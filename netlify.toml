@@ -1,3 +1,9 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+# Netlify's Next.js runtime — turns the .next output into servable pages and
+# an SSR function. Without this the raw build folder gets uploaded as static
+# files and the site 404s.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
