@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  /* The Lexicon palette — dark, atmospheric, campaign-journal */
+  --color-ink-950: #0b0a08;
+  --color-ink-900: #131110;
+  --color-ink-850: #191613;
+  --color-ink-800: #201c18;
+  --color-ink-700: #2e2823;
+  --color-ink-600: #4a4138;
+
+  --color-gold-200: #f0dcb0;
+  --color-gold-300: #e5c988;
+  --color-gold-400: #d4ac62;
+  --color-gold-500: #b9924a;
+  --color-gold-600: #8f6f36;
+
+  --color-parchment-100: #f3ecdd;
+  --color-parchment-300: #ddd2bb;
+  --color-parchment-500: #b3a68b;
+  --color-parchment-700: #7d735e;
+
+  --color-ember-400: #e0724a;
+  --color-ember-500: #c25635;
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+    "Times New Roman", serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink-950);
+  color: var(--color-parchment-100);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Faint vignette + texture so dark pages feel atmospheric, not flat */
+.atmosphere {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 172, 98, 0.08), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 110%, rgba(194, 86, 53, 0.05), transparent 60%);
+}
+
+/* Standard card surface */
+.card {
+  background-color: var(--color-ink-900);
+  border: 1px solid var(--color-ink-700);
+  border-radius: 0.75rem;
+}
+
+.card-interactive {
+  transition: border-color 150ms ease, background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.card-interactive:hover {
+  border-color: var(--color-gold-600);
+  background-color: var(--color-ink-850);
+}
+
+.card-interactive:active {
+  transform: scale(0.99);
+}
+
+/* Thin gilded rule used under section headings */
+.gilded-rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-gold-600),
+    rgba(143, 111, 54, 0.15) 70%,
+    transparent
+  );
+}
