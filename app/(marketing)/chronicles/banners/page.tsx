@@ -7,7 +7,7 @@ import { ArrowLeftIcon, LexiconMark } from "@/components/icons";
 export const metadata: Metadata = {
   title: "The Hall of Banners",
   description:
-    "Every banner in The Lexicon — twelve callings across the tabletop, each with its own chronicle. Which one answers yours?",
+    "Every banner in The Lexicon — callings across the tabletop, each with its own chronicle. Which one answers yours?",
 };
 
 export default function HallOfBannersPage() {
@@ -32,8 +32,8 @@ export default function HallOfBannersPage() {
           The Hall of Banners
         </h1>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-parchment-500">
-          Twelve callings, each with its own plate in the Lexicon&apos;s
-          pages. The hall grows as new banners are chronicled.
+          Callings from across the tabletop, each with its own plate in the
+          Lexicon&apos;s pages. The hall grows as new banners are chronicled.
         </p>
         <div className="gilded-rule mx-auto mt-5 max-w-xs" />
       </div>
