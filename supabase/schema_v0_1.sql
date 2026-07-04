@@ -29,40 +29,12 @@ end;
 $$;
 
 -- ---------------------------------------------------------------------------
--- profiles — one row per user, keyed to auth.users
+-- profiles — DEFINED IN schema_v0_1_profiles.sql
+--
+-- The profiles table moved to its own file when auth shipped; run
+-- schema_v0_1_profiles.sql FIRST, then this file. The tables below
+-- reference public.profiles (id).
 -- ---------------------------------------------------------------------------
-create table if not exists public.profiles (
-  id            uuid primary key references auth.users (id) on delete cascade,
-  username      text not null unique check (char_length(username) between 3 and 32),
-  display_name  text,
-  availability  text not null default 'unset', -- e.g. weeknights, weekends, flexible
-  play_style    text,                          -- e.g. narrative, casual, competitive
-  region        text,                          -- coarse home region for matching
-  bio           text,
-  created_at    timestamptz not null default now(),
-  updated_at    timestamptz not null default now()
-);
-
-create trigger profiles_set_updated_at
-  before update on public.profiles
-  for each row execute function public.set_updated_at();
-
-alter table public.profiles enable row level security;
-
-create policy "Profiles are viewable by authenticated users"
-  on public.profiles for select
-  to authenticated
-  using (true);
-
-create policy "Users can insert their own profile"
-  on public.profiles for insert
-  to authenticated
-  with check ((select auth.uid()) = id);
-
-create policy "Users can update their own profile"
-  on public.profiles for update
-  to authenticated
-  using ((select auth.uid()) = id);
 
 -- ---------------------------------------------------------------------------
 -- armies — forces a user fields

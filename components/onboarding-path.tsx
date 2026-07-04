@@ -65,14 +65,14 @@ export default function OnboardingPath({
       </ol>
 
       <Link
-        href="/dashboard"
+        href="/sign-up"
         className="mt-8 rounded-md bg-gold-500 px-6 py-3.5 text-center text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400"
       >
-        Enter your Lexicon
+        Begin your chronicle
       </Link>
       <p className="mt-3 text-center text-xs text-parchment-700">
-        Guided onboarding is coming soon — for now, step inside and look
-        around.
+        Create your account and forge your commander identity — guided
+        onboarding grows from here.
       </p>
     </div>
   );

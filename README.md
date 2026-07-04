@@ -10,8 +10,9 @@ app or an army-builder clone.
 ## Status
 
 v0.1 prototype — a polished product shell with real navigation and structure,
-placeholder data, and a draft database schema. Built to gather early feedback
-from tabletop players.
+plus a working identity foundation: email/password auth (Supabase) and
+commander profiles. Armies, battles, campaigns, and community remain
+placeholder shells. Built to gather early feedback from tabletop players.
 
 ## Stack
 
@@ -39,10 +40,49 @@ NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
-For local development, put them in `.env.local` (never committed). The app
-shell runs fine without them; anything touching Supabase will raise a clear
-configuration error until they're set. Never add the service role key to this
-project — it must not reach the browser.
+For local development, put them in `.env.local` (never committed). Without
+them the public pages still render, but sign-in and the app shell show a
+clear configuration error. Never add the service role key to this project —
+it must not reach the browser. Access control is enforced by Row Level
+Security in Postgres, so the anon key is safe to expose.
+
+### Supabase setup (one-time)
+
+1. In the Supabase SQL editor, run `supabase/schema_v0_1_profiles.sql`.
+   This creates the `profiles` table, its `updated_at` trigger, and
+   owner-scoped RLS policies. Nothing runs it automatically.
+2. In Supabase → Authentication → URL Configuration, set the Site URL to
+   `https://thelexicon.games` (and add `http://localhost:3000` to additional
+   redirect URLs for local dev) so confirmation emails link back correctly.
+3. Optional: Authentication → Sign In / Up → disable "Confirm email" while
+   prototyping to skip the confirmation-email step.
+
+The broader draft schema (`supabase/schema_v0_1.sql` — armies, venues,
+battles, campaigns, connections) can wait until those features ship; if you
+do run it, run the profiles file first.
+
+## Auth & profile flow
+
+- `/sign-up` — email/password via Supabase Auth. If email confirmation is
+  on, users get a confirmation link first; otherwise they're signed in
+  immediately.
+- `/sign-in` — signs in and redirects to `/dashboard`. Already-signed-in
+  visitors are bounced straight to the dashboard.
+- All pages in the app shell (dashboard, armies, battles, …) are guarded
+  client-side: signed-out visitors are redirected to `/sign-in`.
+- First sign-in: no profile row exists yet, so the guard routes the user to
+  `/profile/setup` to forge their commander identity. Username and
+  availability are required; everything else (experience level, play style,
+  game systems, factions, location, Discord handle, bio) is optional
+  enrichment used by future matchmaking and Muster recommendations.
+- `/profile` — view and edit the profile, sign out.
+- Sessions are handled client-side by `@supabase/supabase-js` (browser
+  storage). Fine for the prototype; can move to cookie-based SSR auth later
+  if server rendering of private data becomes necessary.
+
+TODO: add Discord OAuth sign-in — Supabase supports it natively (enable the
+Discord provider in the Supabase dashboard, then call
+`signInWithOAuth({ provider: "discord" })`). No credentials in this repo.
 
 ## Project layout
 
@@ -59,11 +99,19 @@ supabase/
 
 ## Database schema
 
-`supabase/schema_v0_1.sql` is a reviewed-by-hand draft covering profiles,
-armies, venues, battles, campaigns, and connections — UUID keys,
-`created_at`/`updated_at` triggers, and owner-scoped Row Level Security
-policies. Apply it via the Supabase SQL editor when ready; nothing runs it
-automatically.
+- `supabase/schema_v0_1_profiles.sql` — the live profiles table (required
+  for auth). Run this first.
+- `supabase/schema_v0_1.sql` — draft of the remaining tables (armies,
+  venues, battles, campaigns, connections) for when those features ship.
+
+Both use UUID keys, `created_at`/`updated_at` triggers, and Row Level
+Security. Apply via the Supabase SQL editor; nothing runs them automatically.
+
+## Next up
+
+**Muster** — real army creation backed by the `armies` table, owned by the
+signed-in profile, with faction/system enrichment drawn from the profile's
+interests.
 
 ## Legal note
 
