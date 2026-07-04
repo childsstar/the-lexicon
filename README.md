@@ -98,6 +98,21 @@ in Supabase and the Discord Developer Portal. The required browser env vars
 remain `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`; do not
 commit Discord client secrets or service-role keys to this repo.
 
+
+## Social/share preview testing
+
+The site-level App Router metadata points social crawlers at
+`https://thelexicon.games/og-card.png`, a static 1200×630 share image in
+`public/`. After deployment, verify rich previews by:
+
+1. Sending `https://thelexicon.games` in iMessage/SMS and confirming the
+   conversation renders a large image card.
+2. Posting the homepage URL in Discord or Slack and confirming the preview uses
+   the Lexicon card art instead of only the site name.
+3. Checking the URL with a social preview debugger if a platform exposes one.
+4. Hard-refreshing, cache-busting with a temporary query string, or waiting for
+   platform cache expiry if an old preview is still cached.
+
 ## Project layout
 
 ```
