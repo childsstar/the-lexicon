@@ -68,6 +68,39 @@ body {
   transform: scale(0.99);
 }
 
+/* Form fields — inputs, selects, textareas */
+.field {
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid var(--color-ink-700);
+  background-color: var(--color-ink-850);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-parchment-100);
+  transition: border-color 150ms ease;
+}
+
+.field::placeholder {
+  color: var(--color-parchment-700);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--color-gold-500);
+}
+
+.field:disabled {
+  opacity: 0.6;
+}
+
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237d735e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 1rem;
+}
+
 /* Thin gilded rule used under section headings */
 .gilded-rule {
   height: 1px;
