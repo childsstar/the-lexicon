@@ -2,21 +2,37 @@ import type { Metadata, Viewport } from "next";
 import ThemeScript from "@/components/theme-script";
 import "./globals.css";
 
+const siteDescription =
+  "Discover your tabletop banner. Find your community. Explore game stores, clubs, and events around the world.";
+
+const ogImage = {
+  url: "https://thelexicon.games/og-card.png",
+  width: 1200,
+  height: 630,
+  alt: "The Lexicon — Find Your Banner",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://thelexicon.games"),
   title: {
-    default: "The Lexicon — Your tabletop story starts here",
+    default: "The Lexicon",
     template: "%s · The Lexicon",
   },
-  description:
-    "The Lexicon is a community platform for tabletop wargamers. Discover your faction, muster your army, find your community, and record the battles that become your legend.",
+  applicationName: "The Lexicon",
+  description: siteDescription,
   openGraph: {
     title: "The Lexicon",
-    description:
-      "Discover your faction, muster your army, find your community, and record the battles that become your legend.",
+    description: siteDescription,
     url: "https://thelexicon.games",
     siteName: "The Lexicon",
     type: "website",
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Lexicon",
+    description: siteDescription,
+    images: [ogImage],
   },
 };
 
