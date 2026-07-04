@@ -1,0 +1,731 @@
+[
+    {
+        "name": "The Brooklyn Strategist",
+        "venue_type": "game_store",
+        "formatted_address": "148 Pierrepont St, Brooklyn, NY 11201, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11201",
+        "country_code": "US",
+        "latitude": 40.6956,
+        "longitude": -73.993,
+        "website": "https://thebrooklynstrategist.com/",
+        "phone": "+1 718-576-3035",
+        "source": "official_website",
+        "source_id": "the-brooklyn-strategist",
+        "source_url": "https://thebrooklynstrategist.com/",
+        "confidence": 0.97,
+        "venue_categories": [
+            "board_game_cafe",
+            "retail",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "Warhammer 40,000",
+            "Chess"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists address, phone, walk-in play, TCG, RPG, and wargames."
+        }
+    },
+    {
+        "name": "Sip & Play",
+        "venue_type": "game_store",
+        "formatted_address": "471 5th Ave, Brooklyn, NY 11215, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11215",
+        "country_code": "US",
+        "latitude": 40.6684,
+        "longitude": -73.9873,
+        "website": "https://www.sipnplaynyc.com/",
+        "source": "official_website",
+        "source_id": "sip-and-play-brooklyn",
+        "source_url": "https://www.sipnplaynyc.com/",
+        "confidence": 0.95,
+        "venue_categories": [
+            "board_game_cafe",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Dungeons & Dragons"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists address, hours, Discord/community, and events context."
+        }
+    },
+    {
+        "name": "Twenty Sided Store",
+        "venue_type": "game_store",
+        "formatted_address": "280 Grand St, Brooklyn, NY 11211, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11211",
+        "country_code": "US",
+        "latitude": 40.7132,
+        "longitude": -73.9588,
+        "website": "https://twentysidedstore.com/",
+        "phone": "+1 718-963-1578",
+        "source": "official_website",
+        "source_id": "twenty-sided-store-williamsburg",
+        "source_url": "https://twentysidedstore.com/",
+        "confidence": 0.97,
+        "venue_categories": [
+            "retail",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists Williamsburg address, phone, store, and events."
+        }
+    },
+    {
+        "name": "Last Place on Earth",
+        "venue_type": "game_store",
+        "formatted_address": "531 Graham Ave, Brooklyn, NY 11222, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11222",
+        "country_code": "US",
+        "latitude": 40.7234,
+        "longitude": -73.9456,
+        "website": "https://www.lastplacebk.com/",
+        "phone": "+1 315-230-4381",
+        "source": "official_website",
+        "source_id": "last-place-on-earth-brooklyn",
+        "source_url": "https://www.lastplacebk.com/",
+        "confidence": 0.94,
+        "venue_categories": [
+            "retail",
+            "event_space",
+            "community_hub"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Dungeons & Dragons",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists address, phone, board game shop, and events."
+        }
+    },
+    {
+        "name": "Brooklyn Game Knight",
+        "venue_type": "game_store",
+        "formatted_address": "86 34th St, Brooklyn, NY 11232, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11232",
+        "country_code": "US",
+        "latitude": 40.656,
+        "longitude": -74.0075,
+        "website": "https://www.brooklyngameknight.com/",
+        "source": "official_website",
+        "source_id": "brooklyn-game-knight-industry-city",
+        "source_url": "https://www.brooklyngameknight.com/",
+        "confidence": 0.95,
+        "venue_categories": [
+            "tabletop_lounge",
+            "retail",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Dungeons & Dragons",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists Industry City public location, tabletop lounge, retail, and hours."
+        }
+    },
+    {
+        "name": "Squarrel Cafe",
+        "venue_type": "game_store",
+        "formatted_address": "572 Atlantic Ave, Brooklyn, NY 11217, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11217",
+        "country_code": "US",
+        "latitude": 40.685,
+        "longitude": -73.9797,
+        "website": "https://squarrelcafe.com/",
+        "phone": "+1 718-237-4286",
+        "source": "official_website",
+        "source_id": "squarrel-cafe-brooklyn",
+        "source_url": "https://squarrelcafe.com/",
+        "confidence": 0.94,
+        "venue_categories": [
+            "board_game_cafe",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Dungeons & Dragons"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists address, phone, board game cafe positioning, and weekly D&D night."
+        }
+    },
+    {
+        "name": "Carcosa Club",
+        "venue_type": "club",
+        "formatted_address": "Greenpoint, Brooklyn, NY, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "country_code": "US",
+        "latitude": 40.73,
+        "longitude": -73.954,
+        "website": "https://www.carcosaclub.com/",
+        "source": "official_website",
+        "source_id": "carcosa-club-greenpoint",
+        "source_url": "https://www.carcosaclub.com/",
+        "confidence": 0.62,
+        "venue_categories": [
+            "tabletop_club",
+            "miniatures_wargaming",
+            "board_games",
+            "card_games"
+        ],
+        "supported_game_systems": [
+            "Warhammer 40,000",
+            "Miniatures wargames",
+            "Board games",
+            "Card games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site identifies a non-profit gaming space in Greenpoint, but exact street address was not present in the reviewed public snippet; needs admin review."
+        }
+    },
+    {
+        "name": "Hex & Co. West Side",
+        "venue_type": "game_store",
+        "formatted_address": "2911 Broadway, New York, NY 10025, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10025",
+        "country_code": "US",
+        "latitude": 40.8057,
+        "longitude": -73.9656,
+        "website": "https://www.hexnyc.com/",
+        "phone": "+1 212-439-1008",
+        "source": "official_website",
+        "source_id": "hex-and-co-west-side",
+        "source_url": "https://www.hexnyc.com/",
+        "confidence": 0.97,
+        "venue_categories": [
+            "board_game_cafe",
+            "retail",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists West Side address and phone."
+        }
+    },
+    {
+        "name": "Hex & Co. Upper East Side",
+        "venue_type": "game_store",
+        "formatted_address": "1462 1st Ave, New York, NY 10075, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10075",
+        "country_code": "US",
+        "latitude": 40.7708,
+        "longitude": -73.9537,
+        "website": "https://www.hexnyc.com/",
+        "phone": "+1 646-833-7574",
+        "source": "official_website",
+        "source_id": "hex-and-co-upper-east-side",
+        "source_url": "https://www.hexnyc.com/",
+        "confidence": 0.97,
+        "venue_categories": [
+            "board_game_cafe",
+            "retail",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists Upper East Side address and phone."
+        }
+    },
+    {
+        "name": "Hex & Co. Union Square",
+        "venue_type": "game_store",
+        "formatted_address": "801 Broadway, New York, NY 10003, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10003",
+        "country_code": "US",
+        "latitude": 40.7323,
+        "longitude": -73.991,
+        "website": "https://www.hexnyc.com/",
+        "phone": "+1 646-524-5163",
+        "source": "official_website",
+        "source_id": "hex-and-co-union-square",
+        "source_url": "https://www.hexnyc.com/",
+        "confidence": 0.97,
+        "venue_categories": [
+            "board_game_cafe",
+            "retail",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists Union Square address and phone."
+        }
+    },
+    {
+        "name": "The Compleat Strategist",
+        "venue_type": "game_store",
+        "formatted_address": "11 E 33rd St, New York, NY 10016, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10016",
+        "country_code": "US",
+        "latitude": 40.7474,
+        "longitude": -73.9849,
+        "website": "https://www.thecompleatstrategist.com/",
+        "phone": "+1 212-685-3880",
+        "source": "official_website",
+        "source_id": "the-compleat-strategist-nyc",
+        "source_url": "https://www.thecompleatstrategist.com/pages/contact-us",
+        "confidence": 0.97,
+        "venue_categories": [
+            "retail"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Role-playing games",
+            "Card games",
+            "Miniatures games"
+        ],
+        "external_payload": {
+            "audit_note": "Official contact page lists NYC store address and phone."
+        }
+    },
+    {
+        "name": "The Uncommons",
+        "venue_type": "game_store",
+        "formatted_address": "230 Thompson St, New York, NY 10012, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10012",
+        "country_code": "US",
+        "latitude": 40.7294,
+        "longitude": -73.9986,
+        "website": "https://uncommonsnyc.com/",
+        "phone": "+1 646-543-9215",
+        "source": "official_website",
+        "source_id": "the-uncommons-greenwich-village",
+        "source_url": "https://uncommonsnyc.com/",
+        "confidence": 0.97,
+        "venue_categories": [
+            "board_game_cafe",
+            "retail",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Official site lists address, phone, board game cafe, and events context."
+        }
+    },
+    {
+        "name": "Gamestoria",
+        "venue_type": "game_store",
+        "formatted_address": "42-11 Broadway, Astoria, NY 11103, US",
+        "city": "Astoria",
+        "region_code": "NY",
+        "postal_code": "11103",
+        "country_code": "US",
+        "latitude": 40.7589,
+        "longitude": -73.9174,
+        "website": "https://gamestoria.com/",
+        "phone": "+1 718-606-2853",
+        "source": "official_website",
+        "source_id": "gamestoria-astoria",
+        "source_url": "https://gamestoria.com/contact",
+        "confidence": 0.97,
+        "venue_categories": [
+            "retail",
+            "event_space",
+            "tournament_venue",
+            "wizards_play_network"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Role-playing games",
+            "Trading card games"
+        ],
+        "external_payload": {
+            "audit_note": "Official contact page lists address and phone; Wizards locator corroborates organized play."
+        }
+    },
+    {
+        "name": "Warhammer - 8th Street",
+        "venue_type": "game_store",
+        "formatted_address": "55 E 8th St, New York, NY 10003, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10003",
+        "country_code": "US",
+        "latitude": 40.731,
+        "longitude": -73.9937,
+        "website": "https://stores.warhammer.com/",
+        "phone": "+1 212-982-6314",
+        "source": "official_store_locator",
+        "source_id": "warhammer-8th-street-new-york",
+        "source_url": "https://stores.warhammer.com/",
+        "confidence": 0.9,
+        "venue_categories": [
+            "official_warhammer_store",
+            "retail",
+            "miniatures_wargaming"
+        ],
+        "supported_game_systems": [
+            "Warhammer 40,000",
+            "Warhammer Age of Sigmar",
+            "Kill Team",
+            "Warhammer Underworlds"
+        ],
+        "external_payload": {
+            "audit_note": "Official Warhammer store locator was used as primary source; public social/store listing corroborates address and phone."
+        }
+    },
+    {
+        "name": "Macon Library",
+        "venue_type": "event_space",
+        "formatted_address": "361 Lewis Ave, Brooklyn, NY 11233, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11233",
+        "country_code": "US",
+        "latitude": 40.6825,
+        "longitude": -73.9348,
+        "website": "https://www.bklynlibrary.org/board-game-library",
+        "source": "library_program_page",
+        "source_id": "bpl-macon-board-game-library",
+        "source_url": "https://www.bklynlibrary.org/board-game-library",
+        "confidence": 0.83,
+        "venue_categories": [
+            "library",
+            "board_game_library",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Brooklyn Public Library board game library page lists this branch as a game checkout location."
+        }
+    },
+    {
+        "name": "McKinley Park Library",
+        "venue_type": "event_space",
+        "formatted_address": "6802 Fort Hamilton Pkwy, Brooklyn, NY 11219, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11219",
+        "country_code": "US",
+        "latitude": 40.6299,
+        "longitude": -74.0102,
+        "website": "https://www.bklynlibrary.org/board-game-library",
+        "source": "library_program_page",
+        "source_id": "bpl-mckinley-park-board-game-library",
+        "source_url": "https://www.bklynlibrary.org/board-game-library",
+        "confidence": 0.83,
+        "venue_categories": [
+            "library",
+            "board_game_library",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Brooklyn Public Library board game library page lists this branch as a game checkout location."
+        }
+    },
+    {
+        "name": "New Utrecht Library",
+        "venue_type": "event_space",
+        "formatted_address": "1743 86th St, Brooklyn, NY 11214, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11214",
+        "country_code": "US",
+        "latitude": 40.6074,
+        "longitude": -74.0041,
+        "website": "https://www.bklynlibrary.org/board-game-library",
+        "source": "library_program_page",
+        "source_id": "bpl-new-utrecht-board-game-library",
+        "source_url": "https://www.bklynlibrary.org/board-game-library",
+        "confidence": 0.83,
+        "venue_categories": [
+            "library",
+            "board_game_library",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Brooklyn Public Library board game library page lists this branch as a game checkout location."
+        }
+    },
+    {
+        "name": "Windsor Terrace Library",
+        "venue_type": "event_space",
+        "formatted_address": "160 E 5th St, Brooklyn, NY 11218, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11218",
+        "country_code": "US",
+        "latitude": 40.6491,
+        "longitude": -73.9778,
+        "website": "https://www.bklynlibrary.org/board-game-library",
+        "source": "library_program_page",
+        "source_id": "bpl-windsor-terrace-board-game-library",
+        "source_url": "https://www.bklynlibrary.org/board-game-library",
+        "confidence": 0.83,
+        "venue_categories": [
+            "library",
+            "board_game_library",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Brooklyn Public Library board game library page lists this branch as a game checkout location."
+        }
+    },
+    {
+        "name": "Brooklyn Public Library - Central Library",
+        "venue_type": "event_space",
+        "formatted_address": "10 Grand Army Plaza, Brooklyn, NY 11238, US",
+        "city": "Brooklyn",
+        "region_code": "NY",
+        "postal_code": "11238",
+        "country_code": "US",
+        "latitude": 40.6725,
+        "longitude": -73.9681,
+        "website": "https://www.bklynlibrary.org/board-game-library",
+        "source": "library_program_page",
+        "source_id": "bpl-central-board-game-library",
+        "source_url": "https://www.bklynlibrary.org/board-game-library",
+        "confidence": 0.82,
+        "venue_categories": [
+            "library",
+            "board_game_library",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Brooklyn Public Library board game library page lists Central Library Youth Wing as a game checkout location."
+        }
+    },
+    {
+        "name": "Stavros Niarchos Foundation Library",
+        "venue_type": "event_space",
+        "formatted_address": "455 5th Ave, New York, NY 10016, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10016",
+        "country_code": "US",
+        "latitude": 40.7519,
+        "longitude": -73.9814,
+        "website": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "source": "library_event_calendar",
+        "source_id": "nypl-snfl-board-game-events",
+        "source_url": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "confidence": 0.82,
+        "venue_categories": [
+            "library",
+            "recurring_event_venue",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Card games"
+        ],
+        "external_payload": {
+            "audit_note": "NYPL public events calendar includes in-person board game events at SNFL."
+        }
+    },
+    {
+        "name": "Riverside Library",
+        "venue_type": "event_space",
+        "formatted_address": "127 Amsterdam Ave, New York, NY 10023, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10023",
+        "country_code": "US",
+        "latitude": 40.7758,
+        "longitude": -73.9844,
+        "website": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "source": "library_event_calendar",
+        "source_id": "nypl-riverside-board-card-games",
+        "source_url": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "confidence": 0.82,
+        "venue_categories": [
+            "library",
+            "recurring_event_venue",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Card games",
+            "Mahjong",
+            "Bridge"
+        ],
+        "external_payload": {
+            "audit_note": "NYPL public events calendar includes Adult Board and Card Games at Riverside Library."
+        }
+    },
+    {
+        "name": "Spuyten Duyvil Library",
+        "venue_type": "event_space",
+        "formatted_address": "650 W 235th St, Bronx, NY 10463, US",
+        "city": "Bronx",
+        "region_code": "NY",
+        "postal_code": "10463",
+        "country_code": "US",
+        "latitude": 40.8866,
+        "longitude": -73.9141,
+        "website": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "source": "library_event_calendar",
+        "source_id": "nypl-spuyten-duyvil-game-social",
+        "source_url": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "confidence": 0.8,
+        "venue_categories": [
+            "library",
+            "recurring_event_venue",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "NYPL public events calendar includes Game Social board game programming at Spuyten Duyvil Library."
+        }
+    },
+    {
+        "name": "Mott Haven Library",
+        "venue_type": "event_space",
+        "formatted_address": "321 E 140th St, Bronx, NY 10454, US",
+        "city": "Bronx",
+        "region_code": "NY",
+        "postal_code": "10454",
+        "country_code": "US",
+        "latitude": 40.8105,
+        "longitude": -73.9236,
+        "website": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "source": "library_event_calendar",
+        "source_id": "nypl-mott-haven-board-game-cafe",
+        "source_url": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "confidence": 0.8,
+        "venue_categories": [
+            "library",
+            "recurring_event_venue",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "NYPL public events calendar includes Board Game Cafe programming at Mott Haven Library."
+        }
+    },
+    {
+        "name": "Tompkins Square Library",
+        "venue_type": "event_space",
+        "formatted_address": "331 E 10th St, New York, NY 10009, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10009",
+        "country_code": "US",
+        "latitude": 40.727,
+        "longitude": -73.9801,
+        "website": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "source": "library_event_calendar",
+        "source_id": "nypl-tompkins-square-board-card-games",
+        "source_url": "https://www.nypl.org/events/calendar?keyword=board%20games",
+        "confidence": 0.8,
+        "venue_categories": [
+            "library",
+            "recurring_event_venue",
+            "community_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Card games",
+            "Mahjong",
+            "Chess",
+            "Bridge"
+        ],
+        "external_payload": {
+            "audit_note": "NYPL public events calendar includes Adult Board and Card Games at Tompkins Square Library."
+        }
+    },
+    {
+        "name": "Whole Foods Market Tribeca Community Seating",
+        "venue_type": "event_space",
+        "formatted_address": "270 Greenwich St, New York, NY 10007, US",
+        "city": "New York",
+        "region_code": "NY",
+        "postal_code": "10007",
+        "country_code": "US",
+        "latitude": 40.7157,
+        "longitude": -74.011,
+        "website": "https://www.wholefoodsmarket.com/stores/tribeca",
+        "source": "public_listing",
+        "source_id": "whole-foods-tribeca-board-game-meetup-venue",
+        "source_url": "https://www.wholefoodsmarket.com/stores/tribeca",
+        "confidence": 0.55,
+        "venue_categories": [
+            "recurring_event_venue",
+            "cafe_seating"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Public discussions reference board gaming meetups in the upstairs cafe/community seating, but this needs human verification before import."
+        }
+    }
+]
