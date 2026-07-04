@@ -5,6 +5,9 @@ export type OnboardingStep = {
   title: string;
   body: string;
   icon: React.ReactNode;
+  /** When set, the step is live and links somewhere real. */
+  href?: string;
+  hrefLabel?: string;
 };
 
 export default function OnboardingPath({
@@ -59,6 +62,14 @@ export default function OnboardingPath({
               <p className="mt-1 text-sm leading-relaxed text-parchment-500">
                 {step.body}
               </p>
+              {step.href && (
+                <Link
+                  href={step.href}
+                  className="mt-2 inline-block text-sm font-semibold text-gold-300 transition-colors hover:text-gold-200"
+                >
+                  {step.hrefLabel ?? "Begin"} →
+                </Link>
+              )}
             </div>
           </li>
         ))}
