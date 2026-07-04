@@ -123,18 +123,6 @@ export default function LandingPage() {
           })}
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="mt-auto border-t border-ink-800 py-8 text-center text-xs text-parchment-700">
-        <p>
-          The Lexicon · thelexicon.games — an independent community platform
-          for tabletop wargamers.
-        </p>
-        <p className="mt-2">
-          Not affiliated with or endorsed by Games Workshop or any game
-          publisher. All game names belong to their respective owners.
-        </p>
-      </footer>
     </div>
   );
 }
