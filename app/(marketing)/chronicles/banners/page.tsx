@@ -69,10 +69,12 @@ export default function HallOfBannersPage() {
               )}
               <div className="p-4">
                 <p className="text-xs font-medium text-gold-300">
-                  {banner.primaryFaction}{" "}
-                  <span className="text-text-subtle">
-                    · {banner.gameSystem}
-                  </span>
+                  {banner.primaryFaction}
+                  {banner.gameSystem ? (
+                    <span className="text-text-subtle">
+                      {" "}· {banner.gameSystem}
+                    </span>
+                  ) : null}
                 </p>
                 <p className="mt-2 text-sm italic leading-relaxed text-text-muted">
                   “{banner.cardQuote}”
@@ -80,6 +82,16 @@ export default function HallOfBannersPage() {
                 <p className="mt-2 text-[0.65rem] uppercase tracking-widest text-text-subtle">
                   Plate {i + 1} of {BANNERS.length}
                 </p>
+                {banner.officialUrl ? (
+                  <a
+                    href={banner.officialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-block text-[0.65rem] font-semibold uppercase tracking-widest text-gold-300 transition-colors hover:text-gold-200"
+                  >
+                    Official page
+                  </a>
+                ) : null}
               </div>
             </div>
           );

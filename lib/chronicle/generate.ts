@@ -29,6 +29,10 @@ const WHISPERS = [
   "In another telling of your story, this one answers instead.",
 ];
 
+function bannerGameSystem(banner: Banner): string {
+  return banner.gameSystem ?? "Unknown game system";
+}
+
 export class TemplateResultGenerator implements ResultGenerator {
   async generate({
     scores,
@@ -47,11 +51,11 @@ export class TemplateResultGenerator implements ResultGenerator {
     const traitLine = `The pages mark you for ${TRAITS[t1].name.toLowerCase()} and ${TRAITS[t2].name.toLowerCase()} — ${TRAITS[t1].epithet}, and ${TRAITS[t2].epithet}.`;
 
     return {
-      gameSystem: primary.gameSystem,
+      gameSystem: bannerGameSystem(primary),
       primaryFaction: primary.primaryFaction,
       alternateFactions: [second, third].map((banner, i) => ({
         bannerName: banner.name,
-        gameSystem: banner.gameSystem,
+        gameSystem: bannerGameSystem(banner),
         faction: banner.primaryFaction,
         whisper: WHISPERS[i],
       })),
@@ -130,7 +134,7 @@ export function buildResultPrompt(input: {
     ``,
     `Their two strongest currents: ${TRAITS[t1].name} (${TRAITS[t1].epithet}) and ${TRAITS[t2].name} (${TRAITS[t2].epithet}).`,
     ``,
-    `The banner that answered: "${primary.name}" → faction "${primary.primaryFaction}" in the game system "${primary.gameSystem}".`,
+    `The banner that answered: "${primary.name}" → faction "${primary.primaryFaction}" in the game system "${bannerGameSystem(primary)}".`,
     `Canonical notes on this banner, for inspiration (rewrite, don't copy):`,
     `- Personality: ${primary.personalitySummary}`,
     `- Why it fits: ${primary.reasoning}`,
@@ -138,8 +142,8 @@ export function buildResultPrompt(input: {
     `- Art direction: ${primary.imagePrompt}`,
     ``,
     `Two banners that also stirred:`,
-    `1. "${second.name}" → ${second.primaryFaction} (${second.gameSystem})`,
-    `2. "${third.name}" → ${third.primaryFaction} (${third.gameSystem})`,
+    `1. "${second.name}" → ${second.primaryFaction} (${bannerGameSystem(second)})`,
+    `2. "${third.name}" → ${third.primaryFaction} (${bannerGameSystem(third)})`,
     ``,
     `Produce the reading:`,
     `- gameSystem and primaryFaction: exactly as given above for the answering banner.`,

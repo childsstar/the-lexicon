@@ -21,6 +21,10 @@ const MODEL = process.env.CHRONICLE_MODEL || "claude-opus-4-8";
 // overhead, and never let the SDK retry past the platform limit.
 const CLAUDE_TIMEOUT_MS = 8_500;
 
+function bannerGameSystem(banner: Banner): string {
+  return banner.gameSystem ?? "Unknown game system";
+}
+
 type RequestBody = {
   slug?: unknown;
   answers?: unknown;
@@ -107,7 +111,7 @@ export async function POST(request: Request) {
     // paraphrase can never change someone's matched faction.
     const result: ChronicleResult = {
       ...parsed,
-      gameSystem: ranked[0].gameSystem,
+      gameSystem: bannerGameSystem(ranked[0]),
       primaryFaction: ranked[0].primaryFaction,
       alternateFactions: parsed.alternateFactions
         .slice(0, 2)
@@ -133,7 +137,7 @@ function pinAlternate(
 ): ChronicleResult["alternateFactions"][number] {
   return {
     bannerName: banner.name,
-    gameSystem: banner.gameSystem,
+    gameSystem: bannerGameSystem(banner),
     faction: banner.primaryFaction,
     whisper: alt.whisper,
   };

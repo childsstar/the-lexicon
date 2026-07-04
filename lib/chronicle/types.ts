@@ -57,10 +57,15 @@ export type Banner = {
   id: string;
   /** Evocative archetype name, e.g. "The Shield Unbroken". */
   name: string;
-  gameSystem: string;
+  /** Optional game system label, e.g. "Warhammer 40,000". */
+  gameSystem?: string;
   primaryFaction: string;
   /** Optional official external destination for the faction/game page. */
   officialUrl?: string;
+  /** Optional machine-friendly source identifier for the official URL. */
+  officialSource?: string;
+  /** Optional publisher label for the faction/game page. */
+  publisher?: string;
   /** How strongly each trait pulls toward this banner. */
   profile: Partial<TraitScores>;
   /** Second-person, "unexpectedly accurate" — the emotional core. */
