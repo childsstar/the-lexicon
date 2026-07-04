@@ -20,21 +20,29 @@ export default function ExperiencedOnboardingPage() {
           title: "Import or add armies",
           body: "Bring every force you field into one roster — faction, game system, and the state of the paint queue.",
           icon: <ShieldIcon className="h-5 w-5" />,
+          href: "/armies/muster",
+          hrefLabel: "Open the muster",
         },
         {
           title: "Set availability and play style",
           body: "Weeknight skirmishes or weekend campaigns? Casual narrative or hard-fought competitive? Say how you play so the right opponents find you.",
           icon: <CalendarIcon className="h-5 w-5" />,
+          href: "/profile/setup",
+          hrefLabel: "Forge your profile",
         },
         {
           title: "Find nearby players",
           body: "See who's mustering in your area, what they play, and when they're free to throw dice.",
           icon: <MapPinIcon className="h-5 w-5" />,
+          href: "/community/nearby",
+          hrefLabel: "Scout the area",
         },
         {
           title: "Log your next battle",
           body: "Record the matchup, the outcome, and the moment worth retelling. Every battle adds a page to your legend.",
           icon: <SwordsIcon className="h-5 w-5" />,
+          href: "/battles/new",
+          hrefLabel: "Log a battle",
         },
       ]}
     />

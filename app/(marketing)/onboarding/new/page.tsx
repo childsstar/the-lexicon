@@ -27,16 +27,22 @@ export default function NewPlayerOnboardingPage() {
           title: "Learn the lore",
           body: "Every army carries a history. Get the story behind your faction so your force fights for something.",
           icon: <BookIcon className="h-5 w-5" />,
+          href: "/chronicles/banners",
+          hrefLabel: "Visit the Hall of Banners",
         },
         {
           title: "Muster your first army",
           body: "Start small: a leader and a handful of units. Track what you own, what's built, and what's painted as your force grows.",
           icon: <ShieldIcon className="h-5 w-5" />,
+          href: "/armies/muster",
+          hrefLabel: "Open the muster",
         },
         {
           title: "Find your first game",
           body: "Discover welcoming venues and players near you who enjoy teaching. Your first battle is closer than you think.",
           icon: <DiceIcon className="h-5 w-5" />,
+          href: "/venues",
+          hrefLabel: "Browse venues",
         },
       ]}
     />
