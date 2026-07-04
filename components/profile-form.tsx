@@ -1,8 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase";
 import { friendlyProfileError } from "@/lib/profiles";
+import {
+  GAME_SYSTEMS,
+  SYSTEM_BY_NAME,
+  KNOWN_SYSTEM_NAMES,
+  KNOWN_FACTION_NAMES,
+} from "@/lib/game-data";
 import {
   AVAILABILITY_OPTIONS,
   EXPERIENCE_LEVELS,
@@ -20,6 +26,31 @@ function toList(value: string): string[] {
 
 function fromList(value: string[] | null | undefined): string {
   return (value ?? []).join(", ");
+}
+
+function Chip({
+  label,
+  selected,
+  onToggle,
+}: {
+  label: string;
+  selected: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-pressed={selected}
+      className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+        selected
+          ? "border-gold-500 bg-gold-500/15 text-gold-200"
+          : "border-ink-700 bg-ink-850 text-parchment-500 hover:border-ink-600 hover:text-parchment-300"
+      }`}
+    >
+      {label}
+    </button>
+  );
 }
 
 export default function ProfileForm({
@@ -44,15 +75,31 @@ export default function ProfileForm({
   const [playStyle, setPlayStyle] = useState(
     initial?.preferred_play_style ?? ""
   );
-  const [gameSystems, setGameSystems] = useState(
-    fromList(initial?.preferred_game_systems)
+
+  // Game systems: curated names live in chips, anything unrecognized from a
+  // previous save lands in the free-text field so nothing is ever lost.
+  const initialSystems = initial?.preferred_game_systems ?? [];
+  const [systems, setSystems] = useState<string[]>(
+    initialSystems.filter((s) => KNOWN_SYSTEM_NAMES.has(s))
   );
-  const [factions, setFactions] = useState(fromList(initial?.primary_factions));
+  const [otherSystems, setOtherSystems] = useState(
+    fromList(initialSystems.filter((s) => !KNOWN_SYSTEM_NAMES.has(s)))
+  );
+
+  // Primary factions: same split, with chips grouped by selected system.
+  const initialFactions = initial?.primary_factions ?? [];
+  const [factions, setFactions] = useState<string[]>(
+    initialFactions.filter((f) => KNOWN_FACTION_NAMES.has(f))
+  );
+  const [otherFactions, setOtherFactions] = useState(
+    fromList(initialFactions.filter((f) => !KNOWN_FACTION_NAMES.has(f)))
+  );
+
   const [factionInterests, setFactionInterests] = useState(
     fromList(initial?.faction_interests)
   );
-  const [homeLocation, setHomeLocation] = useState(
-    initial?.home_location ?? ""
+  const [homeLocations, setHomeLocations] = useState(
+    fromList(initial?.home_locations)
   );
   const [discordUsername, setDiscordUsername] = useState(
     initial?.discord_username ?? ""
@@ -61,6 +108,38 @@ export default function ProfileForm({
 
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Faction groups follow the systems selected above.
+  const factionGroups = useMemo(
+    () =>
+      systems
+        .map((name) => SYSTEM_BY_NAME.get(name))
+        .filter((s): s is NonNullable<typeof s> => Boolean(s?.factions.length)),
+    [systems]
+  );
+
+  function toggleSystem(name: string) {
+    setSystems((prev) => {
+      const removing = prev.includes(name);
+      const next = removing
+        ? prev.filter((s) => s !== name)
+        : [...prev, name];
+      if (removing) {
+        // Drop selected factions that no remaining system offers.
+        const visible = new Set(
+          next.flatMap((n) => SYSTEM_BY_NAME.get(n)?.factions ?? [])
+        );
+        setFactions((f) => f.filter((x) => visible.has(x)));
+      }
+      return next;
+    });
+  }
+
+  function toggleFaction(name: string) {
+    setFactions((prev) =>
+      prev.includes(name) ? prev.filter((f) => f !== name) : [...prev, name]
+    );
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -88,10 +167,10 @@ export default function ProfileForm({
         experience_level: experience || null,
         availability,
         preferred_play_style: playStyle || null,
-        preferred_game_systems: toList(gameSystems),
-        primary_factions: toList(factions),
+        preferred_game_systems: [...systems, ...toList(otherSystems)],
+        primary_factions: [...factions, ...toList(otherFactions)],
         faction_interests: toList(factionInterests),
-        home_location: homeLocation.trim() || null,
+        home_locations: toList(homeLocations),
         discord_username: discordUsername.trim() || null,
         bio: bio.trim() || null,
         profile_completed_at:
@@ -220,39 +299,69 @@ export default function ProfileForm({
       </div>
 
       <div>
-        <label
-          htmlFor="game_systems"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
-        >
+        <p className="mb-1.5 text-sm font-medium text-parchment-100">
           Game systems
-        </label>
-        <input
-          id="game_systems"
-          type="text"
-          value={gameSystems}
-          onChange={(e) => setGameSystems(e.target.value)}
-          placeholder="e.g. Grimdark 40K-scale, Skirmish, Fantasy battles"
-          className="field"
-        />
-        <p className="mt-1.5 text-xs text-parchment-700">
-          Separate multiple systems with commas.
         </p>
+        <p className="mb-3 text-xs text-parchment-700">
+          Pick every system you play — your faction choices follow from these.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {GAME_SYSTEMS.map((system) => (
+            <Chip
+              key={system.name}
+              label={system.name}
+              selected={systems.includes(system.name)}
+              onToggle={() => toggleSystem(system.name)}
+            />
+          ))}
+        </div>
+        <input
+          id="other_systems"
+          type="text"
+          value={otherSystems}
+          onChange={(e) => setOtherSystems(e.target.value)}
+          placeholder="Playing something not listed? Add it here, comma separated"
+          className="field mt-3"
+        />
       </div>
 
       <div>
-        <label
-          htmlFor="factions"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
-        >
+        <p className="mb-1.5 text-sm font-medium text-parchment-100">
           Primary factions
-        </label>
+        </p>
+        {factionGroups.length === 0 ? (
+          <p className="mb-3 text-xs text-parchment-700">
+            Select a game system above to choose from its factions, or type
+            yours below.
+          </p>
+        ) : (
+          <div className="space-y-4">
+            {factionGroups.map((system) => (
+              <div key={system.name}>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-parchment-700">
+                  {system.name}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {system.factions.map((faction) => (
+                    <Chip
+                      key={`${system.name}:${faction}`}
+                      label={faction}
+                      selected={factions.includes(faction)}
+                      onToggle={() => toggleFaction(faction)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
         <input
-          id="factions"
+          id="other_factions"
           type="text"
-          value={factions}
-          onChange={(e) => setFactions(e.target.value)}
-          placeholder="The banners you already march under"
-          className="field"
+          value={otherFactions}
+          onChange={(e) => setOtherFactions(e.target.value)}
+          placeholder="Other banners you march under, comma separated"
+          className="field mt-3"
         />
       </div>
 
@@ -275,19 +384,23 @@ export default function ProfileForm({
 
       <div>
         <label
-          htmlFor="home_location"
+          htmlFor="home_locations"
           className="mb-1.5 block text-sm font-medium text-parchment-100"
         >
-          Home location
+          Home locations
         </label>
         <input
-          id="home_location"
+          id="home_locations"
           type="text"
-          value={homeLocation}
-          onChange={(e) => setHomeLocation(e.target.value)}
-          placeholder="City or region — for finding nearby players"
+          value={homeLocations}
+          onChange={(e) => setHomeLocations(e.target.value)}
+          placeholder="e.g. Brooklyn, NY 11215, 94607"
           className="field"
         />
+        <p className="mt-1.5 text-xs text-parchment-700">
+          One or more cities or ZIP codes, comma separated — each one anchors
+          you to a local community.
+        </p>
       </div>
 
       <div>

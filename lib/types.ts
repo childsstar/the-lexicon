@@ -9,7 +9,7 @@ export type Profile = {
   preferred_game_systems: string[];
   primary_factions: string[];
   faction_interests: string[];
-  home_location: string | null;
+  home_locations: string[];
   home_venue_id: string | null;
   discord_username: string | null;
   avatar_url: string | null;

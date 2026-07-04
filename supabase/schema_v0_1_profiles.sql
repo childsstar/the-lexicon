@@ -50,7 +50,9 @@ create table if not exists public.profiles (
   preferred_game_systems text[] not null default '{}',
   primary_factions       text[] not null default '{}',
   faction_interests      text[] not null default '{}',
-  home_location          text,
+  -- One or more cities/ZIP codes so a player can anchor to several local
+  -- communities; geocoding happens later, store what the player typed.
+  home_locations         text[] not null default '{}',
   -- Plain uuid for now; becomes a foreign key once venues ships for real.
   home_venue_id          uuid,
   -- Contact handle only. Discord OAuth sign-in is a planned follow-up —
