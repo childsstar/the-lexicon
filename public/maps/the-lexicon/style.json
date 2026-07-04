@@ -1,0 +1,48 @@
+{
+  "version": 8,
+  "name": "The Lexicon",
+  "center": [0, 0],
+  "zoom": 1,
+  "bearing": 0,
+  "pitch": 0,
+  "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key={key}",
+  "sources": {
+    "hand_drawn_hillshade": {
+      "type": "raster",
+      "url": "https://api.maptiler.com/tiles/hand-drawn-hillshade/tiles.json?key={key}"
+    },
+    "land": {
+      "type": "vector",
+      "url": "https://api.maptiler.com/tiles/land-v4/tiles.json?key={key}"
+    },
+    "land-gradient": {
+      "type": "raster",
+      "url": "https://api.maptiler.com/tiles/land-gradient/tiles.json?key={key}"
+    },
+    "maptiler_attribution": {
+      "type": "vector",
+      "attribution": "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>"
+    },
+    "maptiler_planet_v4": {
+      "type": "vector",
+      "url": "https://api.maptiler.com/tiles/v4/tiles.json?key={key}"
+    },
+    "terrain_rgb": {
+      "type": "raster-dem",
+      "url": "https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key={key}"
+    }
+  },
+  "layers": [
+    { "id": "background", "type": "background", "paint": { "background-color": "hsl(48, 100%, 96%)" } },
+    { "id": "land-gradient", "type": "raster", "source": "land-gradient", "paint": { "raster-opacity": 0.34, "raster-saturation": -0.45, "raster-contrast": -0.18 } },
+    { "id": "land", "type": "fill", "source": "land", "source-layer": "land", "paint": { "fill-color": "hsl(48, 100%, 96%)", "fill-opacity": 0.86 } },
+    { "id": "residential", "type": "fill", "source": "maptiler_planet_v4", "source-layer": "landuse", "filter": ["in", ["get", "class"], ["literal", ["residential", "suburb", "neighbourhood"]]], "paint": { "fill-color": "hsl(45, 93%, 83%)", "fill-opacity": 0.28 } },
+    { "id": "park", "type": "fill", "source": "maptiler_planet_v4", "source-layer": "landcover", "filter": ["in", ["get", "class"], ["literal", ["wood", "grass", "scrub"]]], "paint": { "fill-color": "hsl(75, 31%, 78%)", "fill-opacity": 0.20 } },
+    { "id": "water", "type": "fill", "source": "maptiler_planet_v4", "source-layer": "water", "paint": { "fill-color": "hsl(182, 29%, 82%)", "fill-opacity": 0.88 } },
+    { "id": "waterway", "type": "line", "source": "maptiler_planet_v4", "source-layer": "waterway", "paint": { "line-color": "hsl(182, 29%, 74%)", "line-width": ["interpolate", ["linear"], ["zoom"], 5, 0.4, 12, 1.3], "line-opacity": 0.75 } },
+    { "id": "hillshade", "type": "raster", "source": "hand_drawn_hillshade", "paint": { "raster-opacity": 0.22, "raster-saturation": -0.65 } },
+    { "id": "roads", "type": "line", "source": "maptiler_planet_v4", "source-layer": "transportation", "paint": { "line-color": "hsl(32, 42%, 71%)", "line-width": ["interpolate", ["linear"], ["zoom"], 4, 0.3, 10, 1.1, 14, 3], "line-opacity": 0.55 } },
+    { "id": "road-labels", "type": "symbol", "source": "maptiler_planet_v4", "source-layer": "transportation_name", "minzoom": 12, "layout": { "symbol-placement": "line", "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]], "text-font": ["Noto Sans Regular"], "text-size": 11 }, "paint": { "text-color": "hsl(13, 20%, 51%)", "text-halo-color": "hsl(48, 100%, 96%)", "text-halo-width": 1.4, "text-opacity": 0.78 } },
+    { "id": "place-labels", "type": "symbol", "source": "maptiler_planet_v4", "source-layer": "place", "layout": { "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]], "text-font": ["Noto Serif Regular"], "text-size": ["interpolate", ["linear"], ["zoom"], 3, 11, 9, 15], "text-padding": 3 }, "paint": { "text-color": "hsl(13, 20%, 51%)", "text-halo-color": "hsl(48, 100%, 96%)", "text-halo-width": 1.8 } }
+  ]
+}

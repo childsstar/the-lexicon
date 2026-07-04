@@ -351,3 +351,34 @@ select.field {
 .legal-content a:hover {
   color: var(--color-gold-200);
 }
+
+.venue-map-marker {
+  color: var(--color-ember-400);
+  filter: drop-shadow(0 8px 10px rgba(11, 10, 8, 0.35));
+  height: 2rem;
+  width: 2rem;
+  transition: color 150ms ease, transform 150ms ease;
+}
+
+.venue-map-marker svg {
+  display: block;
+  fill: currentColor;
+  stroke: rgba(11, 10, 8, 0.55);
+  stroke-width: 1.4;
+}
+
+.venue-map-marker svg circle {
+  fill: var(--color-parchment-100);
+  stroke: none;
+}
+
+.venue-map-marker:hover,
+.venue-map-marker-selected {
+  color: var(--color-gold-300);
+  transform: scale(1.18);
+}
+
+.maplibregl-ctrl-attrib,
+.maplibregl-ctrl-attrib a {
+  color: hsl(13, 20%, 36%);
+}
