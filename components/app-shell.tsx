@@ -12,6 +12,9 @@ import {
   LexiconMark,
 } from "@/components/icons";
 
+const shellContainerClass =
+  "mx-auto w-full max-w-3xl px-4 md:max-w-5xl md:px-6 xl:max-w-7xl xl:px-8";
+
 const tabs = [
   { href: "/dashboard", label: "Home", icon: HomeIcon },
   { href: "/armies", label: "Armies", icon: ShieldIcon },
@@ -32,10 +35,12 @@ export default function AppShell({
   const pathname = usePathname();
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
+    <div className="flex min-h-dvh w-full flex-col">
       {/* Top bar */}
       <header className="sticky top-0 z-20 border-b border-ink-700 bg-ink-950/90 backdrop-blur">
-        <div className="flex h-14 items-center justify-between px-4">
+        <div
+          className={`${shellContainerClass} flex h-14 items-center justify-between`}
+        >
           <Link href="/dashboard" className="flex items-center gap-2">
             <LexiconMark className="h-6 w-6 text-gold-400" />
             <span className="font-display text-lg font-semibold tracking-wide text-parchment-100">
@@ -75,7 +80,9 @@ export default function AppShell({
       </header>
 
       {/* Page content — bottom padding clears the mobile tab bar */}
-      <main className="flex-1 px-4 pb-24 pt-6 sm:pb-12">{children}</main>
+      <main className={`${shellContainerClass} flex-1 pb-24 pt-6 sm:pb-12`}>
+        {children}
+      </main>
 
       {/* Mobile bottom tab bar */}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-ink-700 bg-ink-950/95 backdrop-blur sm:hidden">

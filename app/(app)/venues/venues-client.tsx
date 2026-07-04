@@ -109,7 +109,7 @@ export default function VenuesClient() {
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gold-500">
             Near your home locations
           </p>
-          <div className="space-y-3">
+          <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
             {nearby.map((v) => (
               <VenueCard key={v.id} venue={v} nearby />
             ))}
@@ -122,7 +122,7 @@ export default function VenuesClient() {
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-parchment-700">
             {nearby.length > 0 ? "Further afield" : "All venues"}
           </p>
-          <div className="space-y-3">
+          <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
             {elsewhere.map((v) => (
               <VenueCard key={v.id} venue={v} nearby={false} />
             ))}
