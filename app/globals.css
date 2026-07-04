@@ -161,11 +161,98 @@ select.field {
   animation: reveal-art 1.4s ease-out both;
 }
 
+/* Plate art micro-animations — embers drift, candles flicker, storms flash */
+@keyframes plate-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.anim-twinkle {
+  animation: plate-twinkle 3.4s ease-in-out infinite;
+}
+
+@keyframes plate-drift {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-52px);
+    opacity: 0;
+  }
+}
+
+.anim-drift {
+  animation: plate-drift 8s linear infinite;
+}
+
+@keyframes plate-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  41% {
+    opacity: 0.55;
+  }
+  47% {
+    opacity: 0.9;
+  }
+  62% {
+    opacity: 0.45;
+  }
+  71% {
+    opacity: 0.95;
+  }
+}
+
+.anim-flicker {
+  animation: plate-flicker 3s ease-in-out infinite;
+}
+
+@keyframes plate-bolt {
+  0%,
+  84%,
+  100% {
+    opacity: 0;
+  }
+  86% {
+    opacity: 1;
+  }
+  89% {
+    opacity: 0.15;
+  }
+  92% {
+    opacity: 0.8;
+  }
+  95% {
+    opacity: 0;
+  }
+}
+
+.anim-bolt {
+  animation: plate-bolt 7s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-rise,
   .animate-fade-slow,
   .animate-breathe,
-  .animate-reveal {
+  .animate-reveal,
+  .anim-twinkle,
+  .anim-drift,
+  .anim-flicker,
+  .anim-bolt {
     animation: none;
   }
 }

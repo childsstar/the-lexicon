@@ -290,6 +290,7 @@ export default function ChronicleExperience({
         <div className="animate-reveal">
           <BannerArt
             palette={banner.palette}
+            bannerId={banner.id}
             className="flex min-h-[46vh] flex-col items-center justify-end rounded-xl border border-ink-700 p-8 text-center"
           >
             <div className="relative">
@@ -350,20 +351,43 @@ export default function ChronicleExperience({
           <div>
             <SectionRule label="Two banners that also stirred" />
             <div className="space-y-3">
-              {result.alternateFactions.map((alt) => (
-                <div key={alt.bannerName} className="card p-4">
-                  <p className="font-display text-base font-semibold text-parchment-100">
-                    {alt.bannerName}
-                  </p>
-                  <p className="text-xs text-parchment-500">
-                    {alt.faction} · {alt.gameSystem}
-                  </p>
-                  <p className="mt-1.5 text-xs italic text-parchment-700">
-                    {alt.whisper}
-                  </p>
-                </div>
-              ))}
+              {result.alternateFactions.map((alt) => {
+                const altBanner = banners.find(
+                  (b) => b.name === alt.bannerName
+                );
+                return (
+                  <div
+                    key={alt.bannerName}
+                    className="card flex items-center gap-4 p-4"
+                  >
+                    {altBanner && (
+                      <BannerArt
+                        palette={altBanner.palette}
+                        bannerId={altBanner.id}
+                        className="h-16 w-16 shrink-0 rounded-lg border border-ink-700"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <p className="font-display text-base font-semibold text-parchment-100">
+                        {alt.bannerName}
+                      </p>
+                      <p className="text-xs text-parchment-500">
+                        {alt.faction} · {alt.gameSystem}
+                      </p>
+                      <p className="mt-1.5 text-xs italic text-parchment-700">
+                        {alt.whisper}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+            <Link
+              href="/chronicles/banners"
+              className="mt-3 inline-block text-sm font-medium text-gold-300 transition-colors hover:text-gold-200"
+            >
+              Browse the full Hall of Banners →
+            </Link>
           </div>
 
           <div className="space-y-3 pt-2">

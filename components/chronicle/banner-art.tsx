@@ -1,21 +1,32 @@
-// Placeholder "artwork": layered gradients from the banner's palette plus a
-// grain texture, standing in until AI-generated plates exist (see
-// buildImagePrompt in lib/chronicle/generate.ts). Swapping in real art
-// later means replacing this component's background with an <Image>.
+// Banner artwork with a three-tier fallback:
+//   1. AI-rendered raster plate (public/plates/<id>.webp) when one has been
+//      generated — see scripts/generate-plates.mjs and raster-plates.ts
+//   2. Hand-crafted animated SVG plate (components/chronicle/plates.tsx)
+//   3. Layered gradient from the banner's palette (new banners ship art-less)
+// Grain and vignette overlays sit on top of all three so the plates read as
+// one series.
+
+import { PLATES } from "@/components/chronicle/plates";
+import { RASTER_EXT, RASTER_PLATES } from "@/lib/chronicle/raster-plates";
 
 const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")";
 
 export default function BannerArt({
   palette,
+  bannerId,
   className = "",
   children,
 }: {
   palette: [string, string, string];
+  bannerId?: string;
   className?: string;
   children?: React.ReactNode;
 }) {
   const [deep, mid, glow] = palette;
+  const raster = bannerId && RASTER_PLATES.has(bannerId);
+  const Plate = !raster && bannerId ? PLATES[bannerId] : undefined;
+
   return (
     <div
       className={`relative overflow-hidden ${className}`}
@@ -29,6 +40,17 @@ export default function BannerArt({
         ].join(", "),
       }}
     >
+      {raster ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={`/plates/${bannerId}.${RASTER_EXT[bannerId] ?? "webp"}`}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        Plate && <Plate className="absolute inset-0 h-full w-full" />
+      )}
       {/* film grain */}
       <div
         aria-hidden
