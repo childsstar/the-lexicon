@@ -4,13 +4,18 @@ import SignInForm from "./sign-in-form";
 
 export const metadata: Metadata = { title: "Sign in" };
 
-export default function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
   return (
     <AuthScreen
       title="Welcome back, Commander"
       subtitle="Sign in to open your chronicle — your armies, battles, and campaigns await."
     >
-      <SignInForm />
+      <SignInForm initialError={error} />
     </AuthScreen>
   );
 }

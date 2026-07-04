@@ -6,12 +6,16 @@ import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "@/lib/supabase";
 import DiscordAuthButton from "@/components/discord-auth-button";
 
-export default function SignInForm() {
+export default function SignInForm({ initialError }: { initialError?: string }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (initialError) setError(initialError);
+  }, [initialError]);
 
   // Already signed in? Straight to the dashboard.
   useEffect(() => {
