@@ -15,8 +15,16 @@ import {
   scoreAnswers,
 } from "@/lib/chronicle/engine";
 import type { ChronicleEntry } from "@/lib/chronicle";
+import {
+  GAME_SYSTEMS,
+  GAME_SYSTEMS_PARAM,
+  encodeGameSystemKeys,
+  filterByGameSystems,
+  parseGameSystemKeys,
+} from "@/lib/game-systems";
 import BannerArt from "@/components/chronicle/banner-art";
-import { ArrowLeftIcon, LexiconMark } from "@/components/icons";
+import { Frame, SectionRule } from "@/components/chronicle/frame";
+import { LexiconMark } from "@/components/icons";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 const CEREMONY_LINE_MS = 1100;
@@ -31,6 +39,30 @@ export default function ChronicleExperience({
   const { quiz, banners } = entry;
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Optional Find Your World hand-off (?systems=age-of-sigmar,warcry,…):
+  // score only banners from the preferred game systems. With no param — or
+  // no banners charted for those systems yet — the pool is untouched, so
+  // the classic experience is exactly what it was.
+  const preferredSystems = useMemo(
+    () => parseGameSystemKeys(searchParams.get(GAME_SYSTEMS_PARAM)),
+    [searchParams]
+  );
+  const activeBanners = useMemo(
+    () => filterByGameSystems(banners, preferredSystems),
+    [banners, preferredSystems]
+  );
+  const isFiltered = activeBanners.length < banners.length;
+
+  // Keep the hand-off in every URL this experience writes, so shares,
+  // retakes, and revisits stay inside the reader's chosen worlds.
+  const withSystems = useCallback(
+    (url: string) =>
+      preferredSystems.length > 0
+        ? `${url}${url.includes("?") ? "&" : "?"}${GAME_SYSTEMS_PARAM}=${encodeGameSystemKeys(preferredSystems)}`
+        : url,
+    [preferredSystems]
+  );
 
   const [stage, setStage] = useState<Stage>("intro");
   const [answers, setAnswers] = useState<number[]>([]);
@@ -51,7 +83,7 @@ export default function ChronicleExperience({
   const generateFor = useCallback(
     (finalAnswers: number[], rotation: number) => {
       const scores = scoreAnswers(quiz, finalAnswers);
-      const baseRanked = rankBanners(scores, banners);
+      const baseRanked = rankBanners(scores, activeBanners);
       setRanked(baseRanked);
 
       const fallback = () => {
@@ -73,13 +105,14 @@ export default function ChronicleExperience({
           slug: quiz.slug,
           answers: finalAnswers,
           rotation,
+          systems: preferredSystems,
         }),
       })
         .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
         .then((data) => setResult(data.result))
         .catch(fallback);
     },
-    [quiz, banners]
+    [quiz, activeBanners, preferredSystems]
   );
 
   // A shared/revisited link (?a=…) skips straight to a short ceremony.
@@ -107,14 +140,16 @@ export default function ChronicleExperience({
     if (ceremonyLine >= quiz.ceremony.length) {
       const t = setTimeout(() => {
         setStage("results");
-        router.replace(`?a=${encodeAnswers(answers)}`, { scroll: false });
+        router.replace(withSystems(`?a=${encodeAnswers(answers)}`), {
+          scroll: false,
+        });
         window.scrollTo({ top: 0 });
       }, 400);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => setCeremonyLine((l) => l + 1), CEREMONY_LINE_MS);
     return () => clearTimeout(t);
-  }, [stage, ceremonyLine, quiz.ceremony.length, answers, router]);
+  }, [stage, ceremonyLine, quiz.ceremony.length, answers, router, withSystems]);
 
   function choose(optionIndex: number) {
     if (picked !== null) return;
@@ -137,7 +172,7 @@ export default function ChronicleExperience({
     setResult(null);
     setExploreIndex(0);
     setStage("intro");
-    router.replace(quiz.slug ? `/chronicles/${quiz.slug}` : "?", {
+    router.replace(withSystems(quiz.slug ? `/chronicles/${quiz.slug}` : "?"), {
       scroll: false,
     });
     window.scrollTo({ top: 0 });
@@ -152,7 +187,7 @@ export default function ChronicleExperience({
   }
 
   async function share() {
-    const url = `${window.location.origin}/chronicles/${quiz.slug}?a=${encodeAnswers(answers)}`;
+    const url = `${window.location.origin}${withSystems(`/chronicles/${quiz.slug}?a=${encodeAnswers(answers)}`)}`;
     const banner = ranked[exploreIndex];
     try {
       if (navigator.share) {
@@ -189,6 +224,23 @@ export default function ChronicleExperience({
           <p className="mt-8 max-w-sm text-sm leading-relaxed text-text-muted">
             {quiz.invocation}
           </p>
+          {isFiltered && (
+            <p className="mt-4 max-w-sm text-xs leading-relaxed text-text-subtle">
+              Your world guides this reading — banners drawn from{" "}
+              <span className="text-gold-400">
+                {[...new Set(activeBanners.map((b) => b.gameSystemKey))]
+                  .map((key) => GAME_SYSTEMS[key].name)
+                  .join(" · ")}
+              </span>
+              .{" "}
+              <Link
+                href={`/chronicles/${quiz.slug}`}
+                className="underline decoration-border-strong underline-offset-2 transition-colors hover:text-gold-300"
+              >
+                Read from every banner instead
+              </Link>
+            </p>
+          )}
           <button
             onClick={() => setStage("questions")}
             className="mt-10 w-full max-w-xs rounded-md bg-gold-500 px-8 py-4 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400"
@@ -425,56 +477,5 @@ export default function ChronicleExperience({
         </div>
       </div>
     </Frame>
-  );
-}
-
-function Frame({
-  children,
-  backHref,
-  backLabel,
-  onBack,
-}: {
-  children: React.ReactNode;
-  backHref?: string;
-  backLabel?: string;
-  onBack?: () => void;
-}) {
-  return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-5">
-      <header className="flex h-14 items-center justify-between">
-        {onBack ? (
-          <button
-            onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-gold-300"
-          >
-            <ArrowLeftIcon className="h-3.5 w-3.5" />
-            {backLabel}
-          </button>
-        ) : backHref ? (
-          <Link
-            href={backHref}
-            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-gold-300"
-          >
-            <ArrowLeftIcon className="h-3.5 w-3.5" />
-            {backLabel}
-          </Link>
-        ) : (
-          <span />
-        )}
-        <LexiconMark className="h-5 w-5 text-gold-600" />
-      </header>
-      {children}
-    </div>
-  );
-}
-
-function SectionRule({ label }: { label: string }) {
-  return (
-    <div className="mb-3">
-      <p className="text-xs font-semibold uppercase tracking-widest text-gold-500">
-        {label}
-      </p>
-      <div className="gilded-rule mt-2" />
-    </div>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { listChronicles } from "@/lib/chronicle";
+import { FIND_YOUR_WORLD } from "@/lib/world-quiz";
 import {
   ArrowLeftIcon,
   ChevronRightIcon,
@@ -50,6 +51,23 @@ export default function ChroniclesPage() {
       </div>
 
       <div className="mt-8 space-y-3">
+        {/* Find Your World lives outside the chronicle registry — it
+            recommends game systems, then hands off to Find Your Banner. */}
+        <Link
+          href="/chronicles/find-your-world"
+          className="card card-interactive flex items-center gap-4 p-6"
+        >
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-xl font-semibold text-text">
+              {FIND_YOUR_WORLD.title}
+            </h2>
+            <p className="mt-1 text-sm text-text-muted">
+              {FIND_YOUR_WORLD.tagline} Which game systems fit how you play?
+            </p>
+          </div>
+          <ChevronRightIcon className="h-5 w-5 shrink-0 text-text-subtle" />
+        </Link>
+
         {chronicles.map((entry) => (
           <Link
             key={entry.quiz.slug}

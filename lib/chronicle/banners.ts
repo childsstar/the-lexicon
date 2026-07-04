@@ -9,6 +9,7 @@ export const BANNERS: Banner[] = [
   {
     id: "shield-unbroken",
     name: "The Shield Unbroken",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Space Marines",
     profile: { discipline: 3, valor: 2, endurance: 2 },
@@ -26,6 +27,7 @@ export const BANNERS: Banner[] = [
   {
     id: "burning-faith",
     name: "The Burning Faith",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Adepta Sororitas",
     profile: { wonder: 3, valor: 2, discipline: 1 },
@@ -43,6 +45,7 @@ export const BANNERS: Banner[] = [
   {
     id: "endless-hunger",
     name: "The Endless Hunger",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Tyranids",
     profile: { wildness: 3, cunning: 2, endurance: 1 },
@@ -60,6 +63,7 @@ export const BANNERS: Banner[] = [
   {
     id: "deathless-crown",
     name: "The Deathless Crown",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Necrons",
     profile: { endurance: 3, discipline: 2, cunning: 2 },
@@ -77,6 +81,7 @@ export const BANNERS: Banner[] = [
   {
     id: "roaring-horde",
     name: "The Roaring Horde",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Orks",
     profile: { valor: 3, wildness: 3 },
@@ -94,6 +99,7 @@ export const BANNERS: Banner[] = [
   {
     id: "veiled-path",
     name: "The Veiled Path",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Aeldari",
     profile: { cunning: 3, wonder: 2 },
@@ -111,6 +117,7 @@ export const BANNERS: Banner[] = [
   {
     id: "verdant-wrath",
     name: "The Verdant Wrath",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Sylvaneth",
     profile: { wildness: 3, wonder: 2, endurance: 1 },
@@ -128,6 +135,7 @@ export const BANNERS: Banner[] = [
   {
     id: "storms-herald",
     name: "The Storm's Herald",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Stormcast Eternals",
     profile: { valor: 3, wonder: 2, discipline: 1 },
@@ -145,6 +153,7 @@ export const BANNERS: Banner[] = [
   {
     id: "iron-oath",
     name: "The Iron Oath",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Leagues of Votann",
     profile: { endurance: 3, discipline: 2, cunning: 1 },
@@ -162,6 +171,7 @@ export const BANNERS: Banner[] = [
   {
     id: "machine-communion",
     name: "The Machine Communion",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Adeptus Mechanicus",
     profile: { discipline: 2, wonder: 2, cunning: 2 },
@@ -179,6 +189,7 @@ export const BANNERS: Banner[] = [
   {
     id: "midnight-court",
     name: "The Midnight Court",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Soulblight Gravelords",
     profile: { cunning: 2, endurance: 2, wonder: 2 },
@@ -199,6 +210,7 @@ export const BANNERS: Banner[] = [
     primaryFaction: "Gloomspite Gitz",
     officialUrl: "https://www.warhammer-community.com/en-gb/topics/gloomspite-gitz/",
     officialSource: "warhammer-community",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer Age of Sigmar",
     publisher: "Games Workshop",
     profile: { cunning: 3, wildness: 2 },
@@ -218,6 +230,7 @@ export const BANNERS: Banner[] = [
   {
     id: "blackened-choir",
     name: "The Blackened Choir",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Chaos Space Marines",
     profile: { valor: 2, cunning: 2, wildness: 2 },
@@ -231,6 +244,7 @@ export const BANNERS: Banner[] = [
   {
     id: "lantern-line",
     name: "The Lantern Line",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Astra Militarum",
     profile: { discipline: 2, endurance: 2, valor: 2 },
@@ -244,6 +258,7 @@ export const BANNERS: Banner[] = [
   {
     id: "patient-horizon",
     name: "The Patient Horizon",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "T'au Empire",
     profile: { discipline: 2, wonder: 2, cunning: 1 },
@@ -257,6 +272,7 @@ export const BANNERS: Banner[] = [
   {
     id: "glass-knife",
     name: "The Glass Knife",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Drukhari",
     profile: { cunning: 3, wildness: 1, valor: 1 },
@@ -270,6 +286,7 @@ export const BANNERS: Banner[] = [
   {
     id: "subterranean-star",
     name: "The Subterranean Star",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Genestealer Cults",
     profile: { cunning: 3, endurance: 1, wonder: 1 },
@@ -283,6 +300,7 @@ export const BANNERS: Banner[] = [
   {
     id: "towering-vow",
     name: "The Towering Vow",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Imperial Knights",
     profile: { valor: 2, discipline: 2, wonder: 1 },
@@ -296,6 +314,7 @@ export const BANNERS: Banner[] = [
   {
     id: "ashen-tithe",
     name: "The Ashen Tithe",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Chaos Knights",
     profile: { valor: 2, wildness: 2, endurance: 1 },
@@ -309,6 +328,7 @@ export const BANNERS: Banner[] = [
   {
     id: "silver-sanctum",
     name: "The Silver Sanctum",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Grey Knights",
     profile: { discipline: 3, wonder: 2, valor: 1 },
@@ -322,6 +342,7 @@ export const BANNERS: Banner[] = [
   {
     id: "auric-watch",
     name: "The Auric Watch",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Adeptus Custodes",
     profile: { discipline: 3, endurance: 2, valor: 1 },
@@ -335,6 +356,7 @@ export const BANNERS: Banner[] = [
   {
     id: "garden-of-rust",
     name: "The Garden of Rust",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Death Guard",
     profile: { endurance: 3, wildness: 1, wonder: 1 },
@@ -348,6 +370,7 @@ export const BANNERS: Banner[] = [
   {
     id: "sapphire-labyrinth",
     name: "The Sapphire Labyrinth",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "Thousand Sons",
     profile: { wonder: 3, cunning: 2, discipline: 1 },
@@ -361,6 +384,7 @@ export const BANNERS: Banner[] = [
   {
     id: "red-urgency",
     name: "The Red Urgency",
+    gameSystemKey: "warhammer-40k",
     gameSystem: "Warhammer 40,000",
     primaryFaction: "World Eaters",
     profile: { valor: 3, wildness: 2 },
@@ -374,6 +398,7 @@ export const BANNERS: Banner[] = [
   {
     id: "skittering-crown",
     name: "The Skittering Crown",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Skaven",
     profile: { cunning: 3, wildness: 2 },
@@ -387,6 +412,7 @@ export const BANNERS: Banner[] = [
   {
     id: "star-coil",
     name: "The Star Coil",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Seraphon",
     profile: { wonder: 3, discipline: 2 },
@@ -400,6 +426,7 @@ export const BANNERS: Banner[] = [
   {
     id: "market-walls",
     name: "The Market Walls",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Cities of Sigmar",
     profile: { discipline: 2, endurance: 2, wonder: 1 },
@@ -413,6 +440,7 @@ export const BANNERS: Banner[] = [
   {
     id: "sky-ledger",
     name: "The Sky Ledger",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Kharadron Overlords",
     profile: { cunning: 2, discipline: 2, wonder: 1 },
@@ -426,6 +454,7 @@ export const BANNERS: Banner[] = [
   {
     id: "ember-vault",
     name: "The Ember Vault",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Fyreslayers",
     profile: { valor: 2, endurance: 2, discipline: 1 },
@@ -439,6 +468,7 @@ export const BANNERS: Banner[] = [
   {
     id: "dawn-prism",
     name: "The Dawn Prism",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Lumineth Realm-lords",
     profile: { discipline: 2, wonder: 2, cunning: 1 },
@@ -452,6 +482,7 @@ export const BANNERS: Banner[] = [
   {
     id: "crimson-oracle",
     name: "The Crimson Oracle",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Daughters of Khaine",
     profile: { valor: 2, cunning: 2, wonder: 1 },
@@ -465,6 +496,7 @@ export const BANNERS: Banner[] = [
   {
     id: "hollow-bell",
     name: "The Hollow Bell",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Nighthaunt",
     profile: { wonder: 2, endurance: 2, cunning: 1 },
@@ -478,6 +510,7 @@ export const BANNERS: Banner[] = [
   {
     id: "bone-accounting",
     name: "The Bone Accounting",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Ossiarch Bonereapers",
     profile: { discipline: 3, endurance: 2 },
@@ -491,6 +524,7 @@ export const BANNERS: Banner[] = [
   {
     id: "iron-tempest",
     name: "The Iron Tempest",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Slaves to Darkness",
     profile: { valor: 2, endurance: 2, wildness: 1 },
@@ -504,6 +538,7 @@ export const BANNERS: Banner[] = [
   {
     id: "brass-thunder",
     name: "The Brass Thunder",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Blades of Khorne",
     profile: { valor: 3, discipline: 1, wildness: 1 },
@@ -517,6 +552,7 @@ export const BANNERS: Banner[] = [
   {
     id: "changing-stair",
     name: "The Changing Stair",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Disciples of Tzeentch",
     profile: { wonder: 3, cunning: 2 },
@@ -530,6 +566,7 @@ export const BANNERS: Banner[] = [
   {
     id: "rain-of-spores",
     name: "The Rain of Spores",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Maggotkin of Nurgle",
     profile: { endurance: 3, wonder: 1, wildness: 1 },
@@ -543,6 +580,7 @@ export const BANNERS: Banner[] = [
   {
     id: "velvet-mirror",
     name: "The Velvet Mirror",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Hedonites of Slaanesh",
     profile: { wonder: 2, cunning: 2, wildness: 1 },
@@ -556,6 +594,7 @@ export const BANNERS: Banner[] = [
   {
     id: "winter-cauldron",
     name: "The Winter Cauldron",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Ogor Mawtribes",
     profile: { wildness: 2, endurance: 2, valor: 1 },
@@ -569,6 +608,7 @@ export const BANNERS: Banner[] = [
   {
     id: "green-avalanche",
     name: "The Green Avalanche",
+    gameSystemKey: "age-of-sigmar",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Orruk Warclans",
     profile: { valor: 3, wildness: 2 },
