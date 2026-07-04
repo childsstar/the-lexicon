@@ -89,12 +89,20 @@ export default function ProfileClient() {
         title="Profile"
         description="Your commander identity — who you are, when you play, and how you like your battles fought."
         action={
-          <button
-            onClick={() => setEditing(true)}
-            className="shrink-0 rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200"
-          >
-            Edit
-          </button>
+          <div className="flex shrink-0 gap-2">
+            <Link
+              href="/profile/army-lists/import"
+              className="rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200"
+            >
+              Import Army List
+            </Link>
+            <button
+              onClick={() => setEditing(true)}
+              className="rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200"
+            >
+              Edit
+            </button>
+          </div>
         }
       />
 
