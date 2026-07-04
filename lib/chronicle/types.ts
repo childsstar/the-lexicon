@@ -59,6 +59,8 @@ export type Banner = {
   name: string;
   gameSystem: string;
   primaryFaction: string;
+  /** Optional official external destination for the faction/game page. */
+  officialUrl?: string;
   /** How strongly each trait pulls toward this banner. */
   profile: Partial<TraitScores>;
   /** Second-person, "unexpectedly accurate" — the emotional core. */

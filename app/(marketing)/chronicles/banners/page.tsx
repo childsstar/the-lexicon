@@ -39,8 +39,8 @@ export default function HallOfBannersPage() {
       </div>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
-        {BANNERS.map((banner, i) => (
-          <div key={banner.id} className="card overflow-hidden">
+        {BANNERS.map((banner, i) => {
+          const bannerArt = (
             <BannerArt
               palette={banner.palette}
               bannerId={banner.id}
@@ -50,22 +50,40 @@ export default function HallOfBannersPage() {
                 {banner.name}
               </p>
             </BannerArt>
-            <div className="p-4">
-              <p className="text-xs font-medium text-gold-300">
-                {banner.primaryFaction}{" "}
-                <span className="text-text-subtle">
-                  · {banner.gameSystem}
-                </span>
-              </p>
-              <p className="mt-2 text-sm italic leading-relaxed text-text-muted">
-                “{banner.cardQuote}”
-              </p>
-              <p className="mt-2 text-[0.65rem] uppercase tracking-widest text-text-subtle">
-                Plate {i + 1} of {BANNERS.length}
-              </p>
+          );
+
+          return (
+            <div key={banner.id} className="card overflow-hidden">
+              {banner.officialUrl ? (
+                <a
+                  href={banner.officialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visit the official ${banner.name} page`}
+                  className="block"
+                >
+                  {bannerArt}
+                </a>
+              ) : (
+                bannerArt
+              )}
+              <div className="p-4">
+                <p className="text-xs font-medium text-gold-300">
+                  {banner.primaryFaction}{" "}
+                  <span className="text-text-subtle">
+                    · {banner.gameSystem}
+                  </span>
+                </p>
+                <p className="mt-2 text-sm italic leading-relaxed text-text-muted">
+                  “{banner.cardQuote}”
+                </p>
+                <p className="mt-2 text-[0.65rem] uppercase tracking-widest text-text-subtle">
+                  Plate {i + 1} of {BANNERS.length}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="mt-12 text-center">
