@@ -118,7 +118,9 @@ function VenueDetailCard({ venue }: { venue: Venue }) {
 
 const MAPLIBRE_CSS_URL = "https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css";
 const MAPLIBRE_JS_URL = "https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js";
-const THE_LEXICON_STYLE_PATH = "/maps/the-lexicon/style.json";
+const MAPTILER_STYLE_ID = "019f2eed-09d5-7334-b22d-093217fa9d06";
+const mapTilerStyleUrl = (key: string) =>
+  `https://api.maptiler.com/maps/${MAPTILER_STYLE_ID}/style.json?key=${encodeURIComponent(key)}`;
 
 type MapLibreModule = {
   Map: new (options: Record<string, unknown>) => MapLibreMap;
@@ -272,34 +274,32 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<MapLibreMarker[]>([]);
   const [mapError, setMapError] = useState<string | null>(null);
+  const [mapReady, setMapReady] = useState(false);
   const mappableVenues = useMemo(() => venues.filter(isMappableVenue), [venues]);
   const maptilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY;
 
   useEffect(() => {
     if (!maptilerKey || mappableVenues.length === 0 || !mapContainerRef.current) return;
-    const key = maptilerKey;
+    setMapError(null);
+    setMapReady(false);
+    const styleUrl = mapTilerStyleUrl(maptilerKey);
     let cancelled = false;
 
     async function initializeMap() {
       try {
-        const [maplibregl, styleResponse] = await Promise.all([
-          loadMapLibre(),
-          fetch(THE_LEXICON_STYLE_PATH),
-        ]);
-        if (!styleResponse.ok) throw new Error("Unable to load The Lexicon map style.");
-        const rawStyle = await styleResponse.text();
-        const style = JSON.parse(rawStyle.replaceAll("{key}", key));
+        const maplibregl = await loadMapLibre();
         if (cancelled || !mapContainerRef.current) return;
 
         const map = new maplibregl.Map({
           container: mapContainerRef.current,
-          style,
+          style: styleUrl,
           center: [-98.5795, 39.8283],
           zoom: 3,
           attributionControl: true,
         });
         map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
         mapRef.current = map;
+        setMapReady(true);
       } catch (error) {
         if (!cancelled) setMapError(error instanceof Error ? error.message : "Unable to load the map.");
       }
@@ -313,12 +313,13 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
       markersRef.current = [];
       mapRef.current?.remove();
       mapRef.current = null;
+      setMapReady(false);
     };
   }, [maptilerKey, mappableVenues.length]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || mappableVenues.length === 0 || !window.maplibregl) return;
+    if (!mapReady || !map || mappableVenues.length === 0 || !window.maplibregl) return;
 
     markersRef.current.forEach((marker) => marker.remove());
     markersRef.current = mappableVenues.map((venue) =>
@@ -337,7 +338,7 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
     mappableVenues.forEach((venue) => bounds.extend([venue.longitude, venue.latitude]));
     map.resize();
     map.fitBounds(bounds, { padding: 72, maxZoom: 13, duration: 700 });
-  }, [mappableVenues, onSelect, selectedVenue?.id]);
+  }, [mapReady, mappableVenues, onSelect, selectedVenue?.id]);
 
   useEffect(() => {
     const map = mapRef.current;
