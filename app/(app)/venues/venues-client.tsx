@@ -122,6 +122,13 @@ const MAPTILER_STYLE_ID = "019f2eed-09d5-7334-b22d-093217fa9d06";
 const mapTilerStyleUrl = (key: string) =>
   `https://api.maptiler.com/maps/${MAPTILER_STYLE_ID}/style.json?key=${encodeURIComponent(key)}`;
 
+function mapTilerResourceUrl(url: string, key: string) {
+  if (!url.includes("api.maptiler.com")) return url;
+  const resolvedUrl = url.replaceAll("{key}", encodeURIComponent(key));
+  if (/([?&])key=/.test(resolvedUrl)) return resolvedUrl;
+  return `${resolvedUrl}${resolvedUrl.includes("?") ? "&" : "?"}key=${encodeURIComponent(key)}`;
+}
+
 type MapLibreModule = {
   Map: new (options: Record<string, unknown>) => MapLibreMap;
   Marker: new (options?: Record<string, unknown>) => MapLibreMarker;
@@ -135,6 +142,9 @@ type MapLibreMap = {
   flyTo: (options: Record<string, unknown>) => void;
   resize: () => void;
   remove: () => void;
+  on: (type: string, listener: (event?: unknown) => void) => void;
+  off: (type: string, listener: (event?: unknown) => void) => void;
+  once: (type: string, listener: (event?: unknown) => void) => void;
 };
 
 type MapLibreMarker = {
@@ -276,13 +286,14 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
   const [mapError, setMapError] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const mappableVenues = useMemo(() => venues.filter(isMappableVenue), [venues]);
-  const maptilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY;
+  const maptilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY?.trim();
 
   useEffect(() => {
     if (!maptilerKey || mappableVenues.length === 0 || !mapContainerRef.current) return;
     setMapError(null);
     setMapReady(false);
-    const styleUrl = mapTilerStyleUrl(maptilerKey);
+    const key = maptilerKey;
+    const styleUrl = mapTilerStyleUrl(key);
     let cancelled = false;
 
     async function initializeMap() {
@@ -296,10 +307,19 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
           center: [-98.5795, 39.8283],
           zoom: 3,
           attributionControl: true,
+          transformRequest: (url: string) => ({ url: mapTilerResourceUrl(url, key) }),
+        });
+        const handleMapError = (event?: unknown) => {
+          console.error("Venue MapLibre error", event);
+        };
+        map.on("error", handleMapError);
+        map.once("load", () => {
+          if (cancelled) return;
+          map.resize();
+          setMapReady(true);
         });
         map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
         mapRef.current = map;
-        setMapReady(true);
       } catch (error) {
         if (!cancelled) setMapError(error instanceof Error ? error.message : "Unable to load the map.");
       }
@@ -307,8 +327,12 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
 
     initializeMap();
 
+    const resizeObserver = new ResizeObserver(() => mapRef.current?.resize());
+    resizeObserver.observe(mapContainerRef.current);
+
     return () => {
       cancelled = true;
+      resizeObserver.disconnect();
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
       mapRef.current?.remove();
