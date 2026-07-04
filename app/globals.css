@@ -57,6 +57,7 @@
   --atmosphere-ember: rgba(194, 86, 53, 0.05);
 }
 
+/* TODO: Give Parchment a dedicated accessibility/contrast pass before making it a recommended default. */
 :root[data-theme="light"] {
   color-scheme: light;
   --background: #f3ebdd;

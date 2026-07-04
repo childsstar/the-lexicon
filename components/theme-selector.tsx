@@ -2,41 +2,26 @@
 
 import { useEffect, useState } from "react";
 
-type ThemeChoice = "system" | "dark" | "light";
+type ThemeChoice = "dark" | "light";
 
 const storageKey = "lexicon-theme";
 
-function resolveTheme(choice: ThemeChoice) {
-  if (choice !== "system") return choice;
-  return window.matchMedia("(prefers-color-scheme: light)").matches
-    ? "light"
-    : "dark";
+function normalizeThemeChoice(choice: string | null): ThemeChoice {
+  return choice === "light" ? "light" : "dark";
 }
 
 function applyTheme(choice: ThemeChoice) {
-  const theme = resolveTheme(choice);
-  document.documentElement.dataset.theme = theme;
+  document.documentElement.dataset.theme = choice;
   document.documentElement.dataset.themeChoice = choice;
 }
 
 export default function ThemeSelector() {
-  const [choice, setChoice] = useState<ThemeChoice>("system");
+  const [choice, setChoice] = useState<ThemeChoice>("dark");
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey) as ThemeChoice | null;
-    const next = stored === "dark" || stored === "light" ? stored : "system";
+    const next = normalizeThemeChoice(localStorage.getItem(storageKey));
     setChoice(next);
     applyTheme(next);
-
-    const media = window.matchMedia("(prefers-color-scheme: light)");
-    const syncSystemTheme = () => {
-      if ((localStorage.getItem(storageKey) || "system") === "system") {
-        applyTheme("system");
-      }
-    };
-
-    media.addEventListener("change", syncSystemTheme);
-    return () => media.removeEventListener("change", syncSystemTheme);
   }, []);
 
   return (
@@ -53,9 +38,8 @@ export default function ThemeSelector() {
           applyTheme(next);
         }}
       >
-        <option value="system">System</option>
         <option value="dark">Candlelight</option>
-        <option value="light">Parchment</option>
+        <option value="light">Parchment (experimental)</option>
       </select>
     </label>
   );
