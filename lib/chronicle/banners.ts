@@ -198,6 +198,7 @@ export const BANNERS: Banner[] = [
     name: "The Cracked Moon",
     gameSystem: "Warhammer: Age of Sigmar",
     primaryFaction: "Gloomspite Gitz",
+    officialUrl: "https://www.warhammer-community.com/en-gb/topics/gloomspite-gitz/",
     profile: { cunning: 3, wildness: 2 },
     personalitySummary:
       "You are chaos with a plan — or at least a punchline. You zig when the world expects zag, and your best ideas arrive at the worst possible moments, which is precisely why they work.",
