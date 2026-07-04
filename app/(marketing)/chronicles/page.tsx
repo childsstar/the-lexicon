@@ -68,6 +68,21 @@ export default function ChroniclesPage() {
           </Link>
         ))}
 
+        <Link
+          href="/chronicles/banners"
+          className="card card-interactive flex items-center gap-4 p-6"
+        >
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-xl font-semibold text-parchment-100">
+              The Hall of Banners
+            </h2>
+            <p className="mt-1 text-sm text-parchment-500">
+              Every banner and its plate, gathered in one gallery.
+            </p>
+          </div>
+          <ChevronRightIcon className="h-5 w-5 shrink-0 text-parchment-700" />
+        </Link>
+
         {COMING_SOON.map((title) => (
           <div key={title} className="card p-6 opacity-60">
             <h2 className="font-display text-lg font-semibold text-parchment-500">
