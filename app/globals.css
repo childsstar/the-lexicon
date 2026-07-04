@@ -130,6 +130,21 @@ select.field {
   animation: fade-in 1200ms ease both;
 }
 
+@keyframes hero-phrase {
+  from {
+    opacity: 0;
+    transform: translateY(0.2em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-phrase {
+  animation: hero-phrase 420ms ease-out both;
+}
+
 @keyframes breathe {
   0%,
   100% {
@@ -247,6 +262,7 @@ select.field {
 @media (prefers-reduced-motion: reduce) {
   .animate-rise,
   .animate-fade-slow,
+  .animate-hero-phrase,
   .animate-breathe,
   .animate-reveal,
   .anim-twinkle,

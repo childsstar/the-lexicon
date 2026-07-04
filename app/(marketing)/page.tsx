@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RotatingHeroPhrase } from "@/components/rotating-hero-phrase";
 import {
   ShieldIcon,
   UsersIcon,
@@ -59,7 +60,7 @@ export default function LandingPage() {
           The tabletop gaming community platform
         </p>
         <h1 className="max-w-2xl font-display text-4xl font-semibold leading-tight text-parchment-100 sm:text-6xl">
-          Your Warhammer story starts here.
+          Your <RotatingHeroPhrase /> starts here.
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-parchment-500 sm:text-lg">
           Discover your faction, muster your army, find your community, and
