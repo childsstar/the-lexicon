@@ -20,6 +20,8 @@ export default function NewPlayerOnboardingPage() {
           title: "Discover your faction",
           body: "Zealous crusaders, cunning raiders, ancient empires, endless swarms — explore the archetypes and find the force that feels like yours.",
           icon: <CompassIcon className="h-5 w-5" />,
+          href: "/chronicles/find-your-banner",
+          hrefLabel: "Find Your Banner",
         },
         {
           title: "Learn the lore",

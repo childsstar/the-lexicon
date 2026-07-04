@@ -80,6 +80,23 @@ export default function LandingPage() {
             Experienced Player
           </Link>
         </div>
+
+        {/* Find Your Banner — the shareable front door */}
+        <Link
+          href="/chronicles/find-your-banner"
+          className="card card-interactive mt-10 block w-full max-w-md border-gold-600/50 p-6 text-center"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">
+            ✦ Begin your chronicle
+          </p>
+          <p className="mt-2 font-display text-2xl font-semibold text-parchment-100">
+            Find Your Banner
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-parchment-500">
+            Eight choices. One calling. Discover which banner — and which
+            game — answers. No account needed.
+          </p>
+        </Link>
       </section>
 
       {/* Features */}
