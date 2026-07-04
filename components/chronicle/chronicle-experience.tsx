@@ -44,23 +44,40 @@ export default function ChronicleExperience({
 
   const question = quiz.questions[answers.length];
 
-  // Deterministic, client-side generation (see lib/chronicle/generate.ts
-  // for the LLM upgrade path — the ceremony below is designed to cover
-  // its latency).
+  // Ask the server for a Claude-personalized reading (the API key lives
+  // behind /api/chronicle). The ceremony covers the latency, and any
+  // failure falls back to the deterministic client-side template so the
+  // reveal never breaks.
   const generateFor = useCallback(
     (finalAnswers: number[], rotation: number) => {
       const scores = scoreAnswers(quiz, finalAnswers);
       const baseRanked = rankBanners(scores, banners);
-      const rotated = [
-        ...baseRanked.slice(rotation),
-        ...baseRanked.slice(0, rotation),
-      ];
       setRanked(baseRanked);
-      import("@/lib/chronicle/generate").then(({ TemplateResultGenerator }) =>
-        new TemplateResultGenerator()
-          .generate({ quiz, answers: finalAnswers, scores, ranked: rotated })
-          .then(setResult)
-      );
+
+      const fallback = () => {
+        const rotated = [
+          ...baseRanked.slice(rotation),
+          ...baseRanked.slice(0, rotation),
+        ];
+        import("@/lib/chronicle/generate").then(({ TemplateResultGenerator }) =>
+          new TemplateResultGenerator()
+            .generate({ quiz, answers: finalAnswers, scores, ranked: rotated })
+            .then(setResult)
+        );
+      };
+
+      fetch("/api/chronicle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: quiz.slug,
+          answers: finalAnswers,
+          rotation,
+        }),
+      })
+        .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+        .then((data) => setResult(data.result))
+        .catch(fallback);
     },
     [quiz, banners]
   );

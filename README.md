@@ -43,7 +43,18 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 For local development, put them in `.env.local` (never committed). Without
 them the public pages still render, but sign-in and the app shell show a
 clear configuration error. Never add the service role key to this project —
-it must not reach the browser. Access control is enforced by Row Level
+it must not reach the browser.
+
+Server-only (no `NEXT_PUBLIC_` prefix — must never reach the browser):
+
+```
+ANTHROPIC_API_KEY=...   # powers Chronicle readings via /api/chronicle
+CHRONICLE_MODEL=...     # optional; defaults to claude-opus-4-8
+```
+
+Find Your Banner works without the key too: `/api/chronicle` falls back to
+the deterministic template generator whenever the key is missing, the model
+times out, or anything else goes wrong — the reveal never breaks. Access control is enforced by Row Level
 Security in Postgres, so the anon key is safe to expose.
 
 ### Supabase setup (one-time)
