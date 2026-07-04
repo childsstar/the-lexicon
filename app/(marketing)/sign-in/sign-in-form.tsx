@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "@/lib/supabase";
-
-// TODO: Supabase also supports Discord OAuth — enable the Discord provider in
-// the Supabase dashboard and add signInWithOAuth({ provider: "discord" })
-// here. No credentials belong in this repo.
+import DiscordAuthButton from "@/components/discord-auth-button";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -57,6 +54,14 @@ export default function SignInForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      <DiscordAuthButton />
+
+      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-parchment-700">
+        <span className="h-px flex-1 bg-ink-700" />
+        <span>or continue with email</span>
+        <span className="h-px flex-1 bg-ink-700" />
+      </div>
+
       <div>
         <label
           htmlFor="email"

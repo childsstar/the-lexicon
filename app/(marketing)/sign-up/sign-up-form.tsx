@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "@/lib/supabase";
+import DiscordAuthButton from "@/components/discord-auth-button";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -94,6 +95,14 @@ export default function SignUpForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      <DiscordAuthButton />
+
+      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-parchment-700">
+        <span className="h-px flex-1 bg-ink-700" />
+        <span>or continue with email</span>
+        <span className="h-px flex-1 bg-ink-700" />
+      </div>
+
       <div>
         <label
           htmlFor="email"

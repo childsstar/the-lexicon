@@ -91,9 +91,12 @@ do run it, run the profiles file first.
   storage). Fine for the prototype; can move to cookie-based SSR auth later
   if server rendering of private data becomes necessary.
 
-TODO: add Discord OAuth sign-in — Supabase supports it natively (enable the
-Discord provider in the Supabase dashboard, then call
-`signInWithOAuth({ provider: "discord" })`). No credentials in this repo.
+Discord OAuth sign-in is available through Supabase Auth. To use it, enable
+the Discord provider in the Supabase dashboard, configure the Discord OAuth
+app/client credentials there, and add both production and local redirect URLs
+in Supabase and the Discord Developer Portal. The required browser env vars
+remain `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`; do not
+commit Discord client secrets or service-role keys to this repo.
 
 ## Project layout
 
