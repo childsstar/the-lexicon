@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/page-header";
 import EmptyState from "@/components/empty-state";
@@ -116,7 +116,85 @@ function VenueDetailCard({ venue }: { venue: Venue }) {
   );
 }
 
-function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selectedVenue: Venue | null; onSelect: (venue: Venue) => void; }) {
+const MAPLIBRE_CSS_URL = "https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css";
+const MAPLIBRE_JS_URL = "https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js";
+const THE_LEXICON_STYLE_PATH = "/maps/the-lexicon/style.json";
+
+type MapLibreModule = {
+  Map: new (options: Record<string, unknown>) => MapLibreMap;
+  Marker: new (options?: Record<string, unknown>) => MapLibreMarker;
+  NavigationControl: new (options?: Record<string, unknown>) => unknown;
+  LngLatBounds: new (sw?: [number, number], ne?: [number, number]) => MapLibreBounds;
+};
+
+type MapLibreMap = {
+  addControl: (control: unknown, position?: string) => void;
+  fitBounds: (bounds: MapLibreBounds, options?: Record<string, unknown>) => void;
+  flyTo: (options: Record<string, unknown>) => void;
+  resize: () => void;
+  remove: () => void;
+};
+
+type MapLibreMarker = {
+  setLngLat: (lngLat: [number, number]) => MapLibreMarker;
+  addTo: (map: MapLibreMap) => MapLibreMarker;
+  remove: () => void;
+};
+
+type MapLibreBounds = {
+  extend: (lngLat: [number, number]) => MapLibreBounds;
+};
+
+declare global {
+  interface Window {
+    maplibregl?: MapLibreModule;
+  }
+}
+
+let mapLibrePromise: Promise<MapLibreModule> | null = null;
+
+function loadMapLibre() {
+  if (typeof window === "undefined") return Promise.reject(new Error("MapLibre requires a browser."));
+  if (window.maplibregl) return Promise.resolve(window.maplibregl);
+  if (mapLibrePromise) return mapLibrePromise;
+
+  mapLibrePromise = new Promise<MapLibreModule>((resolve, reject) => {
+    if (!document.querySelector(`link[href="${MAPLIBRE_CSS_URL}"]`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = MAPLIBRE_CSS_URL;
+      document.head.appendChild(link);
+    }
+
+    const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${MAPLIBRE_JS_URL}"]`);
+    if (existingScript) {
+      existingScript.addEventListener("load", () => window.maplibregl ? resolve(window.maplibregl) : reject(new Error("MapLibre did not initialize.")), { once: true });
+      existingScript.addEventListener("error", () => reject(new Error("Unable to load MapLibre.")), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = MAPLIBRE_JS_URL;
+    script.async = true;
+    script.onload = () => window.maplibregl ? resolve(window.maplibregl) : reject(new Error("MapLibre did not initialize."));
+    script.onerror = () => reject(new Error("Unable to load MapLibre."));
+    document.head.appendChild(script);
+  });
+
+  return mapLibrePromise;
+}
+
+function createVenueMarkerElement(venue: Venue, selected: boolean, onSelect: (venue: Venue) => void) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.setAttribute("aria-label", `Select ${venue.name}`);
+  button.className = `venue-map-marker ${selected ? "venue-map-marker-selected" : ""}`;
+  button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.6"/></svg>`;
+  button.addEventListener("click", () => onSelect(venue));
+  return button;
+}
+
+function FallbackVenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selectedVenue: Venue | null; onSelect: (venue: Venue) => void; }) {
   const mappableVenues = venues.filter(isMappableVenue);
   const selectedMappable = selectedVenue && isMappableVenue(selectedVenue) ? selectedVenue : null;
   const bounds = useMemo(() => {
@@ -159,10 +237,10 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
 
   return (
     <section className="card overflow-hidden p-0">
-      <div className="relative min-h-[28rem] bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.20),transparent_25%),linear-gradient(135deg,rgba(83,59,32,0.35),rgba(9,11,17,0.95))]">
+      <div className="relative min-h-[min(72vh,42rem)] bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.20),transparent_25%),linear-gradient(135deg,rgba(83,59,32,0.35),rgba(9,11,17,0.95))]">
         <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(212,175,55,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,.18)_1px,transparent_1px)] [background-size:44px_44px]" />
-        <div className="absolute left-4 top-4 rounded-full border border-gold-600/50 bg-background/80 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300">
-          {mappableVenues.length} mapped
+        <div className="absolute left-4 top-4 z-20 rounded-full border border-gold-600/50 bg-background/80 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300">
+          {mappableVenues.length} mapped · add MapTiler key for basemap
         </div>
         {mappableVenues.map((venue) => {
           const selected = venue.id === selectedVenue?.id;
@@ -179,6 +257,105 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
             </button>
           );
         })}
+        {selectedVenue && (
+          <div className="absolute bottom-4 left-4 right-4 z-30 md:left-auto md:w-80">
+            <VenueDetailCard venue={selectedVenue} />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selectedVenue: Venue | null; onSelect: (venue: Venue) => void; }) {
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<MapLibreMap | null>(null);
+  const markersRef = useRef<MapLibreMarker[]>([]);
+  const [mapError, setMapError] = useState<string | null>(null);
+  const mappableVenues = useMemo(() => venues.filter(isMappableVenue), [venues]);
+  const maptilerKey = process.env.NEXT_PUBLIC_MAPTILER_KEY;
+
+  useEffect(() => {
+    if (!maptilerKey || mappableVenues.length === 0 || !mapContainerRef.current) return;
+    const key = maptilerKey;
+    let cancelled = false;
+
+    async function initializeMap() {
+      try {
+        const [maplibregl, styleResponse] = await Promise.all([
+          loadMapLibre(),
+          fetch(THE_LEXICON_STYLE_PATH),
+        ]);
+        if (!styleResponse.ok) throw new Error("Unable to load The Lexicon map style.");
+        const rawStyle = await styleResponse.text();
+        const style = JSON.parse(rawStyle.replaceAll("{key}", key));
+        if (cancelled || !mapContainerRef.current) return;
+
+        const map = new maplibregl.Map({
+          container: mapContainerRef.current,
+          style,
+          center: [-98.5795, 39.8283],
+          zoom: 3,
+          attributionControl: true,
+        });
+        map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
+        mapRef.current = map;
+      } catch (error) {
+        if (!cancelled) setMapError(error instanceof Error ? error.message : "Unable to load the map.");
+      }
+    }
+
+    initializeMap();
+
+    return () => {
+      cancelled = true;
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
+      mapRef.current?.remove();
+      mapRef.current = null;
+    };
+  }, [maptilerKey, mappableVenues.length]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || mappableVenues.length === 0 || !window.maplibregl) return;
+
+    markersRef.current.forEach((marker) => marker.remove());
+    markersRef.current = mappableVenues.map((venue) =>
+      new window.maplibregl!.Marker({
+        element: createVenueMarkerElement(venue, venue.id === selectedVenue?.id, onSelect),
+        anchor: "bottom",
+      })
+        .setLngLat([venue.longitude, venue.latitude])
+        .addTo(map)
+    );
+
+    const bounds = new window.maplibregl.LngLatBounds(
+      [mappableVenues[0].longitude, mappableVenues[0].latitude],
+      [mappableVenues[0].longitude, mappableVenues[0].latitude]
+    );
+    mappableVenues.forEach((venue) => bounds.extend([venue.longitude, venue.latitude]));
+    map.resize();
+    map.fitBounds(bounds, { padding: 72, maxZoom: 13, duration: 700 });
+  }, [mappableVenues, onSelect, selectedVenue?.id]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !selectedVenue || !isMappableVenue(selectedVenue)) return;
+    map.flyTo({ center: [selectedVenue.longitude, selectedVenue.latitude], zoom: 12, duration: 700, essential: true });
+  }, [selectedVenue]);
+
+  if (!maptilerKey || mapError || mappableVenues.length === 0) {
+    return <FallbackVenuesMap venues={venues} selectedVenue={selectedVenue} onSelect={onSelect} />;
+  }
+
+  return (
+    <section className="card overflow-hidden p-0">
+      <div className="relative min-h-[min(72vh,42rem)] lg:min-h-[calc(100vh-18rem)]">
+        <div ref={mapContainerRef} className="absolute inset-0 bg-[#fff8eb]" aria-label="Map of venues" />
+        <div className="pointer-events-none absolute left-4 top-4 z-20 rounded-full border border-gold-600/50 bg-background/85 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300 shadow-lg">
+          {mappableVenues.length} mapped
+        </div>
         {selectedVenue && (
           <div className="absolute bottom-4 left-4 right-4 z-30 md:left-auto md:w-80">
             <VenueDetailCard venue={selectedVenue} />
@@ -310,9 +487,9 @@ export default function VenuesClient() {
             ))}
           </div>
 
-          <div className={viewMode === "both" ? "venues-both grid gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(26rem,1.05fr)]" : ""}>
-            {showList && <div className={viewMode === "both" ? "min-w-0 lg:max-h-[42rem] lg:overflow-y-auto lg:pr-2" : ""}>{listContent}</div>}
-            {showMap && <div className={viewMode === "both" ? "lg:sticky lg:top-6 lg:self-start" : ""}><VenuesMap venues={venues} selectedVenue={selectedVenue} onSelect={handleSelectVenue} /></div>}
+          <div className={viewMode === "both" ? "venues-both grid gap-6 lg:grid-cols-[minmax(360px,420px)_minmax(0,1fr)]" : ""}>
+            {showList && <div className={viewMode === "both" ? "min-w-0 lg:max-h-[calc(100vh-18rem)] lg:overflow-y-auto lg:pr-2" : ""}>{listContent}</div>}
+            {showMap && <div className={viewMode === "both" ? "min-w-0 lg:sticky lg:top-6 lg:self-start" : ""}><VenuesMap venues={venues} selectedVenue={selectedVenue} onSelect={handleSelectVenue} /></div>}
           </div>
         </>
       )}
