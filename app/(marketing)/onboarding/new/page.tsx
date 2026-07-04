@@ -3,6 +3,7 @@ import OnboardingPath from "@/components/onboarding-path";
 import {
   CompassIcon,
   BookIcon,
+  MapPinIcon,
   ShieldIcon,
   DiceIcon,
 } from "@/components/icons";
@@ -14,8 +15,15 @@ export default function NewPlayerOnboardingPage() {
     <OnboardingPath
       eyebrow="New to the Hobby"
       title="Every legend has a first page."
-      intro="Four steps from curious newcomer to your first game on the table. Take them at your own pace — the hobby is a long road, and it's a good one."
+      intro="Five steps from curious newcomer to your first game on the table. Take them at your own pace — the hobby is a long road, and it's a good one."
       steps={[
+        {
+          title: "Find your world",
+          body: "Fantasy or the far future? Elite warbands or grand armies? Seven quick choices recommend the game systems that match how you like to play — no prior knowledge needed, and entirely optional.",
+          icon: <MapPinIcon className="h-5 w-5" />,
+          href: "/chronicles/find-your-world",
+          hrefLabel: "Find Your World",
+        },
         {
           title: "Discover your faction",
           body: "Zealous crusaders, cunning raiders, ancient empires, endless swarms — explore the archetypes and find the force that feels like yours.",

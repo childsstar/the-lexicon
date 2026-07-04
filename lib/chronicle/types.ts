@@ -1,3 +1,5 @@
+import type { GameSystemKey } from "../game-systems";
+
 // The Chronicle engine — shared types.
 //
 // A "chronicle" is an interactive experience (Find Your Banner is the first
@@ -57,6 +59,9 @@ export type Banner = {
   id: string;
   /** Evocative archetype name, e.g. "The Shield Unbroken". */
   name: string;
+  /** Structured reference into GAME_SYSTEMS — used for filtering and
+   * future recommendations. `gameSystem` remains the display label. */
+  gameSystemKey: GameSystemKey;
   /** Optional game system label, e.g. "Warhammer 40,000". */
   gameSystem?: string;
   primaryFaction: string;

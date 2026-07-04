@@ -4,6 +4,11 @@ import type {
   TraitId,
   TraitScores,
 } from "./types";
+import { accumulateScores } from "../quiz-engine";
+
+// Answer-token codecs live in the shared quiz engine; re-exported here so
+// chronicle consumers keep a single import site.
+export { encodeAnswers, decodeAnswers } from "../quiz-engine";
 
 export const EMPTY_SCORES: TraitScores = {
   valor: 0,
@@ -19,15 +24,10 @@ export function scoreAnswers(
   quiz: ChronicleQuiz,
   answers: number[]
 ): TraitScores {
-  const scores: TraitScores = { ...EMPTY_SCORES };
-  quiz.questions.forEach((question, i) => {
-    const option = question.options[answers[i]];
-    if (!option) return;
-    for (const [trait, weight] of Object.entries(option.traits)) {
-      scores[trait as TraitId] += weight ?? 0;
-    }
-  });
-  return scores;
+  return accumulateScores(
+    quiz.questions.map((question, i) => question.options[answers[i]]?.traits),
+    EMPTY_SCORES
+  );
 }
 
 /** Rank banners by affinity: normalized dot product between the player's
@@ -57,23 +57,4 @@ export function topTraits(scores: TraitScores, count = 2): TraitId[] {
     .sort((a, b) => b[1] - a[1])
     .slice(0, count)
     .map(([trait]) => trait);
-}
-
-/** Answers <-> compact URL token (e.g. "03121230"), so results are
- * linkable, revisitable, and — later — shareable Chronicle Cards. */
-export function encodeAnswers(answers: number[]): string {
-  return answers.join("");
-}
-
-export function decodeAnswers(
-  token: string | null,
-  quiz: ChronicleQuiz
-): number[] | null {
-  if (!token || !/^\d+$/.test(token)) return null;
-  if (token.length !== quiz.questions.length) return null;
-  const answers = token.split("").map(Number);
-  const valid = answers.every(
-    (a, i) => a >= 0 && a < quiz.questions[i].options.length
-  );
-  return valid ? answers : null;
 }

@@ -10,6 +10,7 @@ import {
   isValidChronicleResult,
 } from "@/lib/chronicle/generate";
 import type { Banner, ChronicleResult } from "@/lib/chronicle/types";
+import { filterByGameSystems, isGameSystemKey } from "@/lib/game-systems";
 
 // Generates a Chronicle reading. The Anthropic API key lives only here,
 // server-side; the browser never sees it. Every failure path falls back to
@@ -29,6 +30,7 @@ type RequestBody = {
   slug?: unknown;
   answers?: unknown;
   rotation?: unknown;
+  systems?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -43,7 +45,17 @@ export async function POST(request: Request) {
   if (!entry) {
     return NextResponse.json({ error: "Unknown chronicle" }, { status: 404 });
   }
-  const { quiz, banners } = entry;
+  const { quiz } = entry;
+
+  // Optional Find Your World hand-off: mirror the client's filtering so
+  // both rankings agree. Unknown keys are dropped; an empty or unmatched
+  // filter leaves the pool untouched.
+  const preferredSystems = Array.isArray(body.systems)
+    ? body.systems.filter(
+        (s): s is string => typeof s === "string"
+      ).filter(isGameSystemKey)
+    : [];
+  const banners = filterByGameSystems(entry.banners, preferredSystems);
 
   const answers = body.answers;
   const validAnswers =

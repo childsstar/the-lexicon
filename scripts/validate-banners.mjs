@@ -4,11 +4,17 @@ import path from "node:path";
 const ROOT = new URL("..", import.meta.url).pathname;
 const bannersSource = readFileSync(path.join(ROOT, "lib", "chronicle", "banners.ts"), "utf8");
 const platesSource = readFileSync(path.join(ROOT, "components", "chronicle", "plates.tsx"), "utf8");
+const gameSystemsSource = readFileSync(path.join(ROOT, "lib", "game-systems.ts"), "utf8");
+
+const keysList = gameSystemsSource.match(/GAME_SYSTEM_KEYS = \[([\s\S]*?)\] as const/)?.[1];
+if (!keysList) throw new Error("Could not locate GAME_SYSTEM_KEYS in lib/game-systems.ts.");
+const allowedGameSystems = new Set([...keysList.matchAll(/"([^"]+)"/g)].map((m) => m[1]));
 
 const allowedTraits = new Set(["valor", "discipline", "cunning", "wonder", "endurance", "wildness"]);
 const requiredStringFields = [
   "id",
   "name",
+  "gameSystemKey",
   "gameSystem",
   "primaryFaction",
   "personalitySummary",
@@ -36,6 +42,11 @@ for (const [index, record] of records.entries()) {
   if (ids.has(id)) throw new Error(`Duplicate banner id: ${id}`);
   ids.add(id);
 
+  const gameSystemKey = record.match(/gameSystemKey:\s*"([^"]+)"/)?.[1];
+  if (!allowedGameSystems.has(gameSystemKey)) {
+    throw new Error(`Banner ${id} uses unknown gameSystemKey: ${gameSystemKey}`);
+  }
+
   const palette = record.match(/palette:\s*\[([^\]]+)\]/)?.[1]
     ?.split(",")
     .map((part) => part.trim().replace(/^"|"$/g, ""));
@@ -59,4 +70,4 @@ for (const [index, record] of records.entries()) {
   }
 }
 
-console.log(`Validated ${records.length} banners: unique ids, required fields, palettes, trait profiles, and plate registry entries.`);
+console.log(`Validated ${records.length} banners: unique ids, required fields, game system keys, palettes, trait profiles, and plate registry entries.`);
