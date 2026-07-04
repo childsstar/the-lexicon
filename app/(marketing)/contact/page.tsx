@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <article className="mx-auto w-full max-w-[800px] px-5 py-14 sm:py-20">
-      <Link href="/" className="text-xs font-semibold uppercase tracking-[0.22em] text-parchment-700 transition-colors hover:text-gold-300">
+      <Link href="/" className="text-xs font-semibold uppercase tracking-[0.22em] text-text-subtle transition-colors hover:text-gold-300">
         The Lexicon
       </Link>
-      <header className="mt-8 border-b border-ink-800 pb-8">
-        <h1 className="font-display text-4xl font-semibold text-parchment-100 sm:text-5xl">Contact</h1>
-        <p className="mt-4 text-base leading-relaxed text-parchment-500">How to contact The Lexicon team for support, beta feedback, venue updates, privacy questions, and community safety concerns.</p>
+      <header className="mt-8 border-b border-border-muted pb-8">
+        <h1 className="font-display text-4xl font-semibold text-text sm:text-5xl">Contact</h1>
+        <p className="mt-4 text-base leading-relaxed text-text-muted">How to contact The Lexicon team for support, beta feedback, venue updates, privacy questions, and community safety concerns.</p>
       </header>
       <div className="legal-content mt-8 space-y-8">
       <section><h2>Reach the team</h2><p>The Lexicon is currently in public beta, and thoughtful feedback helps shape what comes next. For support, beta feedback, account questions, privacy requests, venue corrections, event updates, or community safety concerns, email us at <a href="mailto:hello@thelexicon.games">hello@thelexicon.games</a>.</p></section>

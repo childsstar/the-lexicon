@@ -26,7 +26,7 @@ export default function OnboardingPath({
       <header className="flex h-16 items-center justify-between">
         <Link
           href="/onboarding"
-          className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-parchment-700 transition-colors hover:text-gold-300"
+          className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-gold-300"
         >
           <ArrowLeftIcon className="h-3.5 w-3.5" />
           Choose a path
@@ -38,10 +38,10 @@ export default function OnboardingPath({
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-500">
           {eyebrow}
         </p>
-        <h1 className="mt-3 font-display text-3xl font-semibold text-parchment-100">
+        <h1 className="mt-3 font-display text-3xl font-semibold text-text">
           {title}
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-parchment-500">
+        <p className="mt-3 text-sm leading-relaxed text-text-muted">
           {intro}
         </p>
       </div>
@@ -49,17 +49,17 @@ export default function OnboardingPath({
       <ol className="mt-8 space-y-3">
         {steps.map((step, i) => (
           <li key={step.title} className="card flex items-start gap-4 p-5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold-600/50 bg-ink-850 text-gold-400">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold-600/50 bg-surface text-gold-400">
               {step.icon}
             </div>
             <div>
-              <p className="text-[0.65rem] font-semibold uppercase tracking-widest text-parchment-700">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-widest text-text-subtle">
                 Step {i + 1}
               </p>
-              <h2 className="mt-0.5 font-display text-lg font-semibold text-parchment-100">
+              <h2 className="mt-0.5 font-display text-lg font-semibold text-text">
                 {step.title}
               </h2>
-              <p className="mt-1 text-sm leading-relaxed text-parchment-500">
+              <p className="mt-1 text-sm leading-relaxed text-text-muted">
                 {step.body}
               </p>
               {step.href && (
@@ -81,7 +81,7 @@ export default function OnboardingPath({
       >
         Begin your chronicle
       </Link>
-      <p className="mt-3 text-center text-xs text-parchment-700">
+      <p className="mt-3 text-center text-xs text-text-subtle">
         Create your account and forge your commander identity — guided
         onboarding grows from here.
       </p>

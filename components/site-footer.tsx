@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeSelector from "@/components/theme-selector";
 
 const footerLinks = [
   { href: "/terms", label: "Terms" },
@@ -9,7 +10,7 @@ const footerLinks = [
 
 export default function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-ink-800 px-5 py-8 text-center text-xs text-parchment-700">
+    <footer className="mt-auto border-t border-border-muted px-5 py-8 text-center text-xs text-text-subtle">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-4">
         <nav
           aria-label="Legal and support"
@@ -19,14 +20,15 @@ export default function SiteFooter() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-medium text-parchment-500 transition-colors hover:text-gold-300"
+              className="font-medium text-text-muted transition-colors hover:text-gold-300"
             >
               {link.label}
             </Link>
           ))}
         </nav>
+        <ThemeSelector />
         <div className="space-y-2 leading-relaxed">
-          <p className="font-medium text-parchment-500">
+          <p className="font-medium text-text-muted">
             The Lexicon is currently in public beta.
           </p>
           <p>

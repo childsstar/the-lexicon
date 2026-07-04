@@ -79,10 +79,10 @@ export default function DashboardClient() {
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-500">
           The Lexicon
         </p>
-        <h1 className="mt-2 font-display text-3xl font-semibold text-parchment-100">
+        <h1 className="mt-2 font-display text-3xl font-semibold text-text">
           Welcome back, {name}
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-parchment-500">
+        <p className="mt-2 text-sm leading-relaxed text-text-muted">
           Your chronicle is open. Muster a force, find an opponent, and keep
           writing it.
         </p>
@@ -97,7 +97,7 @@ export default function DashboardClient() {
           <p className="text-xs font-semibold uppercase tracking-widest text-gold-400">
             Complete your commander profile
           </p>
-          <p className="mt-1 text-sm text-parchment-500">
+          <p className="mt-1 text-sm text-text-muted">
             Add your experience level, play style, and factions — it powers
             matchmaking and Muster recommendations to come.
           </p>
@@ -110,21 +110,21 @@ export default function DashboardClient() {
           href="/profile"
           className="card card-interactive flex items-start gap-4 p-5"
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gold-600/40 bg-ink-850 text-gold-400">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gold-600/40 bg-surface text-gold-400">
             <UserIcon className="h-5 w-5" />
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="font-display text-lg font-semibold text-parchment-100">
+            <h2 className="font-display text-lg font-semibold text-text">
               Profile
             </h2>
-            <p className="mt-0.5 truncate text-sm text-parchment-500">
+            <p className="mt-0.5 truncate text-sm text-text-muted">
               {profile ? `@${profile.username}` : "Your commander identity."}
             </p>
-            <p className="mt-2 text-xs font-medium uppercase tracking-wider text-parchment-700">
+            <p className="mt-2 text-xs font-medium uppercase tracking-wider text-text-subtle">
               {profileTraits || "Identity forged — add your fighting style"}
             </p>
           </div>
-          <ChevronRightIcon className="mt-1 h-4 w-4 shrink-0 text-parchment-700" />
+          <ChevronRightIcon className="mt-1 h-4 w-4 shrink-0 text-text-subtle" />
         </Link>
 
         {sections.map((section) => {
@@ -135,21 +135,21 @@ export default function DashboardClient() {
               href={section.href}
               className="card card-interactive flex items-start gap-4 p-5"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-ink-700 bg-ink-850 text-gold-500">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-gold-500">
                 <Icon className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="font-display text-lg font-semibold text-parchment-100">
+                <h2 className="font-display text-lg font-semibold text-text">
                   {section.title}
                 </h2>
-                <p className="mt-0.5 text-sm text-parchment-500">
+                <p className="mt-0.5 text-sm text-text-muted">
                   {section.body}
                 </p>
-                <p className="mt-2 text-xs font-medium uppercase tracking-wider text-parchment-700">
+                <p className="mt-2 text-xs font-medium uppercase tracking-wider text-text-subtle">
                   {section.stat}
                 </p>
               </div>
-              <ChevronRightIcon className="mt-1 h-4 w-4 shrink-0 text-parchment-700" />
+              <ChevronRightIcon className="mt-1 h-4 w-4 shrink-0 text-text-subtle" />
             </Link>
           );
         })}

@@ -48,7 +48,7 @@ export default function LandingPage() {
         </div>
         <Link
           href="/sign-in"
-          className="rounded-md border border-ink-600 px-4 py-2 text-sm font-medium text-parchment-300 transition-colors hover:border-gold-600 hover:text-gold-300"
+          className="rounded-md border border-border-strong px-4 py-2 text-sm font-medium text-text-soft transition-colors hover:border-gold-600 hover:text-gold-300"
         >
           Sign in
         </Link>
@@ -59,10 +59,10 @@ export default function LandingPage() {
         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-gold-500">
           The tabletop gaming community platform
         </p>
-        <h1 className="max-w-2xl font-display text-4xl font-semibold leading-tight text-parchment-100 sm:text-6xl">
+        <h1 className="max-w-2xl font-display text-4xl font-semibold leading-tight text-text sm:text-6xl">
           Your <RotatingHeroPhrase /> starts here.
         </h1>
-        <p className="mt-6 max-w-xl text-base leading-relaxed text-parchment-500 sm:text-lg">
+        <p className="mt-6 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg">
           Discover your faction, muster your army, find your community, and
           record the battles that become your legend.
         </p>
@@ -90,10 +90,10 @@ export default function LandingPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">
             ✦ Begin your chronicle
           </p>
-          <p className="mt-2 font-display text-2xl font-semibold text-parchment-100">
+          <p className="mt-2 font-display text-2xl font-semibold text-text">
             Find Your Banner
           </p>
-          <p className="mt-2 text-sm leading-relaxed text-parchment-500">
+          <p className="mt-2 text-sm leading-relaxed text-text-muted">
             Eight choices. One calling. Discover which banner — and which
             game — answers. No account needed.
           </p>
@@ -113,10 +113,10 @@ export default function LandingPage() {
                 className="card card-interactive block p-6"
               >
                 <Icon className="mb-4 h-7 w-7 text-gold-500" />
-                <h2 className="font-display text-xl font-semibold text-parchment-100">
+                <h2 className="font-display text-xl font-semibold text-text">
                   {feature.title}
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-parchment-500">
+                <p className="mt-2 text-sm leading-relaxed text-text-muted">
                   {feature.body}
                 </p>
               </Link>

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import ThemeScript from "@/components/theme-script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +21,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0a08",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0b0a08" },
+    { media: "(prefers-color-scheme: light)", color: "#f3ebdd" },
+  ],
 };
 
 export default function RootLayout({
@@ -29,7 +33,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body className="atmosphere min-h-dvh">{children}</body>
     </html>
   );

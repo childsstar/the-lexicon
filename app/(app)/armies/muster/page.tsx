@@ -35,16 +35,16 @@ export default function MusterPage() {
         <div className="space-y-5">
           {fields.map((field) => (
             <div key={field.label}>
-              <label className="mb-1.5 block text-sm font-medium text-parchment-100">
+              <label className="mb-1.5 block text-sm font-medium text-text">
                 {field.label}
               </label>
               <input
                 type="text"
                 disabled
                 placeholder={field.placeholder}
-                className="w-full rounded-md border border-ink-700 bg-ink-850 px-4 py-3 text-sm text-parchment-100 placeholder:text-parchment-700"
+                className="w-full rounded-md border border-border bg-surface px-4 py-3 text-sm text-text placeholder:text-text-subtle"
               />
-              <p className="mt-1.5 text-xs text-parchment-700">{field.hint}</p>
+              <p className="mt-1.5 text-xs text-text-subtle">{field.hint}</p>
             </div>
           ))}
         </div>
@@ -56,7 +56,7 @@ export default function MusterPage() {
         >
           Muster this army
         </button>
-        <p className="mt-3 text-center text-xs text-parchment-700">
+        <p className="mt-3 text-center text-xs text-text-subtle">
           Saving armies unlocks once sign-in ships — this preview shows the
           flow.
         </p>

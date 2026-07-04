@@ -60,16 +60,16 @@ export default function SignInForm({ initialError }: { initialError?: string }) 
     <form onSubmit={handleSubmit} className="space-y-5">
       <DiscordAuthButton />
 
-      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-parchment-700">
-        <span className="h-px flex-1 bg-ink-700" />
+      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-text-subtle">
+        <span className="h-px flex-1 bg-border" />
         <span>or continue with email</span>
-        <span className="h-px flex-1 bg-ink-700" />
+        <span className="h-px flex-1 bg-border" />
       </div>
 
       <div>
         <label
           htmlFor="email"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Email
         </label>
@@ -88,7 +88,7 @@ export default function SignInForm({ initialError }: { initialError?: string }) 
       <div>
         <label
           htmlFor="password"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Password
         </label>
@@ -118,7 +118,7 @@ export default function SignInForm({ initialError }: { initialError?: string }) 
         {submitting ? "Opening the gates…" : "Sign in"}
       </button>
 
-      <p className="text-center text-sm text-parchment-500">
+      <p className="text-center text-sm text-text-muted">
         New to The Lexicon?{" "}
         <Link
           href="/sign-up"

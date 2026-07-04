@@ -22,10 +22,10 @@ export default function CampaignsPage() {
       />
 
       <div className="card mt-8 p-6">
-        <p className="text-xs font-semibold uppercase tracking-widest text-parchment-700">
+        <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">
           Coming soon
         </p>
-        <ul className="mt-3 space-y-2 text-sm text-parchment-500">
+        <ul className="mt-3 space-y-2 text-sm text-text-muted">
           <li className="flex gap-2">
             <span className="text-gold-500">✦</span> Campaign maps and
             territory control

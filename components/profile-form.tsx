@@ -45,7 +45,7 @@ function Chip({
       className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
         selected
           ? "border-gold-500 bg-gold-500/15 text-gold-200"
-          : "border-ink-700 bg-ink-850 text-parchment-500 hover:border-ink-600 hover:text-parchment-300"
+          : "border-border bg-surface text-text-muted hover:border-border-strong hover:text-text-soft"
       }`}
     >
       {label}
@@ -193,7 +193,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="username"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Username <span className="text-gold-400">*</span>
         </label>
@@ -206,7 +206,7 @@ export default function ProfileForm({
           placeholder="e.g. emberfall_veteran"
           className="field"
         />
-        <p className="mt-1.5 text-xs text-parchment-700">
+        <p className="mt-1.5 text-xs text-text-subtle">
           Your name on the battlefield — lowercase letters, numbers, and
           underscores.
         </p>
@@ -215,7 +215,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="display_name"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Display name
         </label>
@@ -232,7 +232,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="availability"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Availability <span className="text-gold-400">*</span>
         </label>
@@ -257,7 +257,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="experience"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Experience level
         </label>
@@ -279,7 +279,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="play_style"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Preferred play style
         </label>
@@ -299,10 +299,10 @@ export default function ProfileForm({
       </div>
 
       <div>
-        <p className="mb-1.5 text-sm font-medium text-parchment-100">
+        <p className="mb-1.5 text-sm font-medium text-text">
           Game systems
         </p>
-        <p className="mb-3 text-xs text-parchment-700">
+        <p className="mb-3 text-xs text-text-subtle">
           Pick every system you play — your faction choices follow from these.
         </p>
         <div className="flex flex-wrap gap-2">
@@ -326,11 +326,11 @@ export default function ProfileForm({
       </div>
 
       <div>
-        <p className="mb-1.5 text-sm font-medium text-parchment-100">
+        <p className="mb-1.5 text-sm font-medium text-text">
           Primary factions
         </p>
         {factionGroups.length === 0 ? (
-          <p className="mb-3 text-xs text-parchment-700">
+          <p className="mb-3 text-xs text-text-subtle">
             Select a game system above to choose from its factions, or type
             yours below.
           </p>
@@ -338,7 +338,7 @@ export default function ProfileForm({
           <div className="space-y-4">
             {factionGroups.map((system) => (
               <div key={system.name}>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-parchment-700">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-text-subtle">
                   {system.name}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -368,7 +368,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="faction_interests"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Faction interests
         </label>
@@ -385,7 +385,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="home_locations"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Home locations
         </label>
@@ -397,7 +397,7 @@ export default function ProfileForm({
           placeholder="e.g. Brooklyn, NY 11215, 94607"
           className="field"
         />
-        <p className="mt-1.5 text-xs text-parchment-700">
+        <p className="mt-1.5 text-xs text-text-subtle">
           One or more cities or ZIP codes, comma separated — each one anchors
           you to a local community.
         </p>
@@ -406,7 +406,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="discord_username"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Discord username
         </label>
@@ -423,7 +423,7 @@ export default function ProfileForm({
       <div>
         <label
           htmlFor="bio"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Bio
         </label>

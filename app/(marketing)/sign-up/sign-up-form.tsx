@@ -75,12 +75,12 @@ export default function SignUpForm() {
   if (awaitingConfirmation) {
     return (
       <div className="card p-6 text-center">
-        <h2 className="font-display text-xl font-semibold text-parchment-100">
+        <h2 className="font-display text-xl font-semibold text-text">
           A raven has been dispatched
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-parchment-500">
+        <p className="mt-2 text-sm leading-relaxed text-text-muted">
           We sent a confirmation link to{" "}
-          <span className="text-parchment-100">{email}</span>. Follow it, then
+          <span className="text-text">{email}</span>. Follow it, then
           sign in to begin your chronicle.
         </p>
         <Link
@@ -97,16 +97,16 @@ export default function SignUpForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <DiscordAuthButton />
 
-      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-parchment-700">
-        <span className="h-px flex-1 bg-ink-700" />
+      <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-text-subtle">
+        <span className="h-px flex-1 bg-border" />
         <span>or continue with email</span>
-        <span className="h-px flex-1 bg-ink-700" />
+        <span className="h-px flex-1 bg-border" />
       </div>
 
       <div>
         <label
           htmlFor="email"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Email
         </label>
@@ -125,7 +125,7 @@ export default function SignUpForm() {
       <div>
         <label
           htmlFor="password"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Password
         </label>
@@ -145,7 +145,7 @@ export default function SignUpForm() {
       <div>
         <label
           htmlFor="confirm"
-          className="mb-1.5 block text-sm font-medium text-parchment-100"
+          className="mb-1.5 block text-sm font-medium text-text"
         >
           Confirm password
         </label>
@@ -175,7 +175,7 @@ export default function SignUpForm() {
         {submitting ? "Inscribing your name…" : "Create account"}
       </button>
 
-      <p className="text-center text-sm text-parchment-500">
+      <p className="text-center text-sm text-text-muted">
         Already have an account?{" "}
         <Link
           href="/sign-in"

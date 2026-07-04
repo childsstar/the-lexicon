@@ -16,7 +16,7 @@ export default function HallOfBannersPage() {
       <header className="flex h-16 items-center justify-between">
         <Link
           href="/chronicles"
-          className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-parchment-700 transition-colors hover:text-gold-300"
+          className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-gold-300"
         >
           <ArrowLeftIcon className="h-3.5 w-3.5" />
           Chronicles
@@ -28,10 +28,10 @@ export default function HallOfBannersPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-500">
           The Lexicon
         </p>
-        <h1 className="mt-2 font-display text-4xl font-semibold text-parchment-100">
+        <h1 className="mt-2 font-display text-4xl font-semibold text-text">
           The Hall of Banners
         </h1>
-        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-parchment-500">
+        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-text-muted">
           Callings from across the tabletop, each with its own plate in the
           Lexicon&apos;s pages. The hall grows as new banners are chronicled.
         </p>
@@ -53,14 +53,14 @@ export default function HallOfBannersPage() {
             <div className="p-4">
               <p className="text-xs font-medium text-gold-300">
                 {banner.primaryFaction}{" "}
-                <span className="text-parchment-700">
+                <span className="text-text-subtle">
                   · {banner.gameSystem}
                 </span>
               </p>
-              <p className="mt-2 text-sm italic leading-relaxed text-parchment-500">
+              <p className="mt-2 text-sm italic leading-relaxed text-text-muted">
                 “{banner.cardQuote}”
               </p>
-              <p className="mt-2 text-[0.65rem] uppercase tracking-widest text-parchment-700">
+              <p className="mt-2 text-[0.65rem] uppercase tracking-widest text-text-subtle">
                 Plate {i + 1} of {BANNERS.length}
               </p>
             </div>
@@ -69,7 +69,7 @@ export default function HallOfBannersPage() {
       </div>
 
       <div className="mt-12 text-center">
-        <p className="font-display text-xl text-parchment-300">
+        <p className="font-display text-xl text-text-soft">
           Which banner answers your call?
         </p>
         <Link
@@ -78,7 +78,7 @@ export default function HallOfBannersPage() {
         >
           Find Your Banner
         </Link>
-        <p className="mt-3 text-xs text-parchment-700">
+        <p className="mt-3 text-xs text-text-subtle">
           Eight choices. No account needed.
         </p>
       </div>

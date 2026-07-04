@@ -48,7 +48,7 @@ export default function VenueDetail({ id }: { id: string }) {
       />
 
       {state === "loading" && (
-        <p className="py-12 text-center text-sm text-parchment-700">
+        <p className="py-12 text-center text-sm text-text-subtle">
           Consulting the gazetteer…
         </p>
       )}
@@ -56,7 +56,7 @@ export default function VenueDetail({ id }: { id: string }) {
       {state === "missing" && (
         <div className="card p-6 text-center">
           <MapPinIcon className="mx-auto h-7 w-7 text-gold-500" />
-          <p className="mt-3 text-sm text-parchment-500">
+          <p className="mt-3 text-sm text-text-muted">
             This venue isn&apos;t in the gazetteer. It may have been removed —
             or never chronicled at all.
           </p>
@@ -67,14 +67,14 @@ export default function VenueDetail({ id }: { id: string }) {
         <>
           <div className="card mb-4 p-6">
             <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-gold-600/40 bg-ink-850 text-gold-500">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-gold-600/40 bg-surface text-gold-500">
                 <MapPinIcon className="h-7 w-7" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold uppercase tracking-widest text-parchment-700">
+                <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">
                   Venue record
                 </p>
-                <h2 className="truncate font-display text-2xl font-semibold text-parchment-100">
+                <h2 className="truncate font-display text-2xl font-semibold text-text">
                   {venue.name}
                 </h2>
                 {venue.website && (
@@ -90,7 +90,7 @@ export default function VenueDetail({ id }: { id: string }) {
               </div>
             </div>
             {venue.description && (
-              <p className="mt-4 border-t border-ink-800 pt-4 text-sm leading-relaxed text-parchment-500">
+              <p className="mt-4 border-t border-border-muted pt-4 text-sm leading-relaxed text-text-muted">
                 {venue.description}
               </p>
             )}
@@ -100,10 +100,10 @@ export default function VenueDetail({ id }: { id: string }) {
             <div className="card flex items-start gap-4 p-5">
               <CalendarIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-500" />
               <div>
-                <h3 className="font-display text-lg font-semibold text-parchment-100">
+                <h3 className="font-display text-lg font-semibold text-text">
                   Event nights
                 </h3>
-                <p className="mt-1 text-sm text-parchment-500">
+                <p className="mt-1 text-sm text-text-muted">
                   League nights, open play, and campaign sessions will be
                   listed here once venue owners can claim their pages.
                 </p>
@@ -112,10 +112,10 @@ export default function VenueDetail({ id }: { id: string }) {
             <div className="card flex items-start gap-4 p-5">
               <UsersIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-500" />
               <div>
-                <h3 className="font-display text-lg font-semibold text-parchment-100">
+                <h3 className="font-display text-lg font-semibold text-text">
                   Regulars
                 </h3>
-                <p className="mt-1 text-sm text-parchment-500">
+                <p className="mt-1 text-sm text-text-muted">
                   See which commanders call this venue home and what they
                   play.
                 </p>

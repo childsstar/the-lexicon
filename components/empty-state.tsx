@@ -16,14 +16,14 @@ export default function EmptyState({
   return (
     <div className="card flex flex-col items-center px-6 py-12 text-center">
       {icon && (
-        <div className="mb-4 rounded-full border border-ink-700 bg-ink-850 p-4 text-gold-500">
+        <div className="mb-4 rounded-full border border-border bg-surface p-4 text-gold-500">
           {icon}
         </div>
       )}
-      <h2 className="font-display text-xl font-semibold text-parchment-100">
+      <h2 className="font-display text-xl font-semibold text-text">
         {title}
       </h2>
-      <p className="mt-2 max-w-sm text-sm leading-relaxed text-parchment-500">
+      <p className="mt-2 max-w-sm text-sm leading-relaxed text-text-muted">
         {body}
       </p>
       {actionHref && actionLabel && (

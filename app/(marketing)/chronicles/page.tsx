@@ -27,7 +27,7 @@ export default function ChroniclesPage() {
       <header className="flex h-16 items-center justify-between">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-parchment-700 transition-colors hover:text-gold-300"
+          className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-gold-300"
         >
           <ArrowLeftIcon className="h-3.5 w-3.5" />
           Home
@@ -39,10 +39,10 @@ export default function ChroniclesPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-500">
           The Lexicon
         </p>
-        <h1 className="mt-2 font-display text-3xl font-semibold text-parchment-100">
+        <h1 className="mt-2 font-display text-3xl font-semibold text-text">
           Chronicles
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-parchment-500">
+        <p className="mt-2 text-sm leading-relaxed text-text-muted">
           Short, story-shaped experiences from the Lexicon&apos;s pages. No
           account needed — just honest answers.
         </p>
@@ -57,14 +57,14 @@ export default function ChroniclesPage() {
             className="card card-interactive flex items-center gap-4 p-6"
           >
             <div className="min-w-0 flex-1">
-              <h2 className="font-display text-xl font-semibold text-parchment-100">
+              <h2 className="font-display text-xl font-semibold text-text">
                 {entry.quiz.title}
               </h2>
-              <p className="mt-1 text-sm text-parchment-500">
+              <p className="mt-1 text-sm text-text-muted">
                 {entry.quiz.tagline}
               </p>
             </div>
-            <ChevronRightIcon className="h-5 w-5 shrink-0 text-parchment-700" />
+            <ChevronRightIcon className="h-5 w-5 shrink-0 text-text-subtle" />
           </Link>
         ))}
 
@@ -73,22 +73,22 @@ export default function ChroniclesPage() {
           className="card card-interactive flex items-center gap-4 p-6"
         >
           <div className="min-w-0 flex-1">
-            <h2 className="font-display text-xl font-semibold text-parchment-100">
+            <h2 className="font-display text-xl font-semibold text-text">
               The Hall of Banners
             </h2>
-            <p className="mt-1 text-sm text-parchment-500">
+            <p className="mt-1 text-sm text-text-muted">
               Every banner and its plate, gathered in one gallery.
             </p>
           </div>
-          <ChevronRightIcon className="h-5 w-5 shrink-0 text-parchment-700" />
+          <ChevronRightIcon className="h-5 w-5 shrink-0 text-text-subtle" />
         </Link>
 
         {COMING_SOON.map((title) => (
           <div key={title} className="card p-6 opacity-60">
-            <h2 className="font-display text-lg font-semibold text-parchment-500">
+            <h2 className="font-display text-lg font-semibold text-text-muted">
               {title}
             </h2>
-            <p className="mt-1 text-xs uppercase tracking-widest text-parchment-700">
+            <p className="mt-1 text-xs uppercase tracking-widest text-text-subtle">
               A future chronicle
             </p>
           </div>
