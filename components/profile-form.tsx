@@ -17,6 +17,11 @@ import {
   type Profile,
 } from "@/lib/types";
 
+export type ProfileFormDefaults = Pick<
+  Partial<Profile>,
+  "display_name" | "discord_username" | "avatar_url"
+>;
+
 function toList(value: string): string[] {
   return value
     .split(",")
@@ -58,14 +63,18 @@ export default function ProfileForm({
   initial,
   submitLabel,
   onSaved,
+  importedDefaults,
 }: {
   userId: string;
   initial: Profile | null;
   submitLabel: string;
   onSaved: () => void;
+  importedDefaults?: ProfileFormDefaults;
 }) {
   const [username, setUsername] = useState(initial?.username ?? "");
-  const [displayName, setDisplayName] = useState(initial?.display_name ?? "");
+  const [displayName, setDisplayName] = useState(
+    initial?.display_name ?? importedDefaults?.display_name ?? ""
+  );
   const [experience, setExperience] = useState(
     initial?.experience_level ?? ""
   );
@@ -102,7 +111,10 @@ export default function ProfileForm({
     fromList(initial?.home_locations)
   );
   const [discordUsername, setDiscordUsername] = useState(
-    initial?.discord_username ?? ""
+    initial?.discord_username ?? importedDefaults?.discord_username ?? ""
+  );
+  const [avatarUrl] = useState(
+    initial?.avatar_url ?? importedDefaults?.avatar_url ?? null
   );
   const [bio, setBio] = useState(initial?.bio ?? "");
 
@@ -172,6 +184,7 @@ export default function ProfileForm({
         faction_interests: toList(factionInterests),
         home_locations: toList(homeLocations),
         discord_username: discordUsername.trim() || null,
+        avatar_url: avatarUrl,
         bio: bio.trim() || null,
         profile_completed_at:
           initial?.profile_completed_at ?? new Date().toISOString(),
