@@ -62,7 +62,7 @@ export default function VenueForm() {
         <div>
           <label
             htmlFor="v-name"
-            className="mb-1.5 block text-sm font-medium text-parchment-100"
+            className="mb-1.5 block text-sm font-medium text-text"
           >
             Venue name <span className="text-gold-400">*</span>
           </label>
@@ -80,7 +80,7 @@ export default function VenueForm() {
         <div>
           <label
             htmlFor="v-type"
-            className="mb-1.5 block text-sm font-medium text-parchment-100"
+            className="mb-1.5 block text-sm font-medium text-text"
           >
             Venue type <span className="text-gold-400">*</span>
           </label>
@@ -105,7 +105,7 @@ export default function VenueForm() {
         <div>
           <label
             htmlFor="v-region"
-            className="mb-1.5 block text-sm font-medium text-parchment-100"
+            className="mb-1.5 block text-sm font-medium text-text"
           >
             City &amp; region <span className="text-gold-400">*</span>
           </label>
@@ -118,7 +118,7 @@ export default function VenueForm() {
             placeholder="e.g. Brooklyn, NY 11201"
             className="field"
           />
-          <p className="mt-1.5 text-xs text-parchment-700">
+          <p className="mt-1.5 text-xs text-text-subtle">
             City, state, and ZIP if you know it — this is how nearby
             commanders find it.
           </p>
@@ -127,7 +127,7 @@ export default function VenueForm() {
         <div>
           <label
             htmlFor="v-website"
-            className="mb-1.5 block text-sm font-medium text-parchment-100"
+            className="mb-1.5 block text-sm font-medium text-text"
           >
             Website
           </label>
@@ -144,7 +144,7 @@ export default function VenueForm() {
         <div>
           <label
             htmlFor="v-desc"
-            className="mb-1.5 block text-sm font-medium text-parchment-100"
+            className="mb-1.5 block text-sm font-medium text-text"
           >
             Description
           </label>

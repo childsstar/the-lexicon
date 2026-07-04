@@ -40,22 +40,22 @@ export default function NearbyPlayersPage() {
       />
 
       <div className="mt-8">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-parchment-700">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-subtle">
           Preview
         </p>
         <div className="space-y-3">
           {examplePlayers.map((player) => (
             <div key={player.name} className="card flex items-center gap-4 p-5">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-ink-700 bg-ink-850 text-gold-500">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-gold-500">
                 <UserIcon className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="truncate font-medium text-parchment-100">
+                <h2 className="truncate font-medium text-text">
                   {player.name}
                 </h2>
-                <p className="text-sm text-parchment-500">{player.detail}</p>
+                <p className="text-sm text-text-muted">{player.detail}</p>
               </div>
-              <span className="shrink-0 rounded-full border border-ink-700 px-3 py-1 text-xs text-parchment-700">
+              <span className="shrink-0 rounded-full border border-border px-3 py-1 text-xs text-text-subtle">
                 {player.distance}
               </span>
             </div>

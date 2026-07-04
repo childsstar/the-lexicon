@@ -18,10 +18,10 @@ export default function ProfileSetupClient() {
         <p className="mt-4 text-xs font-semibold uppercase tracking-[0.25em] text-gold-500">
           Forge your commander identity
         </p>
-        <h1 className="mt-2 font-display text-3xl font-semibold text-parchment-100">
+        <h1 className="mt-2 font-display text-3xl font-semibold text-text">
           {profile ? "Complete your profile" : "Who takes the field?"}
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-parchment-500">
+        <p className="mt-2 text-sm leading-relaxed text-text-muted">
           A username and your availability are all The Lexicon needs to open
           your chronicle. The rest helps future opponents find you — add it
           now or later.

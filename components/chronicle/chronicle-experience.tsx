@@ -180,13 +180,13 @@ export default function ChronicleExperience({
           <p className="mt-8 text-xs font-semibold uppercase tracking-[0.3em] text-gold-500 animate-rise">
             A Chronicle of the Lexicon
           </p>
-          <h1 className="mt-3 font-display text-4xl font-semibold text-parchment-100 animate-rise sm:text-5xl">
+          <h1 className="mt-3 font-display text-4xl font-semibold text-text animate-rise sm:text-5xl">
             {quiz.title}
           </h1>
-          <p className="mt-3 text-sm font-medium text-parchment-500">
+          <p className="mt-3 text-sm font-medium text-text-muted">
             {quiz.tagline}
           </p>
-          <p className="mt-8 max-w-sm text-sm leading-relaxed text-parchment-500">
+          <p className="mt-8 max-w-sm text-sm leading-relaxed text-text-muted">
             {quiz.invocation}
           </p>
           <button
@@ -195,7 +195,7 @@ export default function ChronicleExperience({
           >
             Begin
           </button>
-          <p className="mt-4 text-xs text-parchment-700">
+          <p className="mt-4 text-xs text-text-subtle">
             No account needed · about three minutes
           </p>
         </div>
@@ -214,12 +214,12 @@ export default function ChronicleExperience({
             <div className="flex items-baseline justify-between">
               <p className="font-display text-sm tracking-[0.2em] text-gold-500">
                 {ROMAN[n]}{" "}
-                <span className="text-parchment-700">
+                <span className="text-text-subtle">
                   of {ROMAN[quiz.questions.length - 1]}
                 </span>
               </p>
             </div>
-            <div className="mt-2 h-px w-full bg-ink-700">
+            <div className="mt-2 h-px w-full bg-border">
               <div
                 className="h-px bg-gold-500 transition-all duration-500"
                 style={{
@@ -230,11 +230,11 @@ export default function ChronicleExperience({
           </div>
 
           <div key={n} className="animate-rise">
-            <h1 className="font-display text-2xl font-semibold leading-snug text-parchment-100 sm:text-3xl">
+            <h1 className="font-display text-2xl font-semibold leading-snug text-text sm:text-3xl">
               {question.prompt}
             </h1>
             {question.followUp && (
-              <p className="mt-2 text-sm text-parchment-500">
+              <p className="mt-2 text-sm text-text-muted">
                 {question.followUp}
               </p>
             )}
@@ -248,7 +248,7 @@ export default function ChronicleExperience({
                   className={`card card-interactive w-full p-5 text-left text-sm leading-relaxed transition-colors ${
                     picked === i
                       ? "border-gold-400 bg-gold-500/10 text-gold-200"
-                      : "text-parchment-300"
+                      : "text-text-soft"
                   }`}
                 >
                   {option.label}
@@ -271,7 +271,7 @@ export default function ChronicleExperience({
           <LexiconMark className="h-14 w-14 animate-breathe text-gold-400" />
           <p
             key={line}
-            className="mt-10 max-w-xs font-display text-xl leading-relaxed text-parchment-300 animate-fade-slow"
+            className="mt-10 max-w-xs font-display text-xl leading-relaxed text-text-soft animate-fade-slow"
           >
             {line}
           </p>
@@ -291,55 +291,55 @@ export default function ChronicleExperience({
           <BannerArt
             palette={banner.palette}
             bannerId={banner.id}
-            className="flex min-h-[46vh] flex-col items-center justify-end rounded-xl border border-ink-700 p-8 text-center"
+            className="flex min-h-[46vh] flex-col items-center justify-end rounded-xl border border-border p-8 text-center"
           >
             <div className="relative">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-parchment-300/90">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-text-soft/90">
                 A banner has answered your call
               </p>
               <h1 className="mt-3 font-display text-4xl font-semibold text-white drop-shadow-lg sm:text-5xl">
                 {banner.name}
               </h1>
-              <p className="mt-3 text-sm font-medium tracking-wide text-parchment-300/90">
+              <p className="mt-3 text-sm font-medium tracking-wide text-text-soft/90">
                 {result.primaryFaction} · {result.gameSystem}
               </p>
             </div>
           </BannerArt>
-          <p className="mt-2 text-center text-[0.65rem] italic tracking-wide text-parchment-700">
+          <p className="mt-2 text-center text-[0.65rem] italic tracking-wide text-text-subtle">
             Plate {ROMAN[exploreIndex]} — “{result.imagePrompt.split(",")[0]}”
           </p>
         </div>
 
         <div className="mx-auto mt-10 max-w-md space-y-8">
-          <p className="border-l-2 border-gold-600/60 pl-4 font-display text-lg italic leading-relaxed text-parchment-300">
+          <p className="border-l-2 border-gold-600/60 pl-4 font-display text-lg italic leading-relaxed text-text-soft">
             {result.chronicleIntro}
           </p>
 
           <div>
             <SectionRule label="What the pages saw" />
-            <p className="text-sm leading-relaxed text-parchment-500">
+            <p className="text-sm leading-relaxed text-text-muted">
               {result.personalitySummary}
             </p>
           </div>
 
           <div>
             <SectionRule label="Why this banner" />
-            <p className="text-sm leading-relaxed text-parchment-500">
+            <p className="text-sm leading-relaxed text-text-muted">
               {result.reasoning}
             </p>
           </div>
 
-          <div className="card grid grid-cols-2 divide-x divide-ink-800">
+          <div className="card grid grid-cols-2 divide-x divide-border-muted">
             <div className="p-5 text-center">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-widest text-parchment-700">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-widest text-text-subtle">
                 Game system
               </p>
-              <p className="mt-1.5 font-display text-lg font-semibold text-parchment-100">
+              <p className="mt-1.5 font-display text-lg font-semibold text-text">
                 {result.gameSystem}
               </p>
             </div>
             <div className="p-5 text-center">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-widest text-parchment-700">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-widest text-text-subtle">
                 Faction
               </p>
               <p className="mt-1.5 font-display text-lg font-semibold text-gold-300">
@@ -364,17 +364,17 @@ export default function ChronicleExperience({
                       <BannerArt
                         palette={altBanner.palette}
                         bannerId={altBanner.id}
-                        className="h-16 w-16 shrink-0 rounded-lg border border-ink-700"
+                        className="h-16 w-16 shrink-0 rounded-lg border border-border"
                       />
                     )}
                     <div className="min-w-0">
-                      <p className="font-display text-base font-semibold text-parchment-100">
+                      <p className="font-display text-base font-semibold text-text">
                         {alt.bannerName}
                       </p>
-                      <p className="text-xs text-parchment-500">
+                      <p className="text-xs text-text-muted">
                         {alt.faction} · {alt.gameSystem}
                       </p>
-                      <p className="mt-1.5 text-xs italic text-parchment-700">
+                      <p className="mt-1.5 text-xs italic text-text-subtle">
                         {alt.whisper}
                       </p>
                     </div>
@@ -406,20 +406,20 @@ export default function ChronicleExperience({
               </button>
               <button
                 onClick={share}
-                className="rounded-md border border-ink-600 px-4 py-3 text-sm font-medium text-parchment-300 transition-colors hover:border-gold-600 hover:text-gold-300"
+                className="rounded-md border border-border-strong px-4 py-3 text-sm font-medium text-text-soft transition-colors hover:border-gold-600 hover:text-gold-300"
               >
                 {copied ? "Link copied ✦" : "Share this banner"}
               </button>
             </div>
             <button
               onClick={retake}
-              className="w-full py-2 text-center text-xs font-medium uppercase tracking-widest text-parchment-700 transition-colors hover:text-parchment-300"
+              className="w-full py-2 text-center text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-text-soft"
             >
               Retake the chronicle
             </button>
           </div>
 
-          <p className="pt-4 text-center text-[0.65rem] tracking-widest text-parchment-700">
+          <p className="pt-4 text-center text-[0.65rem] tracking-widest text-text-subtle">
             THELEXICON.GAMES
           </p>
         </div>
@@ -445,7 +445,7 @@ function Frame({
         {onBack ? (
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-parchment-700 transition-colors hover:text-gold-300"
+            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-gold-300"
           >
             <ArrowLeftIcon className="h-3.5 w-3.5" />
             {backLabel}
@@ -453,7 +453,7 @@ function Frame({
         ) : backHref ? (
           <Link
             href={backHref}
-            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-parchment-700 transition-colors hover:text-gold-300"
+            className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-text-subtle transition-colors hover:text-gold-300"
           >
             <ArrowLeftIcon className="h-3.5 w-3.5" />
             {backLabel}

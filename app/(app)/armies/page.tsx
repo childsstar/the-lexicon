@@ -51,7 +51,7 @@ export default function ArmiesPage() {
       />
 
       <div className="mt-8">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-parchment-700">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-subtle">
           Example rosters
         </p>
         <div className="space-y-3">
@@ -61,21 +61,21 @@ export default function ArmiesPage() {
               href={`/armies/${army.id}`}
               className="card card-interactive flex items-center gap-4 p-5"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-ink-700 bg-ink-850 text-gold-500">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-gold-500">
                 <ShieldIcon className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="truncate font-display text-lg font-semibold text-parchment-100">
+                <h2 className="truncate font-display text-lg font-semibold text-text">
                   {army.name}
                 </h2>
-                <p className="text-sm text-parchment-500">
+                <p className="text-sm text-text-muted">
                   {army.faction} · {army.system}
                 </p>
-                <p className="mt-1 text-xs text-parchment-700">
+                <p className="mt-1 text-xs text-text-subtle">
                   {army.progress}
                 </p>
               </div>
-              <ChevronRightIcon className="h-4 w-4 shrink-0 text-parchment-700" />
+              <ChevronRightIcon className="h-4 w-4 shrink-0 text-text-subtle" />
             </Link>
           ))}
         </div>

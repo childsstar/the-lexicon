@@ -32,13 +32,13 @@ function Row({
   const text = Array.isArray(value) ? value.join(", ") : value;
   return (
     <div className="flex items-start justify-between gap-4 px-5 py-4">
-      <p className="text-sm font-medium text-parchment-100">{label}</p>
+      <p className="text-sm font-medium text-text">{label}</p>
       {text ? (
-        <p className="max-w-[60%] text-right text-sm text-parchment-500">
+        <p className="max-w-[60%] text-right text-sm text-text-muted">
           {text}
         </p>
       ) : (
-        <span className="rounded-full border border-ink-700 px-3 py-1 text-xs text-parchment-700">
+        <span className="rounded-full border border-border px-3 py-1 text-xs text-text-subtle">
           Not set
         </span>
       )}
@@ -99,14 +99,14 @@ export default function ProfileClient() {
       />
 
       <div className="card mb-4 flex items-center gap-4 p-5">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gold-600/40 bg-ink-850 text-gold-500">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-gold-600/40 bg-surface text-gold-500">
           <UserIcon className="h-8 w-8" />
         </div>
         <div className="min-w-0">
-          <h2 className="truncate font-display text-xl font-semibold text-parchment-100">
+          <h2 className="truncate font-display text-xl font-semibold text-text">
             {profile?.display_name || profile?.username || "Unnamed Commander"}
           </h2>
-          <p className="mt-0.5 text-sm text-parchment-500">
+          <p className="mt-0.5 text-sm text-text-muted">
             @{profile?.username ?? "—"}
           </p>
         </div>
@@ -120,14 +120,14 @@ export default function ProfileClient() {
           <p className="text-xs font-semibold uppercase tracking-widest text-gold-400">
             Complete your profile
           </p>
-          <p className="mt-1 text-sm text-parchment-500">
+          <p className="mt-1 text-sm text-text-muted">
             Add your experience level, play style, and factions so the right
             opponents can find you.
           </p>
         </Link>
       )}
 
-      <div className="card divide-y divide-ink-800">
+      <div className="card divide-y divide-border-muted">
         <Row
           label="Availability"
           value={labelFor(AVAILABILITY_OPTIONS, profile?.availability ?? null)}
@@ -155,10 +155,10 @@ export default function ProfileClient() {
 
       {profile?.bio && (
         <div className="card mt-4 p-5">
-          <p className="text-xs font-semibold uppercase tracking-widest text-parchment-700">
+          <p className="text-xs font-semibold uppercase tracking-widest text-text-subtle">
             Your chronicle so far
           </p>
-          <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-parchment-300">
+          <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-text-soft">
             {profile.bio}
           </p>
         </div>
@@ -167,7 +167,7 @@ export default function ProfileClient() {
       <button
         onClick={handleSignOut}
         disabled={signingOut}
-        className="mt-8 w-full rounded-md border border-ink-600 px-6 py-3 text-sm font-medium text-parchment-500 transition-colors hover:border-ember-500 hover:text-ember-400 disabled:opacity-60"
+        className="mt-8 w-full rounded-md border border-border-strong px-6 py-3 text-sm font-medium text-text-muted transition-colors hover:border-ember-500 hover:text-ember-400 disabled:opacity-60"
       >
         {signingOut ? "Closing the tome…" : "Sign out"}
       </button>

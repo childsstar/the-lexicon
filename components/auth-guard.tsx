@@ -19,7 +19,7 @@ function LoadingScreen() {
   return (
     <CenteredScreen>
       <LexiconMark className="h-9 w-9 animate-pulse text-gold-500" />
-      <p className="mt-4 text-sm text-parchment-700">Opening the Lexicon…</p>
+      <p className="mt-4 text-sm text-text-subtle">Opening the Lexicon…</p>
     </CenteredScreen>
   );
 }
@@ -57,10 +57,10 @@ export default function AuthGuard({
     return (
       <CenteredScreen>
         <LexiconMark className="h-9 w-9 text-ember-400" />
-        <h1 className="mt-4 font-display text-xl font-semibold text-parchment-100">
+        <h1 className="mt-4 font-display text-xl font-semibold text-text">
           The Lexicon isn&apos;t configured yet
         </h1>
-        <p className="mt-2 max-w-sm text-sm leading-relaxed text-parchment-500">
+        <p className="mt-2 max-w-sm text-sm leading-relaxed text-text-muted">
           {configError}
         </p>
         <Link

@@ -21,14 +21,14 @@ function VenueCard({ venue, nearby }: { venue: Venue; nearby: boolean }) {
       href={`/venues/${venue.id}`}
       className="card card-interactive flex items-center gap-4 p-5"
     >
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-ink-700 bg-ink-850 text-gold-500">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-gold-500">
         <MapPinIcon className="h-5 w-5" />
       </div>
       <div className="min-w-0 flex-1">
-        <h2 className="truncate font-display text-lg font-semibold text-parchment-100">
+        <h2 className="truncate font-display text-lg font-semibold text-text">
           {venue.name}
         </h2>
-        <p className="truncate text-sm text-parchment-500">
+        <p className="truncate text-sm text-text-muted">
           {venueTypeLabel(venue.venue_type)}
           {venue.region ? ` · ${venue.region}` : ""}
         </p>
@@ -38,7 +38,7 @@ function VenueCard({ venue, nearby }: { venue: Venue; nearby: boolean }) {
           Near you
         </span>
       )}
-      <ChevronRightIcon className="h-4 w-4 shrink-0 text-parchment-700" />
+      <ChevronRightIcon className="h-4 w-4 shrink-0 text-text-subtle" />
     </Link>
   );
 }
@@ -89,7 +89,7 @@ export default function VenuesClient() {
       )}
 
       {venues === null && !error && (
-        <p className="py-12 text-center text-sm text-parchment-700">
+        <p className="py-12 text-center text-sm text-text-subtle">
           Consulting the gazetteer…
         </p>
       )}
@@ -119,7 +119,7 @@ export default function VenuesClient() {
 
       {elsewhere.length > 0 && (
         <div>
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-parchment-700">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-subtle">
             {nearby.length > 0 ? "Further afield" : "All venues"}
           </p>
           <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
@@ -131,7 +131,7 @@ export default function VenuesClient() {
       )}
 
       {venues !== null && venues.length > 0 && tokens.length === 0 && (
-        <p className="mt-6 text-center text-xs text-parchment-700">
+        <p className="mt-6 text-center text-xs text-text-subtle">
           Add home locations to{" "}
           <Link href="/profile" className="text-gold-300 hover:text-gold-200">
             your profile
