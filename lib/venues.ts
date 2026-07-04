@@ -6,15 +6,84 @@ export type Venue = {
   website: string | null;
   region: string | null;
   description: string | null;
+  slug: string | null;
+  status: VenueStatus;
+  visibility: VenueVisibility;
+  canonical_source: VenueCanonicalSource;
+  source_of_truth: VenueCanonicalSource;
+  confidence: number | null;
+  verified_at: string | null;
+  last_seen_at: string | null;
+  address_line1: string | null;
+  address_line2: string | null;
+  city: string | null;
+  region_code: string | null;
+  postal_code: string | null;
+  country_code: string | null;
+  formatted_address: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  geocoded_at: string | null;
+  geocoding_source: string | null;
+  geocoding_confidence: number | null;
+  phone: string | null;
+  email: string | null;
+  instagram_url: string | null;
+  facebook_url: string | null;
+  discord_server_id: string | null;
+  discord_invite_url: string | null;
+  claimed_at: string | null;
+  claimed_by: string | null;
+  owner_notes: string | null;
+  venue_categories: string[];
+  supported_game_systems: string[];
+  has_tables: boolean | null;
+  has_retail: boolean | null;
+  has_events: boolean | null;
+  import_batch_id: string | null;
+  source_payload: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
 };
+
+export type VenueExternalSource = {
+  id: string;
+  venue_id: string;
+  source: string;
+  source_id: string | null;
+  source_url: string | null;
+  external_name: string | null;
+  external_payload: Record<string, unknown> | null;
+  confidence: number | null;
+  verified_at: string | null;
+  last_seen_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export const VENUE_STATUSES = ["active", "inactive", "closed", "pending"] as const;
+export type VenueStatus = (typeof VENUE_STATUSES)[number] | (string & {});
+
+export const VENUE_VISIBILITIES = ["public", "unlisted", "private"] as const;
+export type VenueVisibility = (typeof VENUE_VISIBILITIES)[number] | (string & {});
+
+export const VENUE_CANONICAL_SOURCES = ["lexicon", "import", "community", "claimed"] as const;
+export type VenueCanonicalSource =
+  | (typeof VENUE_CANONICAL_SOURCES)[number]
+  | (string & {});
 
 export const VENUE_TYPES = [
   { value: "game_store", label: "Game store" },
   { value: "club", label: "Club" },
   { value: "event_space", label: "Event space" },
   { value: "private", label: "Private table" },
+] as const;
+
+export const VENUE_CATEGORIES = [
+  { value: "retail", label: "Retail" },
+  { value: "gaming_club", label: "Gaming club" },
+  { value: "tournament_venue", label: "Tournament venue" },
+  { value: "community_space", label: "Community space" },
 ] as const;
 
 export function venueTypeLabel(value: string): string {
