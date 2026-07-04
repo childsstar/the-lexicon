@@ -48,7 +48,10 @@ export function friendlyProfileError(error: {
     case "23514":
       return "Username must be 3–32 characters: lowercase letters, numbers, and underscores only.";
     case "42P01":
+    case "PGRST205": // PostgREST: table missing from schema cache
       return "The profiles table doesn't exist yet. Run supabase/schema_v0_1_profiles.sql in the Supabase SQL editor, then try again.";
+    case "PGRST204": // PostgREST: column missing from schema cache
+      return "The profiles table is out of date with the app. Re-run supabase/schema_v0_1_profiles.sql in the Supabase SQL editor (drop the old table first).";
     default:
       return error.message;
   }

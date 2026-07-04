@@ -149,7 +149,7 @@ export default function ProfileClient() {
           label="Faction interests"
           value={profile?.faction_interests ?? null}
         />
-        <Row label="Home location" value={profile?.home_location ?? null} />
+        <Row label="Home locations" value={profile?.home_locations ?? null} />
         <Row label="Discord" value={profile?.discord_username ?? null} />
       </div>
 
