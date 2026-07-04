@@ -828,6 +828,92 @@ function CrackedMoon({ className }: PlateProps) {
   );
 }
 
+
+/* ------------------------------------------------------------------ */
+/* Expansion plates — symbolic variants for additive faction banners   */
+/* ------------------------------------------------------------------ */
+type ExpansionPlateTheme = {
+  deep: string;
+  mid: string;
+  glow: string;
+  motif: "arches" | "lanterns" | "horizon" | "spires" | "tunnels" | "court" | "storm" | "sanctum" | "gate" | "garden" | "maze" | "canyon";
+  seed: number;
+};
+
+function ExpansionPlate({ className, theme }: PlateProps & { theme: ExpansionPlateTheme }) {
+  const marks = Array.from({ length: 7 }, (_, i) => ({
+    x: 54 + i * 48,
+    h: 34 + ((theme.seed + i * 17) % 76),
+    delay: (i % 4) * 0.7,
+  }));
+  return (
+    <Svg className={className}>
+      <defs>
+        <linearGradient id={`exp-bg-${theme.seed}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={theme.deep} />
+          <stop offset="0.62" stopColor={theme.mid} />
+          <stop offset="1" stopColor={theme.deep} />
+        </linearGradient>
+        <radialGradient id={`exp-glow-${theme.seed}`} cx="0.5" cy="0.72" r="0.65">
+          <stop offset="0" stopColor={theme.glow} stopOpacity="0.42" />
+          <stop offset="1" stopColor={theme.glow} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="400" height="500" fill={`url(#exp-bg-${theme.seed})`} />
+      <Stars seed={theme.seed} count={theme.motif === "horizon" || theme.motif === "sanctum" ? 24 : 12} color={theme.glow} maxY={190} />
+      <ellipse cx="200" cy="365" rx="230" ry="150" fill={`url(#exp-glow-${theme.seed})`} />
+      {theme.motif === "horizon" && <path d="M0 300 Q110 255 210 285 T400 250 V500 H0 Z" fill={theme.deep} opacity="0.82" />}
+      {theme.motif === "canyon" && <><path d="M0 500 L0 250 L95 330 L145 500 Z" fill={theme.deep} opacity="0.9"/><path d="M400 500 L400 220 L295 320 L250 500 Z" fill={theme.deep} opacity="0.88"/></>}
+      {theme.motif === "garden" && <g fill={theme.glow} opacity="0.45">{marks.map((m,i)=><circle key={i} cx={m.x} cy={420-m.h/3} r={3+(i%3)} className="anim-twinkle" style={{animationDelay:`${m.delay}s`}} />)}</g>}
+      {theme.motif === "storm" && <g stroke={theme.glow} strokeWidth="3" opacity="0.5" className="anim-flicker"><path d="M245 0 L205 128 H235 L180 270"/><path d="M330 70 L296 162 H320 L275 278"/></g>}
+      {theme.motif === "maze" && <g fill="none" stroke={theme.glow} opacity="0.45"><path d="M70 420 H330 V365 H115 V305 H295 V250 H160 V190 H245"/><path d="M95 455 H305" strokeDasharray="6 10"/></g>}
+      {(theme.motif === "arches" || theme.motif === "sanctum" || theme.motif === "gate") && <g fill={theme.deep} opacity="0.9"><path d="M34 500 V260 Q72 190 110 260 V500 Z"/><path d="M145 500 V220 Q200 130 255 220 V500 Z"/><path d="M290 500 V260 Q328 190 366 260 V500 Z"/></g>}
+      {(theme.motif === "spires" || theme.motif === "court") && <g fill={theme.deep} opacity="0.88">{marks.map((m,i)=><path key={i} d={`M${m.x-16} 500 L${m.x-6} ${360-m.h} L${m.x} ${315-m.h} L${m.x+6} ${360-m.h} L${m.x+16} 500 Z`} />)}</g>}
+      {theme.motif === "tunnels" && <g fill="none" stroke={theme.glow} opacity="0.38"><path d="M0 390 C85 330 130 420 205 360 S330 330 400 380"/><path d="M0 440 C95 390 150 468 230 420 S330 395 400 430"/><path d="M55 280 V500 M205 245 V500 M340 300 V500"/></g>}
+      {theme.motif === "lanterns" && <g>{marks.map((m,i)=><g key={i} className="anim-flicker" style={{animationDelay:`${m.delay}s`}}><line x1={m.x} y1="255" x2={m.x} y2={410-m.h/2} stroke={theme.deep}/><circle cx={m.x} cy={410-m.h/2} r="7" fill={theme.glow} opacity="0.75"/><circle cx={m.x} cy={410-m.h/2} r="18" fill={theme.glow} opacity="0.13"/></g>)}</g>}
+      <path d="M0 500 Q95 466 200 478 T400 462 V500 Z" fill={theme.deep} opacity="0.92" />
+      <path d="M40 454 Q160 430 230 448 T360 420" fill="none" stroke={theme.glow} strokeWidth="1.5" strokeDasharray="5 9" opacity="0.42" />
+      <g fill={theme.glow}>{marks.slice(0,5).map((m,i)=><circle key={i} cx={m.x+12} cy={475-(i%3)*28} r="1.8" className="anim-drift" style={{animationDelay:`${m.delay}s`}} />)}</g>
+    </Svg>
+  );
+}
+
+const EXPANSION_PLATE_THEMES: Record<string, ExpansionPlateTheme> = {
+  "blackened-choir": { deep: "#10070a", mid: "#3d1020", glow: "#d14a32", motif: "arches", seed: 21 },
+  "lantern-line": { deep: "#0b1010", mid: "#2f3a28", glow: "#d6b36a", motif: "lanterns", seed: 22 },
+  "patient-horizon": { deep: "#07131a", mid: "#1e4f66", glow: "#f0b86a", motif: "horizon", seed: 23 },
+  "glass-knife": { deep: "#070711", mid: "#30164f", glow: "#73f0d8", motif: "spires", seed: 24 },
+  "subterranean-star": { deep: "#0d0b12", mid: "#3b2a54", glow: "#d8c26a", motif: "tunnels", seed: 25 },
+  "towering-vow": { deep: "#111018", mid: "#5a2630", glow: "#e0bd73", motif: "court", seed: 26 },
+  "ashen-tithe": { deep: "#0b0808", mid: "#3a2a1f", glow: "#9bd46a", motif: "storm", seed: 27 },
+  "silver-sanctum": { deep: "#0a0d12", mid: "#344457", glow: "#9fd8ff", motif: "sanctum", seed: 28 },
+  "auric-watch": { deep: "#120d06", mid: "#6b4318", glow: "#f0d37a", motif: "gate", seed: 29 },
+  "garden-of-rust": { deep: "#0d1008", mid: "#4b4a22", glow: "#b6c96a", motif: "garden", seed: 30 },
+  "sapphire-labyrinth": { deep: "#06101d", mid: "#123d7a", glow: "#d8b45a", motif: "maze", seed: 31 },
+  "red-urgency": { deep: "#120606", mid: "#6a1717", glow: "#f06a32", motif: "canyon", seed: 32 },
+  "skittering-crown": { deep: "#080d0a", mid: "#264329", glow: "#7ee06a", motif: "arches", seed: 33 },
+  "star-coil": { deep: "#061512", mid: "#1f5a4b", glow: "#82e8ff", motif: "lanterns", seed: 34 },
+  "market-walls": { deep: "#0d1014", mid: "#354256", glow: "#d6a85f", motif: "horizon", seed: 35 },
+  "sky-ledger": { deep: "#081018", mid: "#4f3b22", glow: "#f0b45f", motif: "spires", seed: 36 },
+  "ember-vault": { deep: "#120805", mid: "#5a2112", glow: "#ff9a3d", motif: "tunnels", seed: 37 },
+  "dawn-prism": { deep: "#071118", mid: "#31506a", glow: "#f2e6a0", motif: "court", seed: 38 },
+  "crimson-oracle": { deep: "#12070d", mid: "#5c1832", glow: "#f07a8a", motif: "storm", seed: 39 },
+  "hollow-bell": { deep: "#061013", mid: "#1d3a45", glow: "#a8f0e8", motif: "sanctum", seed: 40 },
+  "bone-accounting": { deep: "#0d0c0a", mid: "#4a4032", glow: "#d8c190", motif: "gate", seed: 41 },
+  "iron-tempest": { deep: "#09090c", mid: "#30303a", glow: "#b6a06a", motif: "garden", seed: 42 },
+  "brass-thunder": { deep: "#130605", mid: "#6b1810", glow: "#e0a13d", motif: "maze", seed: 43 },
+  "changing-stair": { deep: "#070a18", mid: "#283c8a", glow: "#ff7ad8", motif: "canyon", seed: 44 },
+  "rain-of-spores": { deep: "#0b1108", mid: "#3f5126", glow: "#d6c66a", motif: "arches", seed: 45 },
+  "velvet-mirror": { deep: "#120714", mid: "#4b1d55", glow: "#f0a0c8", motif: "lanterns", seed: 46 },
+  "winter-cauldron": { deep: "#091018", mid: "#35475a", glow: "#e89a4a", motif: "horizon", seed: 47 },
+  "green-avalanche": { deep: "#071008", mid: "#24451e", glow: "#9ad45a", motif: "spires", seed: 48 },
+};
+
+const expansionPlate = (id: string): React.FC<PlateProps> =>
+  function ExpansionPlateForBanner(props: PlateProps) {
+    return <ExpansionPlate {...props} theme={EXPANSION_PLATE_THEMES[id]} />;
+  };
+
 /** Plate registry, keyed by banner id. Banners without a plate fall back to
  * BannerArt's gradient — so new banners can ship before their art does. */
 export const PLATES: Record<string, React.FC<PlateProps>> = {
@@ -843,4 +929,32 @@ export const PLATES: Record<string, React.FC<PlateProps>> = {
   "machine-communion": MachineCommunion,
   "midnight-court": MidnightCourt,
   "cracked-moon": CrackedMoon,
+  "blackened-choir": expansionPlate("blackened-choir"),
+  "lantern-line": expansionPlate("lantern-line"),
+  "patient-horizon": expansionPlate("patient-horizon"),
+  "glass-knife": expansionPlate("glass-knife"),
+  "subterranean-star": expansionPlate("subterranean-star"),
+  "towering-vow": expansionPlate("towering-vow"),
+  "ashen-tithe": expansionPlate("ashen-tithe"),
+  "silver-sanctum": expansionPlate("silver-sanctum"),
+  "auric-watch": expansionPlate("auric-watch"),
+  "garden-of-rust": expansionPlate("garden-of-rust"),
+  "sapphire-labyrinth": expansionPlate("sapphire-labyrinth"),
+  "red-urgency": expansionPlate("red-urgency"),
+  "skittering-crown": expansionPlate("skittering-crown"),
+  "star-coil": expansionPlate("star-coil"),
+  "market-walls": expansionPlate("market-walls"),
+  "sky-ledger": expansionPlate("sky-ledger"),
+  "ember-vault": expansionPlate("ember-vault"),
+  "dawn-prism": expansionPlate("dawn-prism"),
+  "crimson-oracle": expansionPlate("crimson-oracle"),
+  "hollow-bell": expansionPlate("hollow-bell"),
+  "bone-accounting": expansionPlate("bone-accounting"),
+  "iron-tempest": expansionPlate("iron-tempest"),
+  "brass-thunder": expansionPlate("brass-thunder"),
+  "changing-stair": expansionPlate("changing-stair"),
+  "rain-of-spores": expansionPlate("rain-of-spores"),
+  "velvet-mirror": expansionPlate("velvet-mirror"),
+  "winter-cauldron": expansionPlate("winter-cauldron"),
+  "green-avalanche": expansionPlate("green-avalanche"),
 };
