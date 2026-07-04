@@ -830,92 +830,1030 @@ function CrackedMoon({ className }: PlateProps) {
 
 
 /* ------------------------------------------------------------------ */
-/* Expansion plates — symbolic variants for additive faction banners   */
+/* Expansion plates — a bespoke ceremonial scene per banner.           */
+/* Each has its own dominant silhouette so the composition is          */
+/* recognizable before the palette is. Environments and mood only —    */
+/* no characters, no publisher IP. Same visual family as the first     */
+/* twelve; those remain untouched.                                     */
 /* ------------------------------------------------------------------ */
-type ExpansionPlateTheme = {
+
+function Base({
+  className,
+  id,
+  deep,
+  mid,
+  sky,
+  children,
+}: PlateProps & {
+  id: string;
   deep: string;
   mid: string;
-  glow: string;
-  motif: "arches" | "lanterns" | "horizon" | "spires" | "tunnels" | "court" | "storm" | "sanctum" | "gate" | "garden" | "maze" | "canyon";
-  seed: number;
-};
-
-function ExpansionPlate({ className, theme }: PlateProps & { theme: ExpansionPlateTheme }) {
-  const marks = Array.from({ length: 7 }, (_, i) => ({
-    x: 54 + i * 48,
-    h: 34 + ((theme.seed + i * 17) % 76),
-    delay: (i % 4) * 0.7,
-  }));
+  sky?: { cx: number; cy: number; color: string; r?: number; o?: number };
+  children: React.ReactNode;
+}) {
   return (
     <Svg className={className}>
       <defs>
-        <linearGradient id={`exp-bg-${theme.seed}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor={theme.deep} />
-          <stop offset="0.62" stopColor={theme.mid} />
-          <stop offset="1" stopColor={theme.deep} />
+        <linearGradient id={`bg-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={deep} />
+          <stop offset="0.55" stopColor={mid} />
+          <stop offset="1" stopColor={deep} />
         </linearGradient>
-        <radialGradient id={`exp-glow-${theme.seed}`} cx="0.5" cy="0.72" r="0.65">
-          <stop offset="0" stopColor={theme.glow} stopOpacity="0.42" />
-          <stop offset="1" stopColor={theme.glow} stopOpacity="0" />
-        </radialGradient>
+        {sky && (
+          <radialGradient
+            id={`sky-${id}`}
+            cx={sky.cx / 400}
+            cy={sky.cy / 500}
+            r={sky.r ?? 0.6}
+          >
+            <stop offset="0" stopColor={sky.color} stopOpacity={sky.o ?? 0.4} />
+            <stop offset="1" stopColor={sky.color} stopOpacity="0" />
+          </radialGradient>
+        )}
       </defs>
-      <rect width="400" height="500" fill={`url(#exp-bg-${theme.seed})`} />
-      <Stars seed={theme.seed} count={theme.motif === "horizon" || theme.motif === "sanctum" ? 24 : 12} color={theme.glow} maxY={190} />
-      <ellipse cx="200" cy="365" rx="230" ry="150" fill={`url(#exp-glow-${theme.seed})`} />
-      {theme.motif === "horizon" && <path d="M0 300 Q110 255 210 285 T400 250 V500 H0 Z" fill={theme.deep} opacity="0.82" />}
-      {theme.motif === "canyon" && <><path d="M0 500 L0 250 L95 330 L145 500 Z" fill={theme.deep} opacity="0.9"/><path d="M400 500 L400 220 L295 320 L250 500 Z" fill={theme.deep} opacity="0.88"/></>}
-      {theme.motif === "garden" && <g fill={theme.glow} opacity="0.45">{marks.map((m,i)=><circle key={i} cx={m.x} cy={420-m.h/3} r={3+(i%3)} className="anim-twinkle" style={{animationDelay:`${m.delay}s`}} />)}</g>}
-      {theme.motif === "storm" && <g stroke={theme.glow} strokeWidth="3" opacity="0.5" className="anim-flicker"><path d="M245 0 L205 128 H235 L180 270"/><path d="M330 70 L296 162 H320 L275 278"/></g>}
-      {theme.motif === "maze" && <g fill="none" stroke={theme.glow} opacity="0.45"><path d="M70 420 H330 V365 H115 V305 H295 V250 H160 V190 H245"/><path d="M95 455 H305" strokeDasharray="6 10"/></g>}
-      {(theme.motif === "arches" || theme.motif === "sanctum" || theme.motif === "gate") && <g fill={theme.deep} opacity="0.9"><path d="M34 500 V260 Q72 190 110 260 V500 Z"/><path d="M145 500 V220 Q200 130 255 220 V500 Z"/><path d="M290 500 V260 Q328 190 366 260 V500 Z"/></g>}
-      {(theme.motif === "spires" || theme.motif === "court") && <g fill={theme.deep} opacity="0.88">{marks.map((m,i)=><path key={i} d={`M${m.x-16} 500 L${m.x-6} ${360-m.h} L${m.x} ${315-m.h} L${m.x+6} ${360-m.h} L${m.x+16} 500 Z`} />)}</g>}
-      {theme.motif === "tunnels" && <g fill="none" stroke={theme.glow} opacity="0.38"><path d="M0 390 C85 330 130 420 205 360 S330 330 400 380"/><path d="M0 440 C95 390 150 468 230 420 S330 395 400 430"/><path d="M55 280 V500 M205 245 V500 M340 300 V500"/></g>}
-      {theme.motif === "lanterns" && <g>{marks.map((m,i)=><g key={i} className="anim-flicker" style={{animationDelay:`${m.delay}s`}}><line x1={m.x} y1="255" x2={m.x} y2={410-m.h/2} stroke={theme.deep}/><circle cx={m.x} cy={410-m.h/2} r="7" fill={theme.glow} opacity="0.75"/><circle cx={m.x} cy={410-m.h/2} r="18" fill={theme.glow} opacity="0.13"/></g>)}</g>}
-      <path d="M0 500 Q95 466 200 478 T400 462 V500 Z" fill={theme.deep} opacity="0.92" />
-      <path d="M40 454 Q160 430 230 448 T360 420" fill="none" stroke={theme.glow} strokeWidth="1.5" strokeDasharray="5 9" opacity="0.42" />
-      <g fill={theme.glow}>{marks.slice(0,5).map((m,i)=><circle key={i} cx={m.x+12} cy={475-(i%3)*28} r="1.8" className="anim-drift" style={{animationDelay:`${m.delay}s`}} />)}</g>
+      <rect width="400" height="500" fill={`url(#bg-${id})`} />
+      {sky && <rect width="400" height="500" fill={`url(#sky-${id})`} />}
+      {children}
     </Svg>
   );
 }
 
-const EXPANSION_PLATE_THEMES: Record<string, ExpansionPlateTheme> = {
-  "blackened-choir": { deep: "#10070a", mid: "#3d1020", glow: "#d14a32", motif: "arches", seed: 21 },
-  "lantern-line": { deep: "#0b1010", mid: "#2f3a28", glow: "#d6b36a", motif: "lanterns", seed: 22 },
-  "patient-horizon": { deep: "#07131a", mid: "#1e4f66", glow: "#f0b86a", motif: "horizon", seed: 23 },
-  "glass-knife": { deep: "#070711", mid: "#30164f", glow: "#73f0d8", motif: "spires", seed: 24 },
-  "subterranean-star": { deep: "#0d0b12", mid: "#3b2a54", glow: "#d8c26a", motif: "tunnels", seed: 25 },
-  "towering-vow": { deep: "#111018", mid: "#5a2630", glow: "#e0bd73", motif: "court", seed: 26 },
-  "ashen-tithe": { deep: "#0b0808", mid: "#3a2a1f", glow: "#9bd46a", motif: "storm", seed: 27 },
-  "silver-sanctum": { deep: "#0a0d12", mid: "#344457", glow: "#9fd8ff", motif: "sanctum", seed: 28 },
-  "auric-watch": { deep: "#120d06", mid: "#6b4318", glow: "#f0d37a", motif: "gate", seed: 29 },
-  "garden-of-rust": { deep: "#0d1008", mid: "#4b4a22", glow: "#b6c96a", motif: "garden", seed: 30 },
-  "sapphire-labyrinth": { deep: "#06101d", mid: "#123d7a", glow: "#d8b45a", motif: "maze", seed: 31 },
-  "red-urgency": { deep: "#120606", mid: "#6a1717", glow: "#f06a32", motif: "canyon", seed: 32 },
-  "skittering-crown": { deep: "#080d0a", mid: "#264329", glow: "#7ee06a", motif: "arches", seed: 33 },
-  "star-coil": { deep: "#061512", mid: "#1f5a4b", glow: "#82e8ff", motif: "lanterns", seed: 34 },
-  "market-walls": { deep: "#0d1014", mid: "#354256", glow: "#d6a85f", motif: "horizon", seed: 35 },
-  "sky-ledger": { deep: "#081018", mid: "#4f3b22", glow: "#f0b45f", motif: "spires", seed: 36 },
-  "ember-vault": { deep: "#120805", mid: "#5a2112", glow: "#ff9a3d", motif: "tunnels", seed: 37 },
-  "dawn-prism": { deep: "#071118", mid: "#31506a", glow: "#f2e6a0", motif: "court", seed: 38 },
-  "crimson-oracle": { deep: "#12070d", mid: "#5c1832", glow: "#f07a8a", motif: "storm", seed: 39 },
-  "hollow-bell": { deep: "#061013", mid: "#1d3a45", glow: "#a8f0e8", motif: "sanctum", seed: 40 },
-  "bone-accounting": { deep: "#0d0c0a", mid: "#4a4032", glow: "#d8c190", motif: "gate", seed: 41 },
-  "iron-tempest": { deep: "#09090c", mid: "#30303a", glow: "#b6a06a", motif: "garden", seed: 42 },
-  "brass-thunder": { deep: "#130605", mid: "#6b1810", glow: "#e0a13d", motif: "maze", seed: 43 },
-  "changing-stair": { deep: "#070a18", mid: "#283c8a", glow: "#ff7ad8", motif: "canyon", seed: 44 },
-  "rain-of-spores": { deep: "#0b1108", mid: "#3f5126", glow: "#d6c66a", motif: "arches", seed: 45 },
-  "velvet-mirror": { deep: "#120714", mid: "#4b1d55", glow: "#f0a0c8", motif: "lanterns", seed: 46 },
-  "winter-cauldron": { deep: "#091018", mid: "#35475a", glow: "#e89a4a", motif: "horizon", seed: 47 },
-  "green-avalanche": { deep: "#071008", mid: "#24451e", glow: "#9ad45a", motif: "spires", seed: 48 },
-};
+/* Chaos Space Marines — a shattered amphitheater of broken tiers. */
+function BlackenedChoir({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#10070a", "#3d1020", "#d14a32"];
+  return (
+    <Base className={className} id="blackened-choir" deep={deep} mid={mid} sky={{ cx: 200, cy: 66, color: glow, r: 0.8, o: 0.42 }}>
+      {/* broken proscenium arches at the rim */}
+      <g fill={deep} opacity="0.92">
+        <path d="M20 240 Q70 150 120 240 L120 250 L108 250 Q70 185 32 250 L20 250 Z" />
+        <path d="M282 250 Q330 165 378 250 L378 262 L366 262 Q330 200 294 262 L282 262 Z" />
+      </g>
+      {/* tiered seating: concentric bowls */}
+      <g fill="none" stroke={deep} strokeWidth="13" strokeLinecap="round">
+        <path d="M52 300 Q200 452 348 300" opacity="0.95" />
+        <path d="M92 322 Q200 448 308 322" opacity="0.9" />
+        <path d="M128 344 Q200 442 272 344" opacity="0.85" />
+      </g>
+      {/* radial aisle breaks */}
+      <g stroke={mid} strokeWidth="4" opacity="0.6">
+        <path d="M200 300 V440" />
+        <path d="M130 306 L168 420" />
+        <path d="M270 306 L232 420" />
+      </g>
+      {/* tattered hanging banner */}
+      <path d="M196 150 L196 238 L188 250 L196 262 L188 276 L206 276 L206 150 Z" fill={deep} opacity="0.85" />
+      {/* embers */}
+      <g fill={glow}>
+        {[70, 150, 250, 330].map((x, i) => (
+          <circle key={x} cx={x} cy={470} r={1.8} className="anim-drift" style={{ animationDelay: `${i * 1.7}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
 
-const expansionPlate = (id: string): React.FC<PlateProps> =>
-  function ExpansionPlateForBanner(props: PlateProps) {
-    return <ExpansionPlate {...props} theme={EXPANSION_PLATE_THEMES[id]} />;
-  };
+/* Astra Militarum — a lantern line receding into rain and fog. */
+function LanternLine({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0b1010", "#2f3a28", "#d6b36a"];
+  const vx = 214;
+  const vy = 250;
+  const lamps = Array.from({ length: 9 }, (_, i) => {
+    const t = i / 8;
+    return { x: 40 + (vx - 40) * t, y: 415 - (415 - vy) * t, r: 7 - t * 5.4, o: 0.9 - t * 0.55 };
+  });
+  return (
+    <Base className={className} id="lantern-line" deep={deep} mid={mid}>
+      {/* iron clouds */}
+      <ellipse cx="120" cy="70" rx="150" ry="40" fill={deep} opacity="0.6" />
+      <ellipse cx="320" cy="50" rx="150" ry="44" fill={deep} opacity="0.66" />
+      {/* distant searchlight */}
+      <path d="M300 120 L250 250 L286 250 Z" fill={glow} opacity="0.1" />
+      {/* parapet earthwork */}
+      <path d="M0 500 L0 430 Q60 405 120 424 L150 405 L210 426 Q300 400 400 424 L400 500 Z" fill={deep} opacity="0.94" />
+      {/* the receding lantern line */}
+      <g>
+        {lamps.map((l, i) => (
+          <g key={i} className="anim-flicker" style={{ animationDelay: `${(i % 4) * 0.6}s` }}>
+            <circle cx={l.x} cy={l.y} r={l.r} fill={glow} opacity={l.o} />
+            <circle cx={l.x} cy={l.y} r={l.r * 2.6} fill={glow} opacity={l.o * 0.16} />
+          </g>
+        ))}
+      </g>
+      {/* fog banks */}
+      <ellipse cx="130" cy="360" rx="150" ry="30" fill={mid} opacity="0.4" />
+      <ellipse cx="300" cy="392" rx="170" ry="34" fill={mid} opacity="0.34" />
+    </Base>
+  );
+}
+
+/* T'au Empire — a wide dawn plain of slender towers. Mostly sky. */
+function PatientHorizon({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#07131a", "#1e4f66", "#f0b86a"];
+  return (
+    <Base className={className} id="patient-horizon" deep={deep} mid={mid}>
+      {/* luminous horizon band */}
+      <rect x="0" y="330" width="400" height="6" fill={glow} opacity="0.28" />
+      <ellipse cx="230" cy="336" rx="240" ry="70" fill={glow} opacity="0.14" />
+      {/* clean terraces */}
+      <g fill={deep} opacity="0.85">
+        <rect x="150" y="336" width="250" height="6" />
+        <rect x="196" y="348" width="204" height="7" />
+        <rect x="150" y="336" width="6" height="20" />
+      </g>
+      {/* slender tower cluster, right of centre */}
+      <g fill={deep}>
+        <path d="M250 336 L253 210 Q255 200 258 210 L261 336 Z" />
+        <path d="M276 336 L279 168 Q281 156 284 168 L287 336 Z" />
+        <path d="M300 336 L302 232 Q304 224 306 232 L308 336 Z" />
+        <rect x="272" y="196" width="16" height="6" opacity="0.9" />
+      </g>
+      {/* amber signal lights */}
+      <g fill={glow}>
+        <circle cx="282" cy="176" r="2.4" className="anim-twinkle" />
+        <circle cx="256" cy="220" r="2" className="anim-twinkle" style={{ animationDelay: "1.3s" }} />
+        <circle cx="304" cy="242" r="1.8" className="anim-twinkle" style={{ animationDelay: "2.1s" }} />
+      </g>
+    </Base>
+  );
+}
+
+/* Drukhari — thin black-glass bridges over a bottomless violet gulf. */
+function GlassKnife({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#070711", "#30164f", "#73f0d8"];
+  return (
+    <Base className={className} id="glass-knife" deep={deep} mid={mid} sky={{ cx: 200, cy: 120, color: mid, r: 0.7, o: 0.5 }}>
+      {/* the abyss darkens downward */}
+      <rect x="0" y="250" width="400" height="250" fill={deep} opacity="0.55" />
+      <ellipse cx="200" cy="500" rx="260" ry="150" fill="#000" opacity="0.5" />
+      {/* razor spires */}
+      <g fill={deep}>
+        <path d="M60 300 L66 120 L69 108 L72 120 L78 300 Z" />
+        <path d="M336 330 L341 150 L344 140 L347 150 L352 330 Z" />
+        <path d="M150 250 L154 176 L156 168 L158 176 L162 250 Z" opacity="0.9" />
+      </g>
+      {/* thin suspended bridges at varying depth */}
+      <g fill={deep} opacity="0.92">
+        <path d="M0 214 L400 196 L400 204 L0 226 Z" />
+        <path d="M0 300 L400 336 L400 344 L0 312 Z" opacity="0.85" />
+        <path d="M70 392 L330 372 L330 380 L70 402 Z" opacity="0.7" />
+      </g>
+      {/* cold neon glints */}
+      <g fill={glow}>
+        <circle cx="120" cy="207" r="1.8" className="anim-twinkle" />
+        <circle cx="300" cy="322" r="1.6" className="anim-twinkle" style={{ animationDelay: "1.6s" }} />
+        <circle cx="210" cy="386" r="1.5" className="anim-twinkle" style={{ animationDelay: "0.8s" }} />
+      </g>
+    </Base>
+  );
+}
+
+/* Genestealer Cults — a chalk constellation on a subterranean wall. */
+function SubterraneanStar({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0d0b12", "#3b2a54", "#d8c26a"];
+  const pts = [
+    [200, 150], [246, 268], [372, 268], [270, 342], [312, 462],
+    [200, 388], [88, 462], [130, 342], [28, 268], [154, 268],
+  ];
+  const path = pts.map((p, i) => `${i ? "L" : "M"}${p[0]} ${p[1]}`).join(" ") + " Z";
+  return (
+    <Base className={className} id="subterranean-star" deep={deep} mid={mid}>
+      {/* concrete seams */}
+      <g stroke={deep} strokeWidth="2" opacity="0.5">
+        <path d="M0 130 H400 M0 250 H400 M0 370 H400 M120 0 V500 M300 0 V500" />
+      </g>
+      {/* purple work-lamp glow */}
+      <ellipse cx="40" cy="430" rx="150" ry="120" fill={mid} opacity="0.5" />
+      <ellipse cx="370" cy="120" rx="140" ry="110" fill={mid} opacity="0.42" />
+      {/* pipes along the top */}
+      <g stroke={deep} strokeWidth="7" fill="none" opacity="0.85">
+        <path d="M0 46 H160 M240 46 H400 M110 46 V0 M300 66 H400" />
+      </g>
+      {/* the chalk star */}
+      <path d={path} fill="none" stroke={glow} strokeWidth="1.6" opacity="0.85" className="anim-flicker" style={{ animationDuration: "6s" }} />
+      <g fill={glow}>
+        {pts.filter((_, i) => i % 2 === 0).map((p, i) => (
+          <circle key={i} cx={p[0]} cy={p[1]} r="2.4" className="anim-twinkle" style={{ animationDelay: `${i * 0.7}s` }} />
+        ))}
+      </g>
+      {/* dust motes */}
+      <g fill={glow}>
+        {[110, 300, 210].map((x, i) => (
+          <circle key={x} cx={x} cy={430} r="1.3" className="anim-drift" style={{ animationDelay: `${i * 2.1}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Imperial Knights — a courtyard of empty armour-plinths and banners. */
+function ToweringVow({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#111018", "#5a2630", "#e0bd73"];
+  const plinths = [70, 140, 210, 280, 350];
+  return (
+    <Base className={className} id="towering-vow" deep={deep} mid={mid} sky={{ cx: 200, cy: 430, color: glow, r: 0.7, o: 0.34 }}>
+      {/* sunrise wash on the far wall */}
+      <rect x="0" y="0" width="400" height="360" fill={mid} opacity="0.25" />
+      {/* top beam + long hanging banners */}
+      <rect x="30" y="70" width="340" height="8" fill={deep} />
+      <g fill={deep} opacity="0.9">
+        {plinths.map((x, i) => (
+          <path key={x} d={`M${x - 12} 78 L${x + 12} 78 L${x + 12} ${300 + (i % 2) * 24} L${x} ${312 + (i % 2) * 24} L${x - 12} ${300 + (i % 2) * 24} Z`} opacity={i % 2 ? 0.66 : 0.86} />
+        ))}
+      </g>
+      {/* polished floor */}
+      <rect x="0" y="392" width="400" height="108" fill={deep} opacity="0.6" />
+      <rect x="0" y="392" width="400" height="3" fill={glow} opacity="0.3" />
+      {/* empty plinths in a row */}
+      <g fill={deep}>
+        {plinths.map((x) => (
+          <path key={x} d={`M${x - 20} 392 L${x + 20} 392 L${x + 14} 356 L${x - 14} 356 Z`} />
+        ))}
+      </g>
+      {/* faint floor reflections */}
+      <g fill={glow} opacity="0.12">
+        {plinths.map((x) => (
+          <rect key={x} x={x - 12} y="395" width="24" height="40" />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Chaos Knights — a colossal rusted gate hanging ajar, green lightning. */
+function AshenTithe({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0b0808", "#3a2a1f", "#9bd46a"];
+  return (
+    <Base className={className} id="ashen-tithe" deep={deep} mid={mid}>
+      {/* sick clouds */}
+      <ellipse cx="120" cy="90" rx="160" ry="46" fill={deep} opacity="0.7" />
+      <ellipse cx="320" cy="70" rx="150" ry="50" fill={deep} opacity="0.72" />
+      {/* green lightning behind */}
+      <g className="anim-bolt">
+        <path d="M250 60 L232 150 L252 148 L214 250" fill="none" stroke={glow} strokeWidth="3" strokeLinejoin="round" />
+        <ellipse cx="235" cy="150" rx="120" ry="110" fill={glow} opacity="0.08" />
+      </g>
+      {/* rusted gate: left panel upright, right panel leaning ajar */}
+      <g fill={deep}>
+        <path d="M60 500 L60 210 L150 200 L150 500 Z" />
+        {Array.from({ length: 4 }, (_, i) => (
+          <rect key={i} x={72 + i * 20} y="212" width="6" height="288" fill={mid} opacity="0.55" />
+        ))}
+      </g>
+      <g fill={deep} transform="rotate(9 250 500)">
+        <path d="M250 500 L256 214 L344 226 L338 500 Z" />
+        {Array.from({ length: 4 }, (_, i) => (
+          <rect key={i} x={266 + i * 20} y="222" width="6" height="278" fill={mid} opacity="0.5" />
+        ))}
+      </g>
+      {/* torn heraldic streamers */}
+      <path d="M104 150 L104 232 L96 246 L104 260 L96 274 L114 274 L114 150 Z" fill={mid} opacity="0.7" />
+      {/* ash */}
+      <g fill={mid}>
+        {[90, 200, 320].map((x, i) => (
+          <circle key={x} cx={x} cy={460} r="1.6" className="anim-drift" style={{ animationDelay: `${i * 1.9}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Grey Knights — a warded silver door, sacred geometry aglow. */
+function SilverSanctum({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0a0d12", "#344457", "#9fd8ff"];
+  const hex = Array.from({ length: 6 }, (_, i) => {
+    const a = (i / 6) * Math.PI * 2 - Math.PI / 2;
+    return `${200 + Math.cos(a) * 60} ${210 + Math.sin(a) * 60}`;
+  });
+  return (
+    <Base className={className} id="silver-sanctum" deep={deep} mid={mid}>
+      {/* cold hall */}
+      <ellipse cx="200" cy="210" rx="150" ry="180" fill={mid} opacity="0.28" />
+      {/* the high warded door */}
+      <path d="M120 470 L120 150 Q200 60 280 150 L280 470 Z" fill={deep} opacity="0.9" />
+      <path d="M120 470 L120 150 Q200 60 280 150 L280 470" fill="none" stroke={glow} strokeWidth="1.4" opacity="0.4" />
+      {/* geometric ward */}
+      <g className="anim-flicker" style={{ animationDuration: "5s" }} opacity="0.85">
+        <circle cx="200" cy="210" r="60" fill="none" stroke={glow} strokeWidth="1.3" />
+        <circle cx="200" cy="210" r="38" fill="none" stroke={glow} strokeWidth="1" />
+        <polygon points={hex.join(" ")} fill="none" stroke={glow} strokeWidth="1.2" />
+        <polygon points={hex.filter((_, i) => i % 2 === 0).join(" ")} fill="none" stroke={glow} strokeWidth="1" />
+      </g>
+      {/* marble floor + reflection */}
+      <rect x="0" y="470" width="400" height="30" fill={deep} />
+      <rect x="0" y="470" width="400" height="2.5" fill={glow} opacity="0.3" />
+      {/* blue candle points + dust */}
+      <g fill={glow}>
+        <circle cx="150" cy="330" r="2.2" className="anim-twinkle" />
+        <circle cx="250" cy="330" r="2.2" className="anim-twinkle" style={{ animationDelay: "1.4s" }} />
+        {[110, 290, 200].map((x, i) => (
+          <circle key={x} cx={x} cy={410} r="1.2" className="anim-drift" style={{ animationDelay: `${i * 2}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Adeptus Custodes — one radiant golden gate, perfect symmetry. */
+function AuricWatch({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#120d06", "#6b4318", "#f0d37a"];
+  return (
+    <Base className={className} id="auric-watch" deep={deep} mid={mid}>
+      {/* light pouring from the gate */}
+      <ellipse cx="200" cy="250" rx="120" ry="230" fill={glow} opacity="0.22" />
+      {/* flanking alcoves (symmetric) */}
+      <g fill={deep} opacity="0.92">
+        <path d="M30 440 L30 240 Q64 190 98 240 L98 440 Z" />
+        <path d="M302 440 L302 240 Q336 190 370 240 L370 440 Z" />
+      </g>
+      {/* the central gate */}
+      <path d="M132 440 L132 190 Q200 90 268 190 L268 440 Z" fill={deep} />
+      <path d="M148 440 L148 200 Q200 118 252 200 L252 440 Z" fill={glow} opacity="0.5" />
+      <path d="M164 440 L164 210 Q200 146 236 210 L236 440 Z" fill={mid} opacity="0.9" />
+      {/* pooled light on the polished floor */}
+      <path d="M150 440 L250 440 L330 500 L70 500 Z" fill={glow} opacity="0.18" />
+      <rect x="0" y="440" width="400" height="3" fill={glow} opacity="0.3" />
+      {/* crowning light */}
+      <circle cx="200" cy="150" r="4" fill={glow} className="anim-twinkle" />
+    </Base>
+  );
+}
+
+/* Death Guard — a ruined greenhouse, cracked glass roof, pallid blooms. */
+function GardenOfRust({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0d1008", "#4b4a22", "#b6c96a"];
+  return (
+    <Base className={className} id="garden-of-rust" deep={deep} mid={mid} sky={{ cx: 200, cy: 200, color: glow, r: 0.75, o: 0.22 }}>
+      {/* pitched glass roof frame */}
+      <path d="M40 300 L200 90 L360 300 Z" fill={mid} opacity="0.16" />
+      <g stroke={deep} strokeWidth="4" fill="none" opacity="0.9">
+        <path d="M40 300 L200 90 L360 300" />
+        <path d="M200 90 L200 300" />
+        <path d="M120 195 L280 195" />
+        <path d="M80 248 L320 248" />
+        <path d="M120 90 L120 300 M280 90 L280 300" opacity="0.5" />
+      </g>
+      {/* shattered panes (missing glass) */}
+      <g fill={deep} opacity="0.85">
+        <path d="M204 100 L276 195 L204 195 Z" />
+        <path d="M84 252 L196 252 L196 296 L112 296 Z" opacity="0.6" />
+      </g>
+      {/* yellow-green fog */}
+      <ellipse cx="200" cy="400" rx="230" ry="70" fill={glow} opacity="0.12" />
+      {/* pallid blooms pushing up through the frame */}
+      <g fill={deep}>
+        <path d="M96 440 Q92 380 100 356 M100 356 Q84 350 88 366 M100 356 Q116 348 110 364" stroke={deep} strokeWidth="3" fill="none" />
+        <circle cx="100" cy="352" r="9" fill={glow} opacity="0.8" />
+        <circle cx="300" cy="366" r="11" fill={glow} opacity="0.7" />
+        <path d="M300 440 Q296 400 300 372" stroke={deep} strokeWidth="3" fill="none" />
+        <circle cx="210" cy="392" r="7" fill={glow} opacity="0.6" />
+        <path d="M210 440 Q208 410 210 398" stroke={deep} strokeWidth="2.5" fill="none" />
+      </g>
+      {/* damp floor */}
+      <path d="M0 440 Q120 424 240 436 T400 428 V500 H0 Z" fill={deep} opacity="0.9" />
+    </Base>
+  );
+}
+
+/* Thousand Sons — a sapphire labyrinth of script-covered walls. */
+function SapphireLabyrinth({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#06101d", "#123d7a", "#d8b45a"];
+  return (
+    <Base className={className} id="sapphire-labyrinth" deep={deep} mid={mid} sky={{ cx: 200, cy: 90, color: mid, r: 0.7, o: 0.55 }}>
+      {/* maze slab */}
+      <rect x="40" y="180" width="320" height="300" fill={deep} opacity="0.55" />
+      {/* labyrinth path */}
+      <g fill="none" stroke={glow} strokeWidth="2.4" opacity="0.7">
+        <path d="M70 450 V210 H330 V450 M100 450 V240 H300 V420 M130 420 V270 H270 V400 M160 400 V300 H240 V380 M190 380 V330 H210 V360" />
+      </g>
+      {/* impossible short stairways */}
+      <g fill={mid} opacity="0.8">
+        <path d="M46 230 h20 v-12 h20 v-12 h20 v34 h-60 Z" />
+        <path d="M356 250 h-20 v-12 h-20 v-12 h-20 v34 h60 Z" />
+      </g>
+      {/* hovering lanterns */}
+      <g fill={glow}>
+        <circle cx="120" cy="150" r="4" className="anim-flicker" />
+        <circle cx="120" cy="150" r="12" opacity="0.14" />
+        <circle cx="290" cy="128" r="3.4" className="anim-flicker" style={{ animationDelay: "1.4s" }} />
+        <circle cx="290" cy="128" r="10" opacity="0.14" />
+      </g>
+    </Base>
+  );
+}
+
+/* World Eaters — a red canyon gorge narrowing to a furnace slot. */
+function RedUrgency({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#120606", "#6a1717", "#f06a32"];
+  return (
+    <Base className={className} id="red-urgency" deep={deep} mid={mid}>
+      {/* furnace slot of sky */}
+      <rect x="176" y="0" width="48" height="500" fill={glow} opacity="0.3" />
+      <ellipse cx="200" cy="120" rx="60" ry="150" fill={glow} opacity="0.35" />
+      {/* converging canyon walls */}
+      <path d="M0 500 L0 0 L120 0 L176 210 L172 500 Z" fill={deep} />
+      <path d="M400 500 L400 0 L280 0 L224 210 L228 500 Z" fill={deep} />
+      {/* jagged inner faces */}
+      <g fill={mid} opacity="0.5">
+        <path d="M120 0 L176 210 L150 120 L150 40 Z" />
+        <path d="M280 0 L224 210 L250 120 L250 40 Z" />
+      </g>
+      {/* iron braziers */}
+      <g fill={glow}>
+        <circle cx="164" cy="360" r="3" className="anim-flicker" />
+        <circle cx="236" cy="330" r="3" className="anim-flicker" style={{ animationDelay: "1.1s" }} />
+      </g>
+      {/* curling dust */}
+      <g fill={glow} opacity="0.5">
+        {[190, 205, 200].map((x, i) => (
+          <circle key={i} cx={x} cy={440 - i * 20} r="2.2" className="anim-drift" style={{ animationDelay: `${i * 1.3}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Skaven — a tangle of pipes and leaning gantries, green sparks. */
+function SkitteringCrown({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#080d0a", "#264329", "#7ee06a"];
+  return (
+    <Base className={className} id="skittering-crown" deep={deep} mid={mid}>
+      {/* pipe tangle */}
+      <g fill="none" stroke={deep} strokeWidth="10" strokeLinecap="round" opacity="0.92">
+        <path d="M0 150 H120 Q150 150 150 190 V320" />
+        <path d="M400 120 H250 Q220 120 220 160 V300" />
+        <path d="M40 260 Q160 220 260 280 T400 250" />
+        <path d="M0 340 Q120 300 210 360 T400 330" />
+        <path d="M90 60 V300 M320 40 V300" />
+      </g>
+      <g fill="none" stroke={mid} strokeWidth="5" opacity="0.7">
+        <path d="M0 200 Q140 170 250 210 T400 190" />
+        <path d="M60 100 H340" />
+      </g>
+      {/* leaning gantries */}
+      <g fill={deep} opacity="0.9" stroke={mid} strokeWidth="2">
+        <path d="M120 380 L150 250 L166 254 L140 384 Z" />
+        <path d="M300 384 L276 244 L292 242 L316 380 Z" />
+      </g>
+      {/* oily water */}
+      <path d="M0 420 Q100 406 200 416 T400 410 V500 H0 Z" fill={deep} opacity="0.85" />
+      <path d="M0 420 H400" stroke={glow} strokeWidth="1" opacity="0.2" />
+      {/* green sparks at the joints */}
+      <g fill={glow}>
+        {[[150, 190], [220, 160], [90, 260], [320, 210], [260, 280]].map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r="2.4" className="anim-twinkle" style={{ animationDelay: `${i * 0.6}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Seraphon — a stepped observatory beneath a coil of stars. */
+function StarCoil({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#061512", "#1f5a4b", "#82e8ff"];
+  const coil = Array.from({ length: 26 }, (_, i) => {
+    const t = i / 25;
+    const a = t * Math.PI * 5;
+    const r = 8 + t * 120;
+    return { x: 200 + Math.cos(a) * r * 0.92, y: 150 + Math.sin(a) * r * 0.5, r: 0.8 + (1 - t) * 1.8, d: (i % 5) * 0.5 };
+  });
+  return (
+    <Base className={className} id="star-coil" deep={deep} mid={mid}>
+      {/* the star coil */}
+      <g fill={glow}>
+        {coil.map((s, i) => (
+          <circle key={i} cx={s.x} cy={s.y} r={s.r} className={i % 2 ? "anim-twinkle" : undefined} style={i % 2 ? { animationDelay: `${s.d}s` } : undefined} opacity={0.85} />
+        ))}
+      </g>
+      {/* luminous pool at the base */}
+      <ellipse cx="200" cy="452" rx="150" ry="30" fill={glow} opacity="0.16" />
+      {/* stepped ziggurat */}
+      <g fill={deep}>
+        <path d="M120 452 L280 452 L262 410 L138 410 Z" />
+        <path d="M146 410 L254 410 L240 372 L160 372 Z" />
+        <path d="M168 372 L232 372 L222 338 L178 338 Z" />
+        <rect x="192" y="306" width="16" height="32" />
+      </g>
+      {/* fern shadows */}
+      <g fill={deep} opacity="0.85">
+        <path d="M0 500 L0 420 Q28 430 40 470 Q52 430 70 500 Z" />
+        <path d="M400 500 L400 430 Q372 440 360 476 Q350 440 336 500 Z" />
+      </g>
+    </Base>
+  );
+}
+
+/* Cities of Sigmar — a long fortified wall, many warm windows. */
+function MarketWalls({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0d1014", "#354256", "#d6a85f"];
+  const merlons = Array.from({ length: 13 }, (_, i) => 20 + i * 30);
+  const windows: [number, number][] = [];
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 10; c++) windows.push([44 + c * 34, 320 + r * 40]);
+  return (
+    <Base className={className} id="market-walls" deep={deep} mid={mid} sky={{ cx: 200, cy: 250, color: glow, r: 0.6, o: 0.22 }}>
+      <Stars seed={35} count={16} color={glow} maxY={210} />
+      {/* the wall */}
+      <rect x="0" y="290" width="400" height="210" fill={deep} />
+      {/* crenellations */}
+      <g fill={deep}>
+        {merlons.map((x) => (
+          <rect key={x} x={x} y="272" width="18" height="20" />
+        ))}
+      </g>
+      {/* central gate */}
+      <path d="M170 500 L170 380 Q200 344 230 380 L230 500 Z" fill="#000" opacity="0.6" />
+      <path d="M182 500 L182 386 Q200 360 218 386 L218 500 Z" fill={glow} opacity="0.28" />
+      {/* many warm windows */}
+      <g fill={glow}>
+        {windows.filter(([x]) => x < 168 || x > 232).map(([x, y], i) => (
+          <rect key={i} x={x} y={y} width="5" height="8" className={i % 4 === 0 ? "anim-flicker" : undefined} style={i % 4 === 0 ? { animationDelay: `${(i % 5) * 0.6}s` } : undefined} opacity="0.85" />
+        ))}
+      </g>
+      {/* little pennants */}
+      <g fill={glow} opacity="0.7">
+        {[80, 200, 320].map((x) => (
+          <path key={x} d={`M${x} 272 L${x} 250 L${x + 14} 258 L${x} 266 Z`} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Kharadron Overlords — a brass sky-dock moored above a cloud sea. */
+function SkyLedger({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#081018", "#4f3b22", "#f0b45f"];
+  return (
+    <Base className={className} id="sky-ledger" deep={deep} mid={mid} sky={{ cx: 320, cy: 150, color: glow, r: 0.6, o: 0.28 }}>
+      <Stars seed={36} count={12} color={glow} maxY={150} />
+      {/* mooring cables up to the frame */}
+      <g stroke={deep} strokeWidth="2" opacity="0.75">
+        <path d="M120 300 L40 90 M160 300 L150 70 M240 300 L250 70 M280 300 L360 90" />
+      </g>
+      {/* the floating dock */}
+      <g fill={deep}>
+        <path d="M100 300 L300 300 L280 340 L120 340 Z" />
+        <rect x="150" y="266" width="10" height="34" />
+        <rect x="240" y="266" width="10" height="34" />
+        <rect x="196" y="252" width="8" height="48" />
+        {/* mooring pylons */}
+        <rect x="112" y="286" width="8" height="18" />
+        <rect x="280" y="286" width="8" height="18" />
+      </g>
+      {/* amber dock lanterns */}
+      <g fill={glow}>
+        {[130, 175, 225, 270].map((x, i) => (
+          <circle key={x} cx={x} cy={312} r="2.6" className="anim-flicker" style={{ animationDelay: `${(i % 3) * 0.7}s` }} />
+        ))}
+      </g>
+      {/* cloud sea */}
+      <g fill={mid} opacity="0.7">
+        <ellipse cx="80" cy="440" rx="140" ry="40" />
+        <ellipse cx="280" cy="460" rx="170" ry="46" />
+        <ellipse cx="380" cy="430" rx="110" ry="34" />
+      </g>
+      <ellipse cx="180" cy="424" rx="120" ry="24" fill={mid} opacity="0.5" />
+    </Base>
+  );
+}
+
+/* Fyreslayers — a great round vault door, molten seams aglow. */
+function EmberVault({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#120805", "#5a2112", "#ff9a3d"];
+  const rays = Array.from({ length: 12 }, (_, i) => {
+    const a = (i / 12) * Math.PI * 2;
+    return `M${200 + Math.cos(a) * 40} ${250 + Math.sin(a) * 40} L${200 + Math.cos(a) * 108} ${250 + Math.sin(a) * 108}`;
+  });
+  return (
+    <Base className={className} id="ember-vault" deep={deep} mid={mid}>
+      {/* basalt blocks */}
+      <g fill={deep}>
+        <path d="M0 500 L0 60 L120 60 L90 250 L120 440 L0 440 Z" />
+        <path d="M400 500 L400 60 L280 60 L310 250 L280 440 L400 440 Z" />
+        <rect x="0" y="0" width="400" height="60" />
+        <rect x="0" y="470" width="400" height="30" />
+      </g>
+      {/* heat haze behind the door */}
+      <ellipse cx="200" cy="250" rx="130" ry="150" fill={glow} opacity="0.16" />
+      {/* the round vault door */}
+      <circle cx="200" cy="250" r="120" fill={deep} />
+      <g stroke={glow} strokeWidth="2" opacity="0.55" className="anim-flicker" style={{ animationDuration: "5s" }}>
+        {rays.map((d, i) => <path key={i} d={d} />)}
+        <circle cx="200" cy="250" r="108" fill="none" />
+        <circle cx="200" cy="250" r="70" fill="none" />
+        <circle cx="200" cy="250" r="40" fill={glow} opacity="0.35" stroke="none" />
+      </g>
+      {/* sparks */}
+      <g fill={glow}>
+        {[150, 200, 250].map((x, i) => (
+          <circle key={x} cx={x} cy={430} r="1.8" className="anim-drift" style={{ animationDelay: `${i * 1.6}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Lumineth — a causeway over a mirror-still lake, prismatic dawn. */
+function DawnPrism({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#071118", "#31506a", "#f2e6a0"];
+  const ridge = "M0 250 L70 200 L120 236 L200 170 L280 224 L340 196 L400 236";
+  return (
+    <Base className={className} id="dawn-prism" deep={deep} mid={mid} sky={{ cx: 200, cy: 190, color: glow, r: 0.7, o: 0.24 }}>
+      {/* pale mountains */}
+      <path d={`${ridge} L400 250 Z`} fill={deep} opacity="0.7" />
+      {/* prism fan of light */}
+      <g stroke={glow} strokeWidth="1.4" opacity="0.5">
+        <path d="M200 150 L120 250" />
+        <path d="M200 150 L170 250" />
+        <path d="M200 150 L230 250" />
+        <path d="M200 150 L280 250" />
+      </g>
+      {/* the causeway */}
+      <rect x="0" y="248" width="400" height="4" fill={glow} opacity="0.5" />
+      {/* mirror water: reflected ridge, fainter */}
+      <g transform="translate(0 500) scale(1 -1)">
+        <path d={`${ridge} L400 250 Z`} fill={deep} opacity="0.35" />
+      </g>
+      <rect x="0" y="252" width="400" height="248" fill={mid} opacity="0.2" />
+      {/* reflected prism */}
+      <g stroke={glow} strokeWidth="1.2" opacity="0.2">
+        <path d="M200 350 L120 252" />
+        <path d="M200 350 L280 252" />
+      </g>
+    </Base>
+  );
+}
+
+/* Daughters of Khaine — a crimson temple mirrored in black water. */
+function CrimsonOracle({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#12070d", "#5c1832", "#f07a8a"];
+  const temple = "M110 300 L150 200 L186 236 L200 150 L214 236 L250 200 L290 300 Z";
+  return (
+    <Base className={className} id="crimson-oracle" deep={deep} mid={mid} sky={{ cx: 200, cy: 210, color: mid, r: 0.7, o: 0.5 }}>
+      {/* silk veils */}
+      <g fill={mid} opacity="0.35">
+        <path d="M60 60 Q76 200 60 320 L84 320 Q100 200 84 60 Z" />
+        <path d="M316 60 Q332 200 316 320 L340 320 Q356 200 340 60 Z" />
+      </g>
+      {/* obsidian temple + steps */}
+      <path d={temple} fill={deep} />
+      <g fill={deep}>
+        <path d="M96 340 L304 340 L290 300 L110 300 Z" />
+        <path d="M84 340 L316 340 L316 360 L84 360 Z" />
+      </g>
+      {/* mirror water: reflection */}
+      <rect x="0" y="360" width="400" height="140" fill="#000" opacity="0.4" />
+      <g transform="translate(0 720) scale(1 -1)" opacity="0.4">
+        <path d={temple} fill={mid} />
+      </g>
+      <rect x="0" y="360" width="400" height="2" fill={glow} opacity="0.3" />
+      {/* candle points */}
+      <g fill={glow}>
+        <circle cx="150" cy="326" r="2.4" className="anim-flicker" />
+        <circle cx="250" cy="326" r="2.4" className="anim-flicker" style={{ animationDelay: "1.2s" }} />
+        <circle cx="200" cy="300" r="2.6" className="anim-flicker" style={{ animationDelay: "0.6s" }} />
+      </g>
+    </Base>
+  );
+}
+
+/* Nighthaunt — a hollow bell over a drowned road in mist. */
+function HollowBell({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#061013", "#1d3a45", "#a8f0e8"];
+  return (
+    <Base className={className} id="hollow-bell" deep={deep} mid={mid} sky={{ cx: 200, cy: 160, color: glow, r: 0.55, o: 0.18 }}>
+      {/* leaning bell towers behind fog */}
+      <g fill={deep} opacity="0.7">
+        <path d="M52 440 L60 150 L88 146 L92 440 Z" transform="rotate(-5 70 300)" />
+        <path d="M320 440 L326 176 L352 178 L356 440 Z" transform="rotate(4 336 300)" />
+      </g>
+      {/* the hanging bell */}
+      <g>
+        <rect x="120" y="70" width="160" height="7" fill={deep} />
+        <line x1="200" y1="77" x2="200" y2="120" stroke={deep} strokeWidth="4" />
+        <path d="M158 250 Q158 140 200 122 Q242 140 242 250 Q242 262 200 262 Q158 262 158 250 Z" fill={deep} />
+        <path d="M158 250 Q200 268 242 250 L242 262 Q200 276 158 262 Z" fill={mid} />
+        <circle cx="200" cy="272" r="6" fill={deep} />
+        <path d="M158 250 Q200 264 242 250" fill="none" stroke={glow} strokeWidth="1.2" opacity="0.4" className="anim-flicker" />
+      </g>
+      {/* still water + reflection */}
+      <rect x="0" y="410" width="400" height="90" fill={deep} opacity="0.7" />
+      <path d="M158 410 Q200 396 242 410 L242 430 Q200 444 158 430 Z" fill={mid} opacity="0.3" transform="translate(0 40) scale(1 -1) translate(0 -820)" />
+      {/* fog veils */}
+      <g fill={mid} opacity="0.4">
+        <ellipse cx="120" cy="330" rx="160" ry="26" />
+        <ellipse cx="300" cy="370" rx="170" ry="30" />
+      </g>
+    </Base>
+  );
+}
+
+/* Ossiarch Bonereapers — a silent colonnade of ivory pillars. */
+function BoneAccounting({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0d0c0a", "#4a4032", "#d8c190"];
+  const rows = Array.from({ length: 6 }, (_, i) => {
+    const t = i / 5;
+    return { y: 470 - t * 250, h: 150 - t * 112, w: 30 - t * 22, xl: 34 + t * 138, xr: 366 - t * 138, o: 0.95 - t * 0.4 };
+  });
+  return (
+    <Base className={className} id="bone-accounting" deep={deep} mid={mid}>
+      {/* cold amber light at the far end */}
+      <ellipse cx="200" cy="200" rx="90" ry="150" fill={glow} opacity="0.16" />
+      {/* black floor + centre avenue */}
+      <path d="M172 500 L196 220 L204 220 L228 500 Z" fill={deep} opacity="0.5" />
+      {/* two receding rows of pillars */}
+      <g fill={deep}>
+        {rows.map((r, i) => (
+          <g key={i}>
+            <rect x={r.xl - r.w / 2} y={r.y - r.h} width={r.w} height={r.h} opacity={r.o} />
+            <rect x={r.xl - r.w / 2 - 3} y={r.y - r.h - 6} width={r.w + 6} height={6} opacity={r.o} />
+            <rect x={r.xr - r.w / 2} y={r.y - r.h} width={r.w} height={r.h} opacity={r.o} />
+            <rect x={r.xr - r.w / 2 - 3} y={r.y - r.h - 6} width={r.w + 6} height={6} opacity={r.o} />
+          </g>
+        ))}
+      </g>
+      {/* braziers down the avenue */}
+      <g fill={glow}>
+        {rows.slice(1, 5).map((r, i) => (
+          <circle key={i} cx={200} cy={r.y - 12} r={2.4 - i * 0.3} className="anim-flicker" style={{ animationDelay: `${i * 0.7}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Slaves to Darkness — a black mountain pass in a snowstorm. */
+function IronTempest({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#09090c", "#30303a", "#b6a06a"];
+  const snow = Array.from({ length: 26 }, (_, i) => {
+    const a = Math.sin(i * 91.7) * 10000;
+    const b = Math.sin(i * 47.3) * 10000;
+    return { x: Math.abs(a - Math.floor(a)) * 400, y: Math.abs(b - Math.floor(b)) * 500 };
+  });
+  return (
+    <Base className={className} id="iron-tempest" deep={deep} mid={mid} sky={{ cx: 200, cy: 210, color: mid, r: 0.6, o: 0.5 }}>
+      {/* two peaks forming a V-notch pass */}
+      <path d="M0 500 L0 120 L90 40 L200 340 L200 500 Z" fill={deep} />
+      <path d="M400 500 L400 90 L316 30 L200 340 L200 500 Z" fill={deep} />
+      {/* fortress lights high on the left cliff */}
+      <g fill={glow}>
+        <rect x="70" y="150" width="5" height="7" className="anim-flicker" />
+        <rect x="84" y="164" width="5" height="7" className="anim-flicker" style={{ animationDelay: "1s" }} />
+        <rect x="60" y="176" width="5" height="7" className="anim-flicker" style={{ animationDelay: "1.8s" }} />
+      </g>
+      {/* iron bell on a broken post in the pass */}
+      <g fill={deep}>
+        <rect x="196" y="300" width="4" height="60" />
+        <rect x="184" y="300" width="30" height="4" />
+        <path d="M200 306 Q188 306 188 322 Q188 330 200 330 Q212 330 212 322 Q212 306 200 306 Z" />
+      </g>
+      {/* driving snow */}
+      <g stroke={glow} strokeWidth="1.4" opacity="0.5" strokeLinecap="round">
+        {snow.map((s, i) => (
+          <path key={i} d={`M${s.x} ${s.y} l-6 12`} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Blades of Khorne — a brass causeway to a vast gate over red clouds. */
+function BrassThunder({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#130605", "#6b1810", "#e0a13d"];
+  return (
+    <Base className={className} id="brass-thunder" deep={deep} mid={mid} sky={{ cx: 200, cy: 120, color: glow, r: 0.6, o: 0.3 }}>
+      {/* the vast rune-gate at the vanishing point */}
+      <rect x="150" y="150" width="100" height="130" fill={deep} />
+      <rect x="150" y="150" width="100" height="8" fill={glow} opacity="0.5" />
+      <g stroke={glow} strokeWidth="1.4" opacity="0.5">
+        <path d="M200 158 V280 M170 180 H230 M176 220 H224 M182 250 H218" />
+      </g>
+      <rect x="190" y="230" width="20" height="50" fill={glow} opacity="0.35" />
+      {/* the causeway in strong perspective */}
+      <path d="M110 500 L188 280 L212 280 L290 500 Z" fill={deep} />
+      {/* rune inlays across the deck */}
+      <g stroke={glow} strokeWidth="1.6" opacity="0.55">
+        <path d="M150 440 H250 M158 400 H242 M166 360 H234 M174 322 H226 M182 300 H218" />
+      </g>
+      {/* red storm clouds flanking */}
+      <g fill={mid} opacity="0.7">
+        <ellipse cx="70" cy="360" rx="130" ry="44" />
+        <ellipse cx="330" cy="380" rx="140" ry="48" />
+        <ellipse cx="60" cy="300" rx="90" ry="30" />
+        <ellipse cx="350" cy="320" rx="90" ry="30" />
+      </g>
+      {/* sparks */}
+      <g fill={glow}>
+        {[176, 200, 224].map((x, i) => (
+          <circle key={x} cx={x} cy={420} r="1.8" className="anim-drift" style={{ animationDelay: `${i * 1.4}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Disciples of Tzeentch — an impossible staircase in shifting cloud. */
+function ChangingStair({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#070a18", "#283c8a", "#ff7ad8"];
+  const teal = "#7ad8ff";
+  function Flight({ x, y, dx, dy, n, fill }: { x: number; y: number; dx: number; dy: number; n: number; fill: string }) {
+    const steps = [];
+    for (let i = 0; i < n; i++) {
+      const sx = x + dx * i;
+      const sy = y + dy * i;
+      steps.push(<path key={i} d={`M${sx} ${sy} h22 v10 h-22 Z`} fill={fill} />);
+      steps.push(<path key={`r${i}`} d={`M${sx + 22} ${sy} v10 l8 -6 v-10 Z`} fill={deep} opacity="0.85" />);
+    }
+    return <g>{steps}</g>;
+  }
+  return (
+    <Base className={className} id="changing-stair" deep={deep} mid={mid} sky={{ cx: 200, cy: 240, color: teal, r: 0.7, o: 0.4 }}>
+      {/* shifting clouds: turquoise + pink */}
+      <ellipse cx="90" cy="150" rx="130" ry="50" fill={teal} opacity="0.16" />
+      <ellipse cx="320" cy="360" rx="140" ry="56" fill={glow} opacity="0.16" />
+      {/* impossible interlocking flights */}
+      <Flight x={70} y={360} dx={16} dy={-16} n={7} fill={mid} />
+      <Flight x={186} y={244} dx={16} dy={12} n={7} fill={glow} />
+      <Flight x={300} y={330} dx={-16} dy={-14} n={6} fill={teal} />
+      <Flight x={196} y={430} dx={-15} dy={-13} n={6} fill={mid} />
+      {/* mirrored doors */}
+      <g fill={deep} opacity="0.9" stroke={glow} strokeWidth="1.2">
+        <path d="M120 130 h26 v40 q-13 8 -26 0 Z" />
+        <path d="M280 250 h24 v38 q-12 7 -24 0 Z" />
+      </g>
+      {/* blue-fire lanterns */}
+      <g fill={teal}>
+        <circle cx="150" cy="200" r="3.4" className="anim-flicker" />
+        <circle cx="150" cy="200" r="10" opacity="0.16" />
+        <circle cx="300" cy="200" r="3" className="anim-flicker" style={{ animationDelay: "1.3s" }} />
+      </g>
+    </Base>
+  );
+}
+
+/* Maggotkin of Nurgle — a mossy ruin in warm rain, blooming with life. */
+function RainOfSpores({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#0b1108", "#3f5126", "#d6c66a"];
+  const rain = Array.from({ length: 20 }, (_, i) => {
+    const a = Math.sin(i * 73.1) * 10000;
+    return { x: Math.abs(a - Math.floor(a)) * 400, y: (i * 53) % 380 };
+  });
+  return (
+    <Base className={className} id="rain-of-spores" deep={deep} mid={mid} sky={{ cx: 200, cy: 200, color: glow, r: 0.7, o: 0.18 }}>
+      {/* soft green fog */}
+      <ellipse cx="200" cy="360" rx="240" ry="90" fill={glow} opacity="0.12" />
+      {/* broken arch of a ruin */}
+      <g fill={deep}>
+        <path d="M60 440 L60 220 Q120 150 180 220 L180 250 Q120 200 84 250 L84 440 Z" opacity="0.9" />
+        <path d="M300 440 L300 280 L340 280 L340 440 Z" opacity="0.8" />
+        <rect x="280" y="272" width="80" height="12" opacity="0.8" />
+      </g>
+      {/* warm rain */}
+      <g stroke={glow} strokeWidth="1.2" opacity="0.35" strokeLinecap="round">
+        {rain.map((r, i) => (
+          <path key={i} d={`M${r.x} ${r.y} l-3 14`} />
+        ))}
+      </g>
+      {/* oversized mushrooms */}
+      <g>
+        <rect x="126" y="392" width="14" height="60" fill={mid} rx="6" />
+        <ellipse cx="133" cy="388" rx="42" ry="20" fill={glow} opacity="0.85" />
+        <ellipse cx="133" cy="394" rx="42" ry="9" fill={deep} opacity="0.4" />
+        <rect x="228" y="410" width="10" height="42" fill={mid} rx="5" />
+        <ellipse cx="233" cy="406" rx="30" ry="15" fill={glow} opacity="0.75" />
+      </g>
+      {/* golden puddle + reflection */}
+      <ellipse cx="200" cy="466" rx="150" ry="18" fill={glow} opacity="0.22" />
+      <path d="M0 452 Q120 440 210 450 T400 444 V500 H0 Z" fill={deep} opacity="0.85" />
+    </Base>
+  );
+}
+
+/* Hedonites of Slaanesh — a mirrored palace of drapes and chandeliers. */
+function VelvetMirror({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#120714", "#4b1d55", "#f0a0c8"];
+  function Chandelier({ y, s, cls }: { y: number; s: number; cls?: string }) {
+    return (
+      <g className={cls}>
+        <line x1="200" y1={y - 30 * s} x2="200" y2={y} stroke={glow} strokeWidth="1" opacity="0.5" />
+        {Array.from({ length: 7 }, (_, i) => (
+          <circle key={i} cx={200 + (i - 3) * 12 * s} cy={y + Math.abs(i - 3) * 4 * s} r={2 * s} fill={glow} opacity="0.85" />
+        ))}
+        <ellipse cx="200" cy={y} rx={44 * s} ry={12 * s} fill={glow} opacity="0.12" />
+      </g>
+    );
+  }
+  return (
+    <Base className={className} id="velvet-mirror" deep={deep} mid={mid} sky={{ cx: 200, cy: 150, color: glow, r: 0.6, o: 0.22 }}>
+      {/* swagged velvet drapes framing */}
+      <g fill={mid} opacity="0.85">
+        <path d="M0 0 L120 0 Q100 120 60 150 Q40 90 0 130 Z" />
+        <path d="M400 0 L280 0 Q300 120 340 150 Q360 90 400 130 Z" />
+        <path d="M120 0 L280 0 Q200 90 200 60 Q200 90 120 0 Z" opacity="0.6" />
+      </g>
+      {/* the chandelier */}
+      <Chandelier y={170} s={1} cls="anim-flicker" />
+      {/* polished mirror floor + reflection */}
+      <rect x="0" y="360" width="400" height="140" fill={deep} opacity="0.6" />
+      <rect x="0" y="360" width="400" height="2.5" fill={glow} opacity="0.28" />
+      <g transform="translate(0 720) scale(1 -1)" opacity="0.35">
+        <Chandelier y={170} s={1} />
+      </g>
+      {/* distant fountains as soft glows */}
+      <g fill={glow} opacity="0.4">
+        <ellipse cx="80" cy="330" rx="20" ry="6" />
+        <ellipse cx="320" cy="330" rx="20" ry="6" />
+      </g>
+    </Base>
+  );
+}
+
+/* Ogor Mawtribes — a great cauldron in a snow camp at twilight. */
+function WinterCauldron({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#091018", "#35475a", "#e89a4a"];
+  return (
+    <Base className={className} id="winter-cauldron" deep={deep} mid={mid} sky={{ cx: 200, cy: 110, color: mid, r: 0.7, o: 0.5 }}>
+      <Stars seed={47} count={12} color="#cdd8e8" maxY={150} />
+      {/* hide tents flanking */}
+      <g fill={deep}>
+        <path d="M20 440 L70 320 L120 440 Z" />
+        <path d="M300 440 L344 336 L388 440 Z" />
+        <path d="M64 340 L70 320 L76 340" fill="none" stroke={deep} strokeWidth="3" />
+      </g>
+      {/* snow ground */}
+      <path d="M0 440 Q120 424 220 436 T400 430 V500 H0 Z" fill={mid} opacity="0.4" />
+      {/* fire glow beneath the cauldron */}
+      <ellipse cx="200" cy="430" rx="90" ry="40" fill={glow} opacity="0.3" />
+      <ellipse cx="200" cy="430" rx="46" ry="18" fill={glow} opacity="0.5" className="anim-flicker" />
+      {/* the great cauldron */}
+      <g fill={deep}>
+        <path d="M120 350 Q120 452 200 452 Q280 452 280 350 Z" />
+        <ellipse cx="200" cy="350" rx="80" ry="20" />
+        <rect x="150" y="452" width="8" height="26" />
+        <rect x="242" y="452" width="8" height="26" />
+      </g>
+      <ellipse cx="200" cy="350" rx="66" ry="14" fill={glow} opacity="0.35" />
+      {/* heavy tracks in the snow */}
+      <g stroke={deep} strokeWidth="4" opacity="0.5" strokeLinecap="round">
+        <path d="M40 476 l14 8 M70 470 l14 8 M320 474 l14 8 M350 468 l14 8" />
+      </g>
+      {/* falling snow */}
+      <g fill="#cdd8e8">
+        {[60, 160, 260, 360].map((x, i) => (
+          <circle key={x} cx={x} cy={200} r="1.6" className="anim-drift" style={{ animationDelay: `${i * 1.5}s` }} />
+        ))}
+      </g>
+    </Base>
+  );
+}
+
+/* Orruk Warclans — standing stones under a green storm, lightning. */
+function GreenAvalanche({ className }: PlateProps) {
+  const [deep, mid, glow] = ["#071008", "#24451e", "#9ad45a"];
+  const stones = [
+    { x: 46, y: 300, w: 30, h: 150, r: -6 },
+    { x: 110, y: 340, w: 24, h: 110, r: 4 },
+    { x: 176, y: 290, w: 38, h: 170, r: -2 },
+    { x: 250, y: 330, w: 26, h: 120, r: 7 },
+    { x: 320, y: 312, w: 32, h: 140, r: -4 },
+    { x: 372, y: 350, w: 20, h: 100, r: 3 },
+  ];
+  return (
+    <Base className={className} id="green-avalanche" deep={deep} mid={mid} sky={{ cx: 200, cy: 120, color: glow, r: 0.7, o: 0.28 }}>
+      {/* heavy green thunderclouds */}
+      <g fill={deep} opacity="0.7">
+        <ellipse cx="110" cy="80" rx="170" ry="52" />
+        <ellipse cx="330" cy="60" rx="160" ry="56" />
+        <ellipse cx="230" cy="120" rx="130" ry="40" opacity="0.7" />
+      </g>
+      {/* lightning through the clouds */}
+      <g className="anim-bolt">
+        <path d="M240 70 L220 150 L242 148 L206 240" fill="none" stroke={glow} strokeWidth="3" strokeLinejoin="round" />
+        <ellipse cx="228" cy="150" rx="120" ry="100" fill={glow} opacity="0.08" />
+      </g>
+      {/* trampled plain */}
+      <path d="M0 440 Q120 424 240 436 T400 430 V500 H0 Z" fill={deep} opacity="0.9" />
+      {/* crude standing stones */}
+      <g fill={deep}>
+        {stones.map((s, i) => (
+          <path
+            key={i}
+            transform={`rotate(${s.r} ${s.x} ${s.y + s.h})`}
+            d={`M${s.x - s.w / 2} ${s.y + s.h} L${s.x - s.w / 2 + 3} ${s.y + 10} L${s.x} ${s.y} L${s.x + s.w / 2 - 4} ${s.y + 12} L${s.x + s.w / 2} ${s.y + s.h} Z`}
+            opacity={0.95 - (i % 3) * 0.12}
+          />
+        ))}
+      </g>
+      {/* muddy tracks */}
+      <g stroke={mid} strokeWidth="3" opacity="0.5" strokeLinecap="round">
+        <path d="M60 470 l16 6 M150 464 l16 6 M280 468 l16 6" />
+      </g>
+    </Base>
+  );
+}
 
 /** Plate registry, keyed by banner id. Banners without a plate fall back to
- * BannerArt's gradient — so new banners can ship before their art does. */
+ * BannerArt's gradient — so new banners can ship before their art does.
+ * The first twelve are the hand-crafted originals (do not alter); the rest
+ * are the bespoke expansion plates above. */
 export const PLATES: Record<string, React.FC<PlateProps>> = {
   "shield-unbroken": ShieldUnbroken,
   "burning-faith": BurningFaith,
@@ -929,32 +1867,32 @@ export const PLATES: Record<string, React.FC<PlateProps>> = {
   "machine-communion": MachineCommunion,
   "midnight-court": MidnightCourt,
   "cracked-moon": CrackedMoon,
-  "blackened-choir": expansionPlate("blackened-choir"),
-  "lantern-line": expansionPlate("lantern-line"),
-  "patient-horizon": expansionPlate("patient-horizon"),
-  "glass-knife": expansionPlate("glass-knife"),
-  "subterranean-star": expansionPlate("subterranean-star"),
-  "towering-vow": expansionPlate("towering-vow"),
-  "ashen-tithe": expansionPlate("ashen-tithe"),
-  "silver-sanctum": expansionPlate("silver-sanctum"),
-  "auric-watch": expansionPlate("auric-watch"),
-  "garden-of-rust": expansionPlate("garden-of-rust"),
-  "sapphire-labyrinth": expansionPlate("sapphire-labyrinth"),
-  "red-urgency": expansionPlate("red-urgency"),
-  "skittering-crown": expansionPlate("skittering-crown"),
-  "star-coil": expansionPlate("star-coil"),
-  "market-walls": expansionPlate("market-walls"),
-  "sky-ledger": expansionPlate("sky-ledger"),
-  "ember-vault": expansionPlate("ember-vault"),
-  "dawn-prism": expansionPlate("dawn-prism"),
-  "crimson-oracle": expansionPlate("crimson-oracle"),
-  "hollow-bell": expansionPlate("hollow-bell"),
-  "bone-accounting": expansionPlate("bone-accounting"),
-  "iron-tempest": expansionPlate("iron-tempest"),
-  "brass-thunder": expansionPlate("brass-thunder"),
-  "changing-stair": expansionPlate("changing-stair"),
-  "rain-of-spores": expansionPlate("rain-of-spores"),
-  "velvet-mirror": expansionPlate("velvet-mirror"),
-  "winter-cauldron": expansionPlate("winter-cauldron"),
-  "green-avalanche": expansionPlate("green-avalanche"),
+  "blackened-choir": BlackenedChoir,
+  "lantern-line": LanternLine,
+  "patient-horizon": PatientHorizon,
+  "glass-knife": GlassKnife,
+  "subterranean-star": SubterraneanStar,
+  "towering-vow": ToweringVow,
+  "ashen-tithe": AshenTithe,
+  "silver-sanctum": SilverSanctum,
+  "auric-watch": AuricWatch,
+  "garden-of-rust": GardenOfRust,
+  "sapphire-labyrinth": SapphireLabyrinth,
+  "red-urgency": RedUrgency,
+  "skittering-crown": SkitteringCrown,
+  "star-coil": StarCoil,
+  "market-walls": MarketWalls,
+  "sky-ledger": SkyLedger,
+  "ember-vault": EmberVault,
+  "dawn-prism": DawnPrism,
+  "crimson-oracle": CrimsonOracle,
+  "hollow-bell": HollowBell,
+  "bone-accounting": BoneAccounting,
+  "iron-tempest": IronTempest,
+  "brass-thunder": BrassThunder,
+  "changing-stair": ChangingStair,
+  "rain-of-spores": RainOfSpores,
+  "velvet-mirror": VelvetMirror,
+  "winter-cauldron": WinterCauldron,
+  "green-avalanche": GreenAvalanche,
 };
