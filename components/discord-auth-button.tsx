@@ -11,7 +11,7 @@ type DiscordAuthButtonProps = {
 
 export default function DiscordAuthButton({
   label = "Continue with Discord",
-  redirectPath = "/dashboard",
+  redirectPath = "/auth/callback?next=/dashboard",
   className = "",
 }: DiscordAuthButtonProps) {
   const [starting, setStarting] = useState(false);
