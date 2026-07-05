@@ -1,25 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-
-export type ParsedArmyUnit = {
-  name: string;
-  quantity: number | null;
-  points: number | null;
-  role: string | null;
-  enhancements: string[];
-  upgrades: string[];
-  wargear: string[];
-};
-
-export type ParsedArmyList = {
-  game_system: string | null;
-  faction: string | null;
-  subfaction: string | null;
-  points_total: number | null;
-  units: ParsedArmyUnit[];
-  inferred_playstyle_tags: string[];
-  confidence: number;
-  warnings: string[];
-};
+import { parseArmyListDeterministically } from "./fallback-parser";
+import type { ArmyListParser, ArmyListParserInput, ParsedArmyList, ParsedArmyUnit } from "./types";
 
 export const EMPTY_PARSED_ARMY_LIST: ParsedArmyList = {
   game_system: null,
@@ -55,15 +36,7 @@ export const ARMY_LIST_SCHEMA = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: [
-          "name",
-          "quantity",
-          "points",
-          "role",
-          "enhancements",
-          "upgrades",
-          "wargear",
-        ],
+        required: ["name", "quantity", "points", "role", "enhancements", "upgrades", "wargear"],
         properties: {
           name: { type: "string" },
           quantity: { type: ["number", "null"] },
@@ -121,44 +94,43 @@ function isParsedArmyUnit(value: unknown): value is ParsedArmyUnit {
   );
 }
 
-export function buildArmyListPrompt(input: {
-  rawText: string;
-  gameSystem?: string | null;
-  name?: string | null;
-}): string {
-  return `Parse this tabletop wargaming army roster into structured JSON. Infer only when the text supports it. If a field is ambiguous, use null and add a warning. Normalize quantities and point values as numbers. Keep unit names recognizable to a recommendation engine.\n\nList name: ${input.name || "not provided"}\nGame system hint: ${input.gameSystem || "not provided"}\n\nRoster text:\n${input.rawText}`;
+export function buildArmyListPrompt(input: ArmyListParserInput): string {
+  return `Parse this tabletop wargaming army roster into structured JSON. Infer only when the text supports it. If a field is ambiguous, use null and add a warning. Normalize quantities and point values as numbers. Keep unit names recognizable to a recommendation engine.\n\nList name: ${input.name || "not provided"}\nGame system hint: ${input.gameSystem || "not provided"}\nFaction hint: ${input.faction || "not provided"}\n\nRoster text:\n${input.rawText}`;
 }
 
-export async function parseArmyListWithAi(input: {
-  rawText: string;
-  gameSystem?: string | null;
-  name?: string | null;
-}): Promise<ParsedArmyList> {
+export async function parseArmyListWithAi(input: ArmyListParserInput): Promise<ParsedArmyList> {
   if (!process.env.ANTHROPIC_API_KEY) {
-    throw new Error("Army list parsing is not configured. Set ANTHROPIC_API_KEY.");
+    throw new Error("Army list AI parsing is not configured. Set ANTHROPIC_API_KEY.");
   }
 
   const client = new Anthropic({ timeout: TIMEOUT_MS, maxRetries: 0 });
   const response = await client.messages.create({
     model: MODEL,
     max_tokens: 4096,
-    output_config: {
-      effort: "low",
-      format: { type: "json_schema", schema: ARMY_LIST_SCHEMA },
-    },
-    system:
-      "You convert pasted tabletop army lists into strict JSON for The Lexicon. Do not invent units. Return only the schema fields.",
+    system: `You convert pasted tabletop army lists into strict JSON for The Lexicon. Return only JSON matching this schema: ${JSON.stringify(ARMY_LIST_SCHEMA)}`,
     messages: [{ role: "user", content: buildArmyListPrompt(input) }],
   });
 
-  if (response.stop_reason === "refusal") {
-    throw new Error("The parser refused this roster text.");
-  }
-
+  if (response.stop_reason === "refusal") throw new Error("The parser refused this roster text.");
   const text = response.content.find((block) => block.type === "text")?.text;
   const parsed: unknown = text ? JSON.parse(text) : null;
-  if (!isParsedArmyList(parsed)) {
-    throw new Error("The parser returned malformed roster JSON.");
-  }
+  if (!isParsedArmyList(parsed)) throw new Error("The parser returned malformed roster JSON.");
   return parsed;
+}
+
+export const defaultArmyListParser: ArmyListParser = {
+  parse: parseArmyList,
+};
+
+export async function parseArmyList(input: ArmyListParserInput): Promise<ParsedArmyList> {
+  try {
+    return await parseArmyListWithAi(input);
+  } catch (error) {
+    const fallback = parseArmyListDeterministically(input);
+    fallback.warnings = [
+      ...fallback.warnings,
+      `AI parser unavailable or failed: ${error instanceof Error ? error.message : "Unknown parser error."}`,
+    ];
+    return fallback;
+  }
 }
