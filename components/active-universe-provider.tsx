@@ -32,6 +32,10 @@ const storageKey = "lexicon-active-universe";
 type ActiveUniverseContextValue = ActiveUniverseState & {
   setRealm: (realmKey: RealmKey | null) => void;
   setGame: (gameKey: GameKey | null) => void;
+  /** Back to "All Warhammer" with no game selected. Called on sign-out
+   * (see components/auth-provider.tsx) so a stale realm from a previous
+   * session never lingers for whoever uses the browser next. */
+  reset: () => void;
 };
 
 const ActiveUniverseContext = createContext<ActiveUniverseContextValue | null>(
@@ -78,8 +82,12 @@ export function ActiveUniverseProvider({
     [state, persist]
   );
 
+  const reset = useCallback(() => {
+    persist(DEFAULT_ACTIVE_UNIVERSE_STATE);
+  }, [persist]);
+
   return (
-    <ActiveUniverseContext.Provider value={{ ...state, setRealm, setGame }}>
+    <ActiveUniverseContext.Provider value={{ ...state, setRealm, setGame, reset }}>
       {children}
     </ActiveUniverseContext.Provider>
   );
