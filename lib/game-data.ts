@@ -4,13 +4,22 @@
 // rules, datasheets, or points. Not affiliated with any publisher. Lists
 // don't need to be exhaustive: every picker backed by this data also accepts
 // free-text entries.
+//
+// Universe/Realm/Game hierarchy: where a name matches a canonical Game
+// (lib/games.ts), the entry below is backfilled with its gameKey rather
+// than duplicating that data — see GAME_SYSTEMS at the bottom of this file.
+
+import { findGameByName, type GameKey } from "./games";
 
 export type GameSystem = {
   name: string;
   factions: string[];
+  /** Set when this name also names a canonical Game — undefined for hobby
+   * systems the Universe/Realm/Game hierarchy doesn't model yet. */
+  gameKey?: GameKey;
 };
 
-export const GAME_SYSTEMS: GameSystem[] = [
+const RAW_GAME_SYSTEMS: GameSystem[] = [
   {
     name: "Warhammer 40,000",
     factions: [
@@ -167,6 +176,11 @@ export const GAME_SYSTEMS: GameSystem[] = [
   { name: "Trench Crusade", factions: [] },
   { name: "Frostgrave", factions: [] },
 ];
+
+export const GAME_SYSTEMS: GameSystem[] = RAW_GAME_SYSTEMS.map((system) => {
+  const game = findGameByName(system.name);
+  return game ? { ...system, gameKey: game.key } : system;
+});
 
 export const SYSTEM_BY_NAME = new Map(
   GAME_SYSTEMS.map((s) => [s.name, s] as const)

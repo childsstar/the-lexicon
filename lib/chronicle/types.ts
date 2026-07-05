@@ -1,4 +1,7 @@
 import type { GameSystemKey } from "../game-systems";
+import { GAMES, isGameKey } from "../games";
+import type { RealmKey } from "../realms";
+import type { UniverseKey } from "../universes";
 
 // The Chronicle engine — shared types.
 //
@@ -86,6 +89,20 @@ export type Banner = {
   /** Gradient palette for the placeholder artwork [deep, mid, glow]. */
   palette: [string, string, string];
 };
+
+/** A banner's place in the Universe/Realm/Game hierarchy, when its
+ * gameSystemKey also names a canonical Game (lib/games.ts) — undefined for
+ * banners outside Warhammer, which the hierarchy doesn't model yet. Kept as
+ * a lookup rather than fields on every Banner literal so realm-aware
+ * filtering (e.g. "only banners in the active realm") is a config-free
+ * addition. */
+export function bannerHierarchy(
+  banner: Pick<Banner, "gameSystemKey">
+): { universeKey: UniverseKey; realmKey: RealmKey } | undefined {
+  if (!isGameKey(banner.gameSystemKey)) return undefined;
+  const game = GAMES[banner.gameSystemKey];
+  return { universeKey: game.universeKey, realmKey: game.realmKey };
+}
 
 /** The generated result — the shape a future LLM call must also return. */
 export type ChronicleResult = {

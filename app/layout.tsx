@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import ThemeScript from "@/components/theme-script";
+import { ActiveUniverseProvider } from "@/components/active-universe-provider";
 import "./globals.css";
 
 const siteDescription =
@@ -53,7 +54,9 @@ export default function RootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body className="atmosphere min-h-dvh">{children}</body>
+      <body className="atmosphere min-h-dvh">
+        <ActiveUniverseProvider>{children}</ActiveUniverseProvider>
+      </body>
     </html>
   );
 }
