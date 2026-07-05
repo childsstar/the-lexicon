@@ -25,12 +25,10 @@ export default function RealmSwitcher() {
           setRealm(isRealmKey(value) ? value : null);
         }}
       >
-        <option value="">
-          {universe.emoji} {universe.name}
-        </option>
+        <option value="">{universe.name}</option>
         {REALM_LIST.map((realm) => (
           <option key={realm.key} value={realm.key}>
-            {realm.emoji} {realm.name}
+            {realm.name}
           </option>
         ))}
       </select>

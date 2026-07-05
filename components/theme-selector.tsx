@@ -1,10 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Flame, Scroll } from "lucide-react";
 
 type ThemeChoice = "dark" | "light";
 
 const storageKey = "lexicon-theme";
+
+const THEME_LABELS: Record<ThemeChoice, string> = {
+  dark: "Candlelight",
+  light: "Parchment",
+};
 
 function normalizeThemeChoice(choice: string | null): ThemeChoice {
   return choice === "light" ? "light" : "dark";
@@ -24,23 +30,24 @@ export default function ThemeSelector() {
     applyTheme(next);
   }, []);
 
+  function toggle() {
+    const next: ThemeChoice = choice === "dark" ? "light" : "dark";
+    localStorage.setItem(storageKey, next);
+    setChoice(next);
+    applyTheme(next);
+  }
+
+  const Icon = choice === "dark" ? Flame : Scroll;
+
   return (
-    <label className="flex items-center gap-2 text-xs font-medium text-text-muted">
-      <span className="hidden md:inline">Theme</span>
-      <select
-        aria-label="Theme"
-        className="rounded-md border border-border bg-surface-raised px-2.5 py-1.5 text-xs font-medium text-text transition-colors focus:border-gold-500 focus:outline-none"
-        value={choice}
-        onChange={(event) => {
-          const next = event.target.value as ThemeChoice;
-          localStorage.setItem(storageKey, next);
-          setChoice(next);
-          applyTheme(next);
-        }}
-      >
-        <option value="dark">Candlelight</option>
-        <option value="light">Parchment (experimental)</option>
-      </select>
-    </label>
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={`Theme: ${THEME_LABELS[choice]}. Switch to ${THEME_LABELS[choice === "dark" ? "light" : "dark"]}.`}
+      title={THEME_LABELS[choice]}
+      className="flex items-center justify-center rounded-full border border-border-strong p-1.5 text-text-muted transition-colors hover:border-gold-600 hover:text-gold-300"
+    >
+      <Icon className="h-4 w-4" aria-hidden="true" />
+    </button>
   );
 }
