@@ -43,9 +43,9 @@ export default function AppShell({
         <div
           className={`${shellContainerClass} flex h-14 items-center justify-between`}
         >
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
             <LexiconMark className="h-6 w-6 text-gold-400" />
-            <span className="font-display text-lg font-semibold tracking-wide text-text">
+            <span className="hidden font-display text-lg font-semibold tracking-wide text-text sm:inline">
               The Lexicon
             </span>
           </Link>
