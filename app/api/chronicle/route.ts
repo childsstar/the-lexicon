@@ -10,7 +10,10 @@ import {
   isValidChronicleResult,
 } from "@/lib/chronicle/generate";
 import type { Banner, ChronicleResult } from "@/lib/chronicle/types";
+import { filterBannersForActiveContext } from "@/lib/chronicle/types";
 import { filterByGameSystems, isGameSystemKey } from "@/lib/game-systems";
+import { isRealmKey } from "@/lib/realms";
+import { isGameKey } from "@/lib/games";
 
 // Generates a Chronicle reading. The Anthropic API key lives only here,
 // server-side; the browser never sees it. Every failure path falls back to
@@ -31,6 +34,8 @@ type RequestBody = {
   answers?: unknown;
   rotation?: unknown;
   systems?: unknown;
+  realmKey?: unknown;
+  gameKey?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -47,15 +52,30 @@ export async function POST(request: Request) {
   }
   const { quiz } = entry;
 
-  // Optional Find Your World hand-off: mirror the client's filtering so
-  // both rankings agree. Unknown keys are dropped; an empty or unmatched
-  // filter leaves the pool untouched.
+  // Mirror the client's exact filter precedence so both rankings agree —
+  // an explicit Find Your World hand-off (?systems=) wins; otherwise fall
+  // back to the caller's active realm/game via the same canonical matcher
+  // Hall of Banners and venues use. Unknown/missing values are dropped, so
+  // a stale or malformed field never breaks the pool, it just falls
+  // through to "unfiltered."
   const preferredSystems = Array.isArray(body.systems)
     ? body.systems.filter(
         (s): s is string => typeof s === "string"
       ).filter(isGameSystemKey)
     : [];
-  const banners = filterByGameSystems(entry.banners, preferredSystems);
+  const realmKey =
+    typeof body.realmKey === "string" && isRealmKey(body.realmKey)
+      ? body.realmKey
+      : null;
+  const gameKey =
+    typeof body.gameKey === "string" && isGameKey(body.gameKey)
+      ? body.gameKey
+      : null;
+  const banners =
+    preferredSystems.length > 0
+      ? filterByGameSystems(entry.banners, preferredSystems)
+      : filterBannersForActiveContext(entry.banners, { realmKey, gameKey })
+          .banners;
 
   const answers = body.answers;
   const validAnswers =

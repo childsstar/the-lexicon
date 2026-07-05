@@ -11,6 +11,7 @@ import type { User } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase";
 import { fetchProfile } from "@/lib/profiles";
 import type { Profile } from "@/lib/types";
+import { useActiveUniverse } from "@/components/active-universe-provider";
 
 // NOTE: email/password only for v0.1. Supabase also supports Discord OAuth
 // (signInWithOAuth({ provider: "discord" })) — add it soon; it only needs the
@@ -30,6 +31,7 @@ type AuthState = {
 const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const { reset: resetActiveUniverse } = useActiveUniverse();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -89,7 +91,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);
-  }, []);
+    // A stale realm/game selection from this session shouldn't greet
+    // whoever's logged out (or the next person on a shared device) —
+    // back to "All Warhammer" until someone picks otherwise.
+    resetActiveUniverse();
+  }, [resetActiveUniverse]);
 
   return (
     <AuthContext.Provider

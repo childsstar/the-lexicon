@@ -135,13 +135,21 @@ export default function ChronicleExperience({
           answers: finalAnswers,
           rotation,
           systems: preferredSystems,
+          // Mirrors the client's own filter precedence (query hand-off,
+          // then active realm/game) so the server ranks the exact same
+          // banner pool the client just did — otherwise the server can
+          // narrate a different banner than the one shown (see the PR
+          // discussion: a stale active realm with no ?systems= in the URL
+          // used to desync these two rankings).
+          realmKey: activeRealmKey,
+          gameKey: activeGameKey,
         }),
       })
         .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
         .then((data) => setResult(data.result))
         .catch(fallback);
     },
-    [quiz, activeBanners, preferredSystems]
+    [quiz, activeBanners, preferredSystems, activeRealmKey, activeGameKey]
   );
 
   // A shared/revisited link (?a=…) skips straight to a short ceremony.
