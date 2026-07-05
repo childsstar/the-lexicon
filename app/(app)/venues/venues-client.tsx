@@ -122,33 +122,6 @@ const MAPTILER_STYLE_ID = "019f2eed-09d5-7334-b22d-093217fa9d06";
 const mapTilerStyleUrl = (key: string) =>
   `https://api.maptiler.com/maps/${MAPTILER_STYLE_ID}/style.json?key=${encodeURIComponent(key)}`;
 
-function redactMapTilerKey(value: string, key?: string) {
-  let redacted = value.replace(/([?&]key=)[^&]+/gi, "$1[redacted]").replace(/%7Bkey%7D|\{key\}/gi, "[redacted]");
-  if (key) redacted = redacted.replaceAll(encodeURIComponent(key), "[redacted]").replaceAll(key, "[redacted]");
-  return redacted;
-}
-
-function debugVenueMap(message: string, payload?: unknown) {
-  if (typeof window === "undefined") return;
-  const enabled =
-    window.location.search.includes("debugVenueMap=1") ||
-    window.localStorage.getItem("debugVenueMap") === "1" ||
-    process.env.NODE_ENV !== "production";
-  if (!enabled) return;
-  console.log(`[VenuesMap] ${message}`, payload ?? "");
-}
-
-function elementDimensions(element: Element | null) {
-  if (!element) return null;
-  const rect = element.getBoundingClientRect();
-  return {
-    width: rect.width,
-    height: rect.height,
-    clientWidth: (element as HTMLElement).clientWidth,
-    clientHeight: (element as HTMLElement).clientHeight,
-  };
-}
-
 function mapTilerResourceUrl(url: string, key: string) {
   if (!url.includes("api.maptiler.com")) return url;
   const resolvedUrl = url.replaceAll("{key}", encodeURIComponent(key));
@@ -195,10 +168,7 @@ let mapLibrePromise: Promise<MapLibreModule> | null = null;
 
 function loadMapLibre() {
   if (typeof window === "undefined") return Promise.reject(new Error("MapLibre requires a browser."));
-  if (window.maplibregl) {
-    debugVenueMap("MapLibre global already present before map creation", { hasMapLibre: true });
-    return Promise.resolve(window.maplibregl);
-  }
+  if (window.maplibregl) return Promise.resolve(window.maplibregl);
   if (mapLibrePromise) return mapLibrePromise;
 
   mapLibrePromise = new Promise<MapLibreModule>((resolve, reject) => {
@@ -206,10 +176,7 @@ function loadMapLibre() {
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = MAPLIBRE_CSS_URL;
-      link.onload = () => debugVenueMap("MapLibre CSS loaded", { url: MAPLIBRE_CSS_URL });
-      link.onerror = () => debugVenueMap("MapLibre CSS failed", { url: MAPLIBRE_CSS_URL });
       document.head.appendChild(link);
-      debugVenueMap("MapLibre CSS requested", { url: MAPLIBRE_CSS_URL });
     }
 
     const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${MAPLIBRE_JS_URL}"]`);
@@ -222,16 +189,9 @@ function loadMapLibre() {
     const script = document.createElement("script");
     script.src = MAPLIBRE_JS_URL;
     script.async = true;
-    script.onload = () => {
-      debugVenueMap("MapLibre JS loaded", { url: MAPLIBRE_JS_URL, hasGlobal: Boolean(window.maplibregl) });
-      return window.maplibregl ? resolve(window.maplibregl) : reject(new Error("MapLibre did not initialize."));
-    };
-    script.onerror = () => {
-      debugVenueMap("MapLibre JS failed", { url: MAPLIBRE_JS_URL });
-      reject(new Error("Unable to load MapLibre."));
-    };
+    script.onload = () => window.maplibregl ? resolve(window.maplibregl) : reject(new Error("MapLibre did not initialize."));
+    script.onerror = () => reject(new Error("Unable to load MapLibre."));
     document.head.appendChild(script);
-    debugVenueMap("MapLibre JS requested", { url: MAPLIBRE_JS_URL });
   });
 
   return mapLibrePromise;
@@ -336,16 +296,10 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
     const key = maptilerKey;
     const styleUrl = mapTilerStyleUrl(key);
     let cancelled = false;
-    let loggedFailures = 0;
-    debugVenueMap("MapTiler style URL", { url: redactMapTilerKey(styleUrl, key) });
-
     async function initializeMap() {
       try {
         const maplibregl = await loadMapLibre();
         if (cancelled || !mapContainerRef.current) return;
-
-        debugVenueMap("MapLibre global before map creation", { hasGlobal: Boolean(window.maplibregl), jsUrl: MAPLIBRE_JS_URL, cssUrl: MAPLIBRE_CSS_URL });
-        debugVenueMap("container dimensions before map creation", elementDimensions(mapContainerRef.current));
 
         const map = new maplibregl.Map({
           container: mapContainerRef.current,
@@ -354,43 +308,16 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
           zoom: 3,
           attributionControl: true,
           transformRequest: (url: string) => {
-            const transformedUrl = mapTilerResourceUrl(url, key);
-            if (transformedUrl !== url) debugVenueMap("MapTiler resource URL transformed", { url: redactMapTilerKey(transformedUrl, key) });
-            return { url: transformedUrl };
+            return { url: mapTilerResourceUrl(url, key) };
           },
         });
-        const logMapState = (eventName: string, event?: unknown) => {
-          const mapElement = mapContainerRef.current?.querySelector(".maplibregl-map");
-          const canvas = mapContainerRef.current?.querySelector(".maplibregl-canvas");
-          debugVenueMap(eventName, {
-            event,
-            container: elementDimensions(mapContainerRef.current),
-            mapElement: elementDimensions(mapElement ?? null),
-            canvas: elementDimensions(canvas ?? null),
-            canvasExists: Boolean(canvas),
-            isStyleLoaded: map.isStyleLoaded(),
-          });
-        };
         const handleMapError = (event?: unknown) => {
           console.error("Venue MapLibre error", event);
-          logMapState("map error", event);
-          const url = (event as { error?: { url?: string; status?: number; message?: string } })?.error?.url;
-          if (url && loggedFailures < 5) {
-            loggedFailures += 1;
-            debugVenueMap("failed resource", {
-              url: redactMapTilerKey(url, key),
-              status: (event as { error?: { status?: number } })?.error?.status,
-              message: (event as { error?: { message?: string } })?.error?.message,
-            });
-          }
         };
         map.on("error", handleMapError);
-        map.on("styledata", (event) => logMapState("styledata", event));
-        map.on("sourcedata", (event) => logMapState("sourcedata", event));
         map.once("load", () => {
           if (cancelled) return;
           map.resize();
-          logMapState("load");
           setMapReady(true);
         });
         map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
@@ -452,7 +379,7 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
   return (
     <section className="venue-map-shell min-h-[min(72vh,42rem)] lg:min-h-[calc(100vh-18rem)]">
       <div ref={mapContainerRef} className="venue-map-canvas absolute inset-0 z-0" aria-label="Map of venues" />
-      <div className="pointer-events-none absolute inset-0 z-10">
+      <div className="venue-map-overlays pointer-events-none absolute inset-0 z-10">
         <div className="absolute left-4 top-4 rounded-full border border-gold-600/50 bg-background/85 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300 shadow-lg">
           {mappableVenues.length} mapped
         </div>

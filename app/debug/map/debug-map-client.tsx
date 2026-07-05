@@ -83,19 +83,12 @@ export default function DebugMapClient() {
           zoom: 11,
         });
 
-        console.log(map);
-        console.log("Map created");
-
-        map.on("load", () => {
-          console.log("Style loaded", map?.isStyleLoaded());
-        });
-
         map.on("error", (event) => {
-          console.log("Map error", event);
+          console.error("Debug MapLibre error", event);
         });
       })
       .catch((error) => {
-        console.log("Map error", error);
+        console.error("Debug MapLibre error", error);
       });
 
     return () => {
