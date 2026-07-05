@@ -361,7 +361,7 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
         });
         const logMapState = (eventName: string, event?: unknown) => {
           const mapElement = mapContainerRef.current?.querySelector(".maplibregl-map");
-          const canvas = mapContainerRef.current?.querySelector("canvas");
+          const canvas = mapContainerRef.current?.querySelector(".maplibregl-canvas");
           debugVenueMap(eventName, {
             event,
             container: elementDimensions(mapContainerRef.current),
@@ -451,8 +451,8 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
 
   return (
     <section className="card overflow-hidden p-0">
-      <div className="relative min-h-[min(72vh,42rem)] lg:min-h-[calc(100vh-18rem)]">
-        <div ref={mapContainerRef} className="absolute inset-0 bg-[#fff8eb]" aria-label="Map of venues" />
+      <div className="venue-map-shell relative min-h-[min(72vh,42rem)] lg:min-h-[calc(100vh-18rem)]">
+        <div ref={mapContainerRef} className="venue-map-canvas absolute inset-0" aria-label="Map of venues" />
         <div className="pointer-events-none absolute left-4 top-4 z-20 rounded-full border border-gold-600/50 bg-background/85 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300 shadow-lg">
           {mappableVenues.length} mapped
         </div>
