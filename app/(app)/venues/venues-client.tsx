@@ -450,14 +450,14 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
   }
 
   return (
-    <section className="card overflow-hidden p-0">
-      <div className="venue-map-shell relative min-h-[min(72vh,42rem)] lg:min-h-[calc(100vh-18rem)]">
-        <div ref={mapContainerRef} className="venue-map-canvas absolute inset-0" aria-label="Map of venues" />
-        <div className="pointer-events-none absolute left-4 top-4 z-20 rounded-full border border-gold-600/50 bg-background/85 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300 shadow-lg">
+    <section className="venue-map-shell min-h-[min(72vh,42rem)] lg:min-h-[calc(100vh-18rem)]">
+      <div ref={mapContainerRef} className="venue-map-canvas absolute inset-0 z-0" aria-label="Map of venues" />
+      <div className="pointer-events-none absolute inset-0 z-10">
+        <div className="absolute left-4 top-4 rounded-full border border-gold-600/50 bg-background/85 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300 shadow-lg">
           {mappableVenues.length} mapped
         </div>
         {selectedVenue && (
-          <div className="absolute bottom-4 left-4 right-4 z-30 md:left-auto md:w-80">
+          <div className="pointer-events-auto absolute bottom-4 left-4 right-4 md:left-auto md:w-80">
             <VenueDetailCard venue={selectedVenue} />
           </div>
         )}
