@@ -9,7 +9,9 @@
     "lint": "next lint",
     "validate:banners": "node scripts/validate-banners.mjs",
     "validate:venue-import": "node scripts/validate-venue-import.mjs",
-    "validate:army-list-parser": "node scripts/validate-army-list-parser.mjs"
+    "validate:army-list-parser": "node scripts/validate-army-list-parser.mjs",
+    "validate:discord-link": "node scripts/validate-discord-link.mjs",
+    "validate:discord-cta": "node scripts/validate-discord-cta.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0",

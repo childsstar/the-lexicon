@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PageHeader from "@/components/page-header";
+import DiscordCta from "@/components/discord-cta";
 import { getSupabaseClient } from "@/lib/supabase";
 import { venueTypeLabel, type Venue } from "@/lib/venues";
 import { MapPinIcon, CalendarIcon, UsersIcon } from "@/components/icons";
@@ -97,6 +98,7 @@ export default function VenueDetail({ id }: { id: string }) {
           </div>
 
           <div className="space-y-3">
+            <DiscordCta url={venue.discord_invite_url} />
             <div className="card flex items-start gap-4 p-5">
               <CalendarIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-500" />
               <div>

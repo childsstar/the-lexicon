@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import PageHeader from "@/components/page-header";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
-import { friendlyVenueError, VENUE_TYPES } from "@/lib/venues";
+import { friendlyVenueError, isDiscordInviteUrl, VENUE_TYPES } from "@/lib/venues";
 
 export default function VenueForm() {
   const router = useRouter();
@@ -14,6 +14,7 @@ export default function VenueForm() {
   const [venueType, setVenueType] = useState("");
   const [region, setRegion] = useState("");
   const [website, setWebsite] = useState("");
+  const [discordUrl, setDiscordUrl] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -27,6 +28,13 @@ export default function VenueForm() {
       setError("Pick what kind of venue this is.");
       return;
     }
+    const trimmedDiscordUrl = discordUrl.trim();
+    if (trimmedDiscordUrl && !isDiscordInviteUrl(trimmedDiscordUrl)) {
+      setError(
+        "That doesn't look like a Discord invite. Use a link like https://discord.gg/yourcode."
+      );
+      return;
+    }
     setSaving(true);
     try {
       const { error } = await getSupabaseClient().from("venues").insert({
@@ -35,6 +43,7 @@ export default function VenueForm() {
         venue_type: venueType,
         region: region.trim(),
         website: website.trim() || null,
+        discord_invite_url: trimmedDiscordUrl || null,
         description: description.trim() || null,
       });
       if (error) {
@@ -139,6 +148,27 @@ export default function VenueForm() {
             placeholder="https://…"
             className="field"
           />
+        </div>
+
+        <div>
+          <label
+            htmlFor="v-discord"
+            className="mb-1.5 block text-sm font-medium text-text"
+          >
+            Discord invite
+          </label>
+          <input
+            id="v-discord"
+            type="url"
+            value={discordUrl}
+            onChange={(e) => setDiscordUrl(e.target.value)}
+            placeholder="https://discord.gg/…"
+            className="field"
+          />
+          <p className="mt-1.5 text-xs text-text-subtle">
+            Join the local Discord to find games, events, leagues, and pickup
+            nights. The Lexicon just links to it — nothing is synced.
+          </p>
         </div>
 
         <div>

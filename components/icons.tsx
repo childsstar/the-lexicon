@@ -169,6 +169,16 @@ export function CalendarIcon(props: IconProps) {
   );
 }
 
+export function ChatIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M4 5.5h16v10H9l-4 3.5v-3.5H4v-10Z" />
+      <path d="M8 9.5h8" />
+      <path d="M8 12.5h5" />
+    </svg>
+  );
+}
+
 /** The Lexicon brand mark — an open tome with a starburst. Original artwork. */
 export function LexiconMark(props: IconProps) {
   return (
