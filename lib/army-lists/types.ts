@@ -1,4 +1,36 @@
-import type { ParsedArmyList } from "./parser";
+export type ParsedArmyUnit = {
+  name: string;
+  quantity: number | null;
+  points: number | null;
+  role: string | null;
+  enhancements: string[];
+  upgrades: string[];
+  wargear: string[];
+};
+
+export type ParsedArmyList = {
+  game_system: string | null;
+  faction: string | null;
+  subfaction: string | null;
+  points_total: number | null;
+  units: ParsedArmyUnit[];
+  inferred_playstyle_tags: string[];
+  confidence: number;
+  warnings: string[];
+};
+
+export type ArmyListParserInput = {
+  rawText: string;
+  gameSystem?: string | null;
+  faction?: string | null;
+  name?: string | null;
+};
+
+export type ArmyListParser = {
+  parse(input: ArmyListParserInput): Promise<ParsedArmyList>;
+};
+
+
 
 export type ArmyList = {
   id: string;

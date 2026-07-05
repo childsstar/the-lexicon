@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { parseArmyListWithAi, type ParsedArmyList } from "@/lib/army-lists/parser";
+import { parseArmyList } from "@/lib/army-lists/parser";
+import type { ParsedArmyList } from "@/lib/army-lists/types";
 
 const MAX_RAW_TEXT_LENGTH = 40_000;
 
 type RequestBody = {
   name?: unknown;
   gameSystem?: unknown;
+  faction?: unknown;
   rawText?: unknown;
 };
 
@@ -37,6 +39,10 @@ export async function POST(request: Request) {
     typeof body.gameSystem === "string" && body.gameSystem.trim()
       ? body.gameSystem.trim()
       : null;
+  const faction =
+    typeof body.faction === "string" && body.faction.trim()
+      ? body.faction.trim()
+      : null;
 
   if (!rawText) {
     return NextResponse.json({ error: "Paste an army list before importing." }, { status: 400 });
@@ -65,7 +71,7 @@ export async function POST(request: Request) {
   let parserError: string | null = null;
 
   try {
-    parsed = await parseArmyListWithAi({ rawText, gameSystem, name });
+    parsed = await parseArmyList({ rawText, gameSystem, faction, name });
   } catch (err) {
     parserStatus = "failed";
     parserError = err instanceof Error ? err.message : "Army list parsing failed.";
@@ -78,7 +84,7 @@ export async function POST(request: Request) {
       profile_id: userData.user.id,
       name,
       game_system: parsed?.game_system ?? gameSystem,
-      faction: parsed?.faction ?? null,
+      faction: parsed?.faction ?? faction,
       points_total: parsed?.points_total ?? null,
       raw_text: rawText,
       parsed_json: parsed,
