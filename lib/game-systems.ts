@@ -6,6 +6,16 @@
 // (recommended factions, starter boxes, local clubs, painting guides…) can
 // hang recommendations off the same keys. Adding a system is purely a
 // configuration change: add its key below and an entry to GAME_SYSTEMS.
+//
+// Universe/Realm/Game hierarchy: this registry predates and covers more
+// ground than lib/games.ts (every hobby system, not just Warhammer), so it
+// stays the source of truth for Find Your World/Find Your Banner. Where a
+// key also names a canonical Game, GAME_SYSTEMS is backfilled with its
+// universeKey/realmKey below rather than duplicating that data.
+
+import { type UniverseKey } from "./universes";
+import { type RealmKey } from "./realms";
+import { GAMES, isGameKey } from "./games";
 
 export const GAME_SYSTEM_KEYS = [
   // Warhammer
@@ -42,9 +52,14 @@ export type GameSystem = {
   tagline: string;
   /** Short blurb for the recommendation screen. */
   blurb: string;
+  /** Set when this key also names a canonical Game (see lib/games.ts) —
+   * undefined for hobby systems the Universe/Realm/Game hierarchy doesn't
+   * model yet. */
+  universeKey?: UniverseKey;
+  realmKey?: RealmKey;
 };
 
-export const GAME_SYSTEMS: Record<GameSystemKey, GameSystem> = {
+const RAW_GAME_SYSTEMS: Record<GameSystemKey, GameSystem> = {
   "warhammer-40k": {
     key: "warhammer-40k",
     name: "Warhammer 40,000",
@@ -199,6 +214,20 @@ export const GAME_SYSTEMS: Record<GameSystemKey, GameSystem> = {
       "Grim beyond grim: warband-scale skirmish in a world where the Crusades tore a hole into hell. Atmospheric, narrative, unforgettable.",
   },
 };
+
+export const GAME_SYSTEMS: Record<GameSystemKey, GameSystem> =
+  Object.fromEntries(
+    Object.entries(RAW_GAME_SYSTEMS).map(([key, system]) => [
+      key,
+      isGameKey(key)
+        ? {
+            ...system,
+            universeKey: GAMES[key].universeKey,
+            realmKey: GAMES[key].realmKey,
+          }
+        : system,
+    ])
+  ) as Record<GameSystemKey, GameSystem>;
 
 export const GAME_SYSTEM_LIST: GameSystem[] = GAME_SYSTEM_KEYS.map(
   (key) => GAME_SYSTEMS[key]

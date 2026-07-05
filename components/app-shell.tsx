@@ -12,6 +12,7 @@ import {
   LexiconMark,
 } from "@/components/icons";
 import ThemeSelector from "@/components/theme-selector";
+import RealmSwitcher from "@/components/realm-switcher";
 
 const shellContainerClass =
   "mx-auto w-full max-w-3xl px-4 md:max-w-5xl md:px-6 xl:max-w-7xl xl:px-8";
@@ -67,6 +68,7 @@ export default function AppShell({
           </nav>
 
           <div className="flex items-center gap-2">
+            <RealmSwitcher />
             <ThemeSelector />
             <Link
               href="/profile"
