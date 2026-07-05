@@ -85,7 +85,7 @@ export default function LandingPage() {
         {/* Two shareable front doors, side by side. Find Your World is the
             optional travel-guide stop; Find Your Banner beside it is the
             skip — so no separate skip control is needed. */}
-        <div className="mt-10 grid w-full max-w-2xl gap-4 sm:grid-cols-2">
+        <div className="mt-10 grid w-full max-w-3xl gap-4 sm:grid-cols-2">
           {/* Find Your World — recommend game systems first */}
           <Link
             href="/chronicles/find-your-world"
