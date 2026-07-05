@@ -90,6 +90,28 @@ export function venueTypeLabel(value: string): string {
   return VENUE_TYPES.find((t) => t.value === value)?.label ?? value;
 }
 
+const DISCORD_INVITE_HOSTS = new Set(["discord.gg", "discord.com", "discordapp.com"]);
+
+/**
+ * Accepts discord.gg/<code>, discord.com/invite/<code>, and
+ * discordapp.com/invite/<code> (protocol optional, defaults to https).
+ */
+export function isDiscordInviteUrl(value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  let parsed: URL;
+  try {
+    parsed = new URL(/^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return false;
+  const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+  if (!DISCORD_INVITE_HOSTS.has(host)) return false;
+  if (host === "discord.gg") return parsed.pathname.replace(/\/+$/, "").length > 1;
+  return /^\/invite\/[^/]+/i.test(parsed.pathname);
+}
+
 /**
  * v1 locality matching: token overlap between a profile's home_locations
  * and a venue's region — "Brooklyn, NY 11201" matches a venue in
