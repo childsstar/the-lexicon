@@ -301,8 +301,9 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
         const maplibregl = await loadMapLibre();
         if (cancelled || !mapContainerRef.current) return;
 
+        const container = mapContainerRef.current;
         const map = new maplibregl.Map({
-          container: mapContainerRef.current,
+          container,
           style: styleUrl,
           center: [-98.5795, 39.8283],
           zoom: 3,
@@ -315,6 +316,11 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
           console.error("Venue MapLibre error", event);
         };
         map.on("error", handleMapError);
+        const resizeWhenLaidOut = () => {
+          if (cancelled) return;
+          map.resize();
+        };
+        requestAnimationFrame(() => requestAnimationFrame(resizeWhenLaidOut));
         map.once("load", () => {
           if (cancelled) return;
           map.resize();
@@ -378,7 +384,7 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
 
   return (
     <section className="venue-map-shell min-h-[min(72vh,42rem)] lg:min-h-[calc(100vh-18rem)]">
-      <div ref={mapContainerRef} className="venue-map-canvas absolute inset-0 z-0" aria-label="Map of venues" />
+      <div ref={mapContainerRef} className="venue-map-canvas" aria-label="Map of venues" role="img" />
       <div className="venue-map-overlays pointer-events-none absolute inset-0 z-10">
         <div className="absolute left-4 top-4 rounded-full border border-gold-600/50 bg-background/85 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300 shadow-lg">
           {mappableVenues.length} mapped

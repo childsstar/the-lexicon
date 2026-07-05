@@ -389,24 +389,15 @@ select.field {
 
 .venue-map-canvas {
   background: transparent;
+  inset: 0;
+  min-height: inherit;
   overflow: hidden;
   position: absolute;
   z-index: 0;
 }
 
-.venue-map-canvas .maplibregl-map,
-.venue-map-canvas .maplibregl-canvas-container,
-.venue-map-canvas .maplibregl-canvas {
-  height: 100% !important;
-  inset: 0;
-  position: absolute;
-  width: 100% !important;
-}
-
-.venue-map-canvas .maplibregl-map,
-.venue-map-canvas .maplibregl-canvas-container,
-.venue-map-canvas .maplibregl-canvas {
-  z-index: 0;
+.venue-map-overlays {
+  z-index: 10;
 }
 
 .venue-map-canvas .maplibregl-canvas {
