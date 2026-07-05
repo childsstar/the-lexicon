@@ -413,3 +413,11 @@ select.field {
 .maplibregl-ctrl-attrib a {
   color: hsl(13, 20%, 36%);
 }
+.venue-user-location-marker {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  border: 2px solid var(--background);
+  background: rgb(125 211 252);
+  box-shadow: 0 0 0 6px rgb(125 211 252 / 18%), 0 0 18px rgb(125 211 252 / 55%);
+}

@@ -395,7 +395,7 @@
     },
     {
         "name": "Warhammer - 8th Street",
-        "venue_type": "game_store",
+        "venue_type": "warhammer_store",
         "formatted_address": "55 E 8th St, New York, NY 10003, US",
         "city": "New York",
         "region_code": "NY",
@@ -426,7 +426,7 @@
     },
     {
         "name": "Macon Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "361 Lewis Ave, Brooklyn, NY 11233, US",
         "city": "Brooklyn",
         "region_code": "NY",
@@ -453,7 +453,7 @@
     },
     {
         "name": "McKinley Park Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "6802 Fort Hamilton Pkwy, Brooklyn, NY 11219, US",
         "city": "Brooklyn",
         "region_code": "NY",
@@ -480,7 +480,7 @@
     },
     {
         "name": "New Utrecht Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "1743 86th St, Brooklyn, NY 11214, US",
         "city": "Brooklyn",
         "region_code": "NY",
@@ -507,7 +507,7 @@
     },
     {
         "name": "Windsor Terrace Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "160 E 5th St, Brooklyn, NY 11218, US",
         "city": "Brooklyn",
         "region_code": "NY",
@@ -534,7 +534,7 @@
     },
     {
         "name": "Brooklyn Public Library - Central Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "10 Grand Army Plaza, Brooklyn, NY 11238, US",
         "city": "Brooklyn",
         "region_code": "NY",
@@ -561,7 +561,7 @@
     },
     {
         "name": "Stavros Niarchos Foundation Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "455 5th Ave, New York, NY 10016, US",
         "city": "New York",
         "region_code": "NY",
@@ -589,7 +589,7 @@
     },
     {
         "name": "Riverside Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "127 Amsterdam Ave, New York, NY 10023, US",
         "city": "New York",
         "region_code": "NY",
@@ -619,7 +619,7 @@
     },
     {
         "name": "Spuyten Duyvil Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "650 W 235th St, Bronx, NY 10463, US",
         "city": "Bronx",
         "region_code": "NY",
@@ -646,7 +646,7 @@
     },
     {
         "name": "Mott Haven Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "321 E 140th St, Bronx, NY 10454, US",
         "city": "Bronx",
         "region_code": "NY",
@@ -673,7 +673,7 @@
     },
     {
         "name": "Tompkins Square Library",
-        "venue_type": "event_space",
+        "venue_type": "library",
         "formatted_address": "331 E 10th St, New York, NY 10009, US",
         "city": "New York",
         "region_code": "NY",
@@ -704,7 +704,7 @@
     },
     {
         "name": "Whole Foods Market Tribeca Community Seating",
-        "venue_type": "event_space",
+        "venue_type": "community_gathering_space",
         "formatted_address": "270 Greenwich St, New York, NY 10007, US",
         "city": "New York",
         "region_code": "NY",

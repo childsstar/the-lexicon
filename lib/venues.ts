@@ -73,10 +73,20 @@ export type VenueCanonicalSource =
   | (string & {});
 
 export const VENUE_TYPES = [
-  { value: "game_store", label: "Game store" },
-  { value: "club", label: "Club" },
-  { value: "event_space", label: "Event space" },
-  { value: "private", label: "Private table" },
+  { value: "game_store", label: "Game Shop" },
+  { value: "warhammer_store", label: "Warhammer Store" },
+  { value: "board_game_cafe", label: "Board Game Café" },
+  { value: "community_gathering_space", label: "Community Gathering Space" },
+  { value: "library", label: "Library" },
+  { value: "cafe_restaurant", label: "Café / Restaurant" },
+  { value: "brewery_pub", label: "Brewery / Pub" },
+  { value: "event_space", label: "Event Space" },
+  { value: "convention_center", label: "Convention Center" },
+  { value: "community_center", label: "Community Center" },
+  { value: "club", label: "Club / Private Venue" },
+  { value: "private", label: "Private Table" },
+  { value: "hobby_maker_space", label: "Hobby / Maker Space" },
+  { value: "other", label: "Other" },
 ] as const;
 
 export const VENUE_CATEGORIES = [
@@ -86,8 +96,30 @@ export const VENUE_CATEGORIES = [
   { value: "community_space", label: "Community space" },
 ] as const;
 
-export function venueTypeLabel(value: string): string {
-  return VENUE_TYPES.find((t) => t.value === value)?.label ?? value;
+export function venueTypeLabel(value: string | null | undefined): string {
+  if (!value) return "Uncharted Venue";
+  return VENUE_TYPES.find((t) => t.value === value)?.label ?? value.replaceAll("_", " ");
+}
+
+export type Coordinates = { latitude: number; longitude: number };
+
+export function distanceInMiles(a: Coordinates, b: Coordinates): number {
+  const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+  const earthRadiusMiles = 3958.8;
+  const dLat = toRadians(b.latitude - a.latitude);
+  const dLng = toRadians(b.longitude - a.longitude);
+  const lat1 = toRadians(a.latitude);
+  const lat2 = toRadians(b.latitude);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * earthRadiusMiles * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
+export function formatDistanceMiles(miles: number): string {
+  if (miles < 0.1) return "<0.1 mi";
+  if (miles < 10) return `${miles.toFixed(1)} mi`;
+  return `${Math.round(miles)} mi`;
 }
 
 const DISCORD_INVITE_HOSTS = new Set(["discord.gg", "discord.com", "discordapp.com"]);
