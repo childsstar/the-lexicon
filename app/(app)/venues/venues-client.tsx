@@ -17,6 +17,10 @@ import {
   type Coordinates,
   type Venue,
 } from "@/lib/venues";
+import { venueContextRelevance } from "@/lib/active-context-matching";
+import { useActiveUniverse } from "@/components/active-universe-provider";
+import { GAMES } from "@/lib/games";
+import { REALMS } from "@/lib/realms";
 import { MapPinIcon, PlusIcon, ChevronRightIcon } from "@/components/icons";
 
 type ViewMode = "list" | "map" | "both";
@@ -431,6 +435,8 @@ function VenuesMap({ venues, selectedVenue, userLocation, onSelect }: { venues: 
 
 export default function VenuesClient() {
   const { profile } = useAuth();
+  const { realmKey: activeRealmKey, gameKey: activeGameKey } =
+    useActiveUniverse();
   const [venues, setVenues] = useState<Venue[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
@@ -467,8 +473,27 @@ export default function VenuesClient() {
     if (!userLocation) return filteredVenues;
     return [...filteredVenues].sort((a, b) => (venueDistance(a) ?? Number.POSITIVE_INFINITY) - (venueDistance(b) ?? Number.POSITIVE_INFINITY));
   }, [filteredVenues, userLocation]);
-  const nearby = sortedFilteredVenues.filter((v) => userLocation ? venueDistance(v) !== undefined : venueIsNearby(v, tokens));
-  const elsewhere = sortedFilteredVenues.filter((v) => userLocation ? venueDistance(v) === undefined : !venueIsNearby(v, tokens));
+  // Prefer (not hide) venues relevant to the active realm/game: a stable
+  // sort on top of the existing distance ordering, so within "equally
+  // relevant" venues nothing about the distance/nearby grouping changes.
+  // See lib/active-context-matching.ts for the centralized matching logic.
+  const activeContext = { realmKey: activeRealmKey, gameKey: activeGameKey };
+  const contextSortedVenues = useMemo(() => {
+    if (!activeContext.realmKey && !activeContext.gameKey) return sortedFilteredVenues;
+    return [...sortedFilteredVenues].sort(
+      (a, b) => venueContextRelevance(b, activeContext) - venueContextRelevance(a, activeContext)
+    );
+  }, [sortedFilteredVenues, activeContext.realmKey, activeContext.gameKey]);
+  const hasExplicitContextMatch = filteredVenues.some(
+    (v) => venueContextRelevance(v, activeContext) === 2
+  );
+  const activeContextLabel = activeContext.gameKey
+    ? GAMES[activeContext.gameKey].name
+    : activeContext.realmKey
+      ? REALMS[activeContext.realmKey].name
+      : null;
+  const nearby = contextSortedVenues.filter((v) => userLocation ? venueDistance(v) !== undefined : venueIsNearby(v, tokens));
+  const elsewhere = contextSortedVenues.filter((v) => userLocation ? venueDistance(v) === undefined : !venueIsNearby(v, tokens));
   const selectedVenue = filteredVenues.find((v) => v.id === selectedVenueId) ?? null;
   const showList = viewMode === "list" || viewMode === "both";
   const showMap = viewMode === "map" || viewMode === "both";
@@ -605,6 +630,22 @@ export default function VenuesClient() {
             </div>
             {locationMessage && <p className="text-xs text-text-subtle">{locationMessage}</p>}
           </div>
+
+          {activeContextLabel && filteredVenues.length > 0 && (
+            <p className="mb-5 text-xs text-text-subtle">
+              {hasExplicitContextMatch ? (
+                <>
+                  Prioritizing venues that support{" "}
+                  <span className="text-gold-400">{activeContextLabel}</span>.
+                </>
+              ) : (
+                <>
+                  No {activeContextLabel} venues have been mapped yet —
+                  showing all Warhammer venues instead.
+                </>
+              )}
+            </p>
+          )}
 
           <div className="mb-5 inline-flex rounded-lg border border-border bg-surface p-1">
             {(["list", "map", "both"] as const).map((mode) => (

@@ -4,6 +4,7 @@ import {
   type GameSystem,
   type GameSystemKey,
 } from "./game-systems";
+import type { RealmKey } from "./realms";
 import { accumulateScores } from "./quiz-engine";
 
 // Find Your World — the optional stop before Find Your Banner.
@@ -352,13 +353,31 @@ export const EMPTY_SYSTEM_SCORES: SystemScores = Object.fromEntries(
   GAME_SYSTEM_KEYS.map((key) => [key, 0])
 ) as SystemScores;
 
-export function scoreWorldAnswers(answers: number[]): SystemScores {
-  return accumulateScores(
+/** A flat tie-breaking nudge, not a filter — the active realm never
+ * removes or blocks a system from ranking, it only slightly favors systems
+ * that already belong to it. See "quiz entry behavior" in
+ * docs/universe-realm-game-audit.md. */
+const REALM_SOFT_WEIGHT_BONUS = 1;
+
+export function scoreWorldAnswers(
+  answers: number[],
+  options?: { preferredRealmKey?: RealmKey | null }
+): SystemScores {
+  const base = accumulateScores(
     FIND_YOUR_WORLD.questions.map(
       (question, i) => question.options[answers[i]]?.systems
     ),
     EMPTY_SYSTEM_SCORES
   );
+  const preferredRealmKey = options?.preferredRealmKey;
+  if (!preferredRealmKey) return base;
+  const boosted = { ...base };
+  for (const key of GAME_SYSTEM_KEYS) {
+    if (GAME_SYSTEMS[key].realmKey === preferredRealmKey) {
+      boosted[key] += REALM_SOFT_WEIGHT_BONUS;
+    }
+  }
+  return boosted;
 }
 
 export type RankedGameSystem = {
@@ -408,8 +427,11 @@ export type WorldRecommendation = {
   recommendedKeys: GameSystemKey[];
 };
 
-export function recommendWorlds(answers: number[]): WorldRecommendation {
-  const ranked = rankGameSystems(scoreWorldAnswers(answers));
+export function recommendWorlds(
+  answers: number[],
+  options?: { preferredRealmKey?: RealmKey | null }
+): WorldRecommendation {
+  const ranked = rankGameSystems(scoreWorldAnswers(answers, options));
   const [primary, ...rest] = ranked;
   const alsoConsider = rest.slice(0, 3).map((r) => r.system);
   return {

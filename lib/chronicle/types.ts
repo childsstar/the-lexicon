@@ -2,6 +2,10 @@ import type { GameSystemKey } from "../game-systems";
 import { GAMES, isGameKey } from "../games";
 import type { RealmKey } from "../realms";
 import type { UniverseKey } from "../universes";
+import {
+  matchesActiveUniverseContext,
+  type ActiveContext,
+} from "../active-context-matching";
 
 // The Chronicle engine — shared types.
 //
@@ -102,6 +106,42 @@ export function bannerHierarchy(
   if (!isGameKey(banner.gameSystemKey)) return undefined;
   const game = GAMES[banner.gameSystemKey];
   return { universeKey: game.universeKey, realmKey: game.realmKey };
+}
+
+export type BannerContextFilterResult = {
+  banners: Banner[];
+  /** True when no banner matched the active realm/game and the full list
+   * was returned instead — the Hall of Banners and Find Your Banner should
+   * surface this (see docs/universe-realm-game-audit.md) rather than
+   * silently showing an unfiltered list with no explanation. */
+  fellBack: boolean;
+};
+
+/** The canonical Hall of Banners / Find Your Banner filter: scopes banners
+ * to the active realm/game via the shared matching layer
+ * (lib/active-context-matching.ts), gracefully falling back to the full
+ * list — never an empty page — when nothing has been mapped there yet. */
+export function filterBannersForActiveContext(
+  banners: Banner[],
+  active: ActiveContext
+): BannerContextFilterResult {
+  if (!active.realmKey && !active.gameKey) {
+    return { banners, fellBack: false }; // "All Warhammer" — no filter
+  }
+  const matched = banners.filter((banner) =>
+    matchesActiveUniverseContext(
+      {
+        gameKey: isGameKey(banner.gameSystemKey)
+          ? banner.gameSystemKey
+          : null,
+      },
+      active,
+      { onUnknown: false }
+    )
+  );
+  return matched.length > 0
+    ? { banners: matched, fellBack: false }
+    : { banners, fellBack: true };
 }
 
 /** The generated result — the shape a future LLM call must also return. */

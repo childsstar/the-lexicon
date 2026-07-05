@@ -12,6 +12,9 @@ import {
   GAME_SYSTEMS_PARAM,
   encodeGameSystemKeys,
 } from "@/lib/game-systems";
+import { isGameKey } from "@/lib/games";
+import { REALMS } from "@/lib/realms";
+import { useActiveUniverse } from "@/components/active-universe-provider";
 import { decodeAnswers, encodeAnswers } from "@/lib/quiz-engine";
 import { Frame, SectionRule } from "@/components/chronicle/frame";
 import { LexiconMark } from "@/components/icons";
@@ -32,6 +35,7 @@ const quiz = FIND_YOUR_WORLD;
 export default function WorldExperience() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { realmKey: activeRealmKey, setGame } = useActiveUniverse();
 
   const [stage, setStage] = useState<Stage>("intro");
   const [answers, setAnswers] = useState<number[]>([]);
@@ -42,13 +46,29 @@ export default function WorldExperience() {
 
   const question = quiz.questions[answers.length];
 
+  // The active realm is a soft weighting signal here — it nudges ranking
+  // toward systems already in that realm without ever excluding a
+  // cross-realm (or non-Warhammer) recommendation. See lib/world-quiz.ts.
   const recommendation: WorldRecommendation | null = useMemo(
     () =>
       answers.length === quiz.questions.length
-        ? recommendWorlds(answers)
+        ? recommendWorlds(answers, { preferredRealmKey: activeRealmKey })
         : null,
-    [answers]
+    [answers, activeRealmKey]
   );
+
+  // A finished quiz is a real decision — update the active realm/game to
+  // match the recommendation, same as Find Your Banner
+  // (chronicle-experience.tsx). If the primary world isn't mapped to a
+  // canonical game yet (most of the hobby isn't, by MVP design — see the
+  // audit doc), the active context is left untouched, never silently reset.
+  useEffect(() => {
+    if (stage !== "results" || !recommendation) return;
+    if (isGameKey(recommendation.primary.key)) {
+      setGame(recommendation.primary.key);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage, recommendation]);
 
   // A shared/revisited link (?a=…) skips straight to a short ceremony.
   useEffect(() => {
@@ -142,6 +162,15 @@ export default function WorldExperience() {
           <p className="mt-8 max-w-sm text-sm leading-relaxed text-text-muted">
             {quiz.invocation}
           </p>
+          {activeRealmKey && (
+            <p className="mt-4 max-w-sm text-xs leading-relaxed text-text-subtle">
+              Currently exploring{" "}
+              <span className="text-gold-400">
+                {REALMS[activeRealmKey].name}
+              </span>{" "}
+              — your answers still range across every world.
+            </p>
+          )}
           <button
             onClick={() => setStage("questions")}
             className="mt-10 w-full max-w-xs rounded-md bg-gold-500 px-8 py-4 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400"

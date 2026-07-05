@@ -8,6 +8,7 @@ import type {
   ChronicleQuiz,
   ChronicleResult,
 } from "@/lib/chronicle/types";
+import { filterBannersForActiveContext } from "@/lib/chronicle/types";
 import {
   decodeAnswers,
   encodeAnswers,
@@ -22,6 +23,9 @@ import {
   filterByGameSystems,
   parseGameSystemKeys,
 } from "@/lib/game-systems";
+import { GAMES, isGameKey } from "@/lib/games";
+import { REALMS } from "@/lib/realms";
+import { useActiveUniverse } from "@/components/active-universe-provider";
 import BannerArt from "@/components/chronicle/banner-art";
 import { Frame, SectionRule } from "@/components/chronicle/frame";
 import { LexiconMark } from "@/components/icons";
@@ -39,6 +43,11 @@ export default function ChronicleExperience({
   const { quiz, banners } = entry;
   const router = useRouter();
   const searchParams = useSearchParams();
+  const {
+    realmKey: activeRealmKey,
+    gameKey: activeGameKey,
+    setGame,
+  } = useActiveUniverse();
 
   // Optional Find Your World hand-off (?systems=age-of-sigmar,warcry,…):
   // score only banners from the preferred game systems. With no param — or
@@ -48,10 +57,30 @@ export default function ChronicleExperience({
     () => parseGameSystemKeys(searchParams.get(GAME_SYSTEMS_PARAM)),
     [searchParams]
   );
-  const activeBanners = useMemo(
-    () => filterByGameSystems(banners, preferredSystems),
-    [banners, preferredSystems]
+  const hasQueryHandoff = preferredSystems.length > 0;
+
+  // With no explicit hand-off, fall back to the active realm/game — the
+  // Hall of Banners' lens applies here too, gracefully, via the same
+  // canonical matcher (lib/active-context-matching.ts).
+  const contextFilter = useMemo(
+    () =>
+      filterBannersForActiveContext(banners, {
+        realmKey: activeRealmKey,
+        gameKey: activeGameKey,
+      }),
+    [banners, activeRealmKey, activeGameKey]
   );
+  const usingContextFilter =
+    !hasQueryHandoff && (activeRealmKey !== null || activeGameKey !== null);
+  const contextLabel = activeGameKey
+    ? GAMES[activeGameKey].name
+    : activeRealmKey
+      ? REALMS[activeRealmKey].name
+      : null;
+
+  const activeBanners = hasQueryHandoff
+    ? filterByGameSystems(banners, preferredSystems)
+    : contextFilter.banners;
   const isFiltered = activeBanners.length < banners.length;
 
   // Keep the hand-off in every URL this experience writes, so shares,
@@ -126,6 +155,21 @@ export default function ChronicleExperience({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // A finished chronicle is a real decision, not a filter — update the
+  // active realm/game to match the banner that answered, same as Find Your
+  // World (world-experience.tsx). Exploring alternates afterward doesn't
+  // re-trigger this; only the initial reveal counts as "the verdict." If
+  // the top banner isn't mapped to a canonical game yet, the active
+  // context is left untouched (never a silent reset).
+  useEffect(() => {
+    if (stage !== "results") return;
+    const primary = ranked[0];
+    if (primary && isGameKey(primary.gameSystemKey)) {
+      setGame(primary.gameSystemKey);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage]);
 
   function beginCeremony(finalAnswers: number[]) {
     setStage("ceremony");
@@ -224,7 +268,7 @@ export default function ChronicleExperience({
           <p className="mt-8 max-w-sm text-sm leading-relaxed text-text-muted">
             {quiz.invocation}
           </p>
-          {isFiltered && (
+          {hasQueryHandoff && isFiltered && (
             <p className="mt-4 max-w-sm text-xs leading-relaxed text-text-subtle">
               Your world guides this reading — banners drawn from{" "}
               <span className="text-gold-400">
@@ -239,6 +283,22 @@ export default function ChronicleExperience({
               >
                 Read from every banner instead
               </Link>
+            </p>
+          )}
+          {usingContextFilter && contextLabel && (
+            <p className="mt-4 max-w-sm text-xs leading-relaxed text-text-subtle">
+              {contextFilter.fellBack ? (
+                <>
+                  No {contextLabel} banners have been mapped yet — reading
+                  from every banner instead.
+                </>
+              ) : (
+                <>
+                  Reading from{" "}
+                  <span className="text-gold-400">{contextLabel}</span> —
+                  your active realm.
+                </>
+              )}
             </p>
           )}
           <button

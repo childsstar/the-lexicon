@@ -13,6 +13,12 @@ export type Profile = {
   home_venue_id: string | null;
   discord_username: string | null;
   avatar_url: string | null;
+  /** Snapshot of ActiveUniverseState at last save — see
+   * components/active-universe-provider.tsx. localStorage remains the
+   * live source of truth; these exist for a future cross-device sync. */
+  preferred_universe_key: string | null;
+  preferred_realm_key: string | null;
+  preferred_game_key: string | null;
   profile_completed_at: string | null;
   created_at: string;
   updated_at: string;

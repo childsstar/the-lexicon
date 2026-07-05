@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { BANNERS } from "@/lib/chronicle/banners";
+import HallOfBannersFilter from "@/components/chronicle/hall-of-banners-filter";
 import BannerArt from "@/components/chronicle/banner-art";
 import { ArrowLeftIcon, LexiconMark } from "@/components/icons";
 
@@ -38,7 +39,7 @@ export default function HallOfBannersPage() {
         <div className="gilded-rule mx-auto mt-5 max-w-xs" />
       </div>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <HallOfBannersFilter banners={BANNERS}>
         {BANNERS.map((banner, i) => {
           const bannerArt = (
             <BannerArt
@@ -96,7 +97,7 @@ export default function HallOfBannersPage() {
             </div>
           );
         })}
-      </div>
+      </HallOfBannersFilter>
 
       <div className="mt-12 text-center">
         <p className="font-display text-xl text-text-soft">
