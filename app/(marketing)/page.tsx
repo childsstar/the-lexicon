@@ -82,52 +82,44 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        {/* Find Your World — optional travel-guide stop before Banner
-            Discovery. Skipping goes straight to Find Your Banner, exactly
-            as before. */}
-        <div className="card mt-10 w-full max-w-md border-gold-600/50 p-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">
-            ✦ New to tabletop gaming?
-          </p>
-          <p className="mt-2 font-display text-2xl font-semibold text-text">
-            Find Your World
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-text-muted">
-            Let us help you find your world before we help you find your
-            banner. Seven quick choices chart the game systems made for you.
-          </p>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/chronicles/find-your-world"
-              className="flex-1 rounded-md bg-gold-500 px-5 py-3 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400"
-            >
-              Discover My World
-            </Link>
-            <Link
-              href="/chronicles/find-your-banner"
-              className="flex-1 rounded-md border border-border-strong px-5 py-3 text-sm font-medium text-text-soft transition-colors hover:border-gold-600 hover:text-gold-300"
-            >
-              Skip
-            </Link>
-          </div>
-        </div>
+        {/* Two shareable front doors, side by side. Find Your World is the
+            optional travel-guide stop; Find Your Banner beside it is the
+            skip — so no separate skip control is needed. */}
+        <div className="mt-10 grid w-full max-w-2xl gap-4 sm:grid-cols-2">
+          {/* Find Your World — recommend game systems first */}
+          <Link
+            href="/chronicles/find-your-world"
+            className="card card-interactive flex flex-col border-gold-600/50 p-6 text-center"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">
+              ✦ New to tabletop gaming?
+            </p>
+            <p className="mt-2 font-display text-2xl font-semibold text-text">
+              Find Your World
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-text-muted">
+              Let us help you find your world before we help you find your
+              banner. Seven quick choices chart the game systems made for you.
+            </p>
+          </Link>
 
-        {/* Find Your Banner — the shareable front door */}
-        <Link
-          href="/chronicles/find-your-banner"
-          className="card card-interactive mt-4 block w-full max-w-md border-gold-600/50 p-6 text-center"
-        >
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">
-            ✦ Begin your chronicle
-          </p>
-          <p className="mt-2 font-display text-2xl font-semibold text-text">
-            Find Your Banner
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-text-muted">
-            Eight choices. One calling. Discover which banner — and which
-            game — answers. No account needed.
-          </p>
-        </Link>
+          {/* Find Your Banner — the shareable front door */}
+          <Link
+            href="/chronicles/find-your-banner"
+            className="card card-interactive flex flex-col border-gold-600/50 p-6 text-center"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-400">
+              ✦ Begin your chronicle
+            </p>
+            <p className="mt-2 font-display text-2xl font-semibold text-text">
+              Find Your Banner
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-text-muted">
+              Eight choices. One calling. Discover which banner — and which
+              game — answers. No account needed.
+            </p>
+          </Link>
+        </div>
       </section>
 
       {/* Features */}
