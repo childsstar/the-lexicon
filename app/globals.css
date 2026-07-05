@@ -378,6 +378,37 @@ select.field {
   transform: scale(1.18);
 }
 
+.venue-map-shell {
+  overflow: hidden;
+  position: relative;
+}
+
+.venue-map-canvas {
+  background: #fff8eb;
+  overflow: hidden;
+  position: absolute;
+  z-index: 0;
+}
+
+.venue-map-canvas .maplibregl-map,
+.venue-map-canvas .maplibregl-canvas-container,
+.venue-map-canvas .maplibregl-canvas {
+  height: 100% !important;
+  inset: 0;
+  position: absolute;
+  width: 100% !important;
+}
+
+.venue-map-canvas .maplibregl-canvas {
+  display: block;
+  z-index: 0;
+}
+
+.venue-map-canvas .maplibregl-control-container,
+.venue-map-canvas .maplibregl-marker {
+  z-index: 10;
+}
+
 .maplibregl-ctrl-attrib,
 .maplibregl-ctrl-attrib a {
   color: hsl(13, 20%, 36%);
