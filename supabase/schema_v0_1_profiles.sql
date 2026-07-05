@@ -60,6 +60,12 @@ create table if not exists public.profiles (
   -- dashboard; no credentials belong in this repo).
   discord_username       text,
   avatar_url             text,
+  -- Snapshot of ActiveUniverseState at last profile save (see
+  -- supabase/migrations/20260705000000_add_active_context_to_profiles.sql
+  -- for why there's no fixed-list check constraint here).
+  preferred_universe_key text,
+  preferred_realm_key    text,
+  preferred_game_key     text,
   profile_completed_at   timestamptz,
   created_at             timestamptz not null default now(),
   updated_at             timestamptz not null default now()

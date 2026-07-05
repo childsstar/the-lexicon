@@ -37,12 +37,31 @@ try {
 const withUrl = renderToStaticMarkup(
   DiscordCta({ url: "https://discord.gg/exampleclub" })
 );
-assert.match(withUrl, /Join Discord/);
+assert.match(withUrl, /Join Discord</);
 assert.match(withUrl, /href="https:\/\/discord\.gg\/exampleclub"/);
 assert.match(withUrl, /target="_blank"/);
 
 for (const blank of [null, undefined, "", "   "]) {
   assert.equal(renderToStaticMarkup(DiscordCta({ url: blank })), "", `expected no CTA for ${JSON.stringify(blank)}`);
+}
+
+// A known, unambiguous realm personalizes the CTA copy (Section 4 of the
+// universe/realm/game wiring PR); no label falls back to the generic copy.
+const withCommunityLabel = renderToStaticMarkup(
+  DiscordCta({
+    url: "https://discord.gg/exampleclub",
+    communityLabel: "Warhammer 40,000",
+  })
+);
+assert.match(withCommunityLabel, /Join this venue/);
+assert.match(withCommunityLabel, /Warhammer 40,000 community/);
+assert.doesNotMatch(withCommunityLabel, /Join Discord</);
+
+for (const blank of [null, undefined, "", "   "]) {
+  const withBlankLabel = renderToStaticMarkup(
+    DiscordCta({ url: "https://discord.gg/exampleclub", communityLabel: blank })
+  );
+  assert.match(withBlankLabel, /Join Discord</, `expected generic copy for label ${JSON.stringify(blank)}`);
 }
 
 console.log("discord CTA render validation passed");

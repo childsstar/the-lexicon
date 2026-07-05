@@ -9,6 +9,7 @@ import {
   KNOWN_SYSTEM_NAMES,
   KNOWN_FACTION_NAMES,
 } from "@/lib/game-data";
+import { useActiveUniverse } from "@/components/active-universe-provider";
 import {
   AVAILABILITY_OPTIONS,
   EXPERIENCE_LEVELS,
@@ -71,6 +72,7 @@ export default function ProfileForm({
   onSaved: () => void;
   importedDefaults?: ProfileFormDefaults;
 }) {
+  const { universeKey, realmKey, gameKey } = useActiveUniverse();
   const [username, setUsername] = useState(initial?.username ?? "");
   const [displayName, setDisplayName] = useState(
     initial?.display_name ?? importedDefaults?.display_name ?? ""
@@ -186,6 +188,13 @@ export default function ProfileForm({
         discord_username: discordUsername.trim() || null,
         avatar_url: avatarUrl,
         bio: bio.trim() || null,
+        // Snapshot of the active realm/game at save time — see
+        // components/active-universe-provider.tsx. localStorage stays the
+        // live source of truth; this just prepares the profile for a
+        // future cross-device sync.
+        preferred_universe_key: universeKey,
+        preferred_realm_key: realmKey,
+        preferred_game_key: gameKey,
         profile_completed_at:
           initial?.profile_completed_at ?? new Date().toISOString(),
       });

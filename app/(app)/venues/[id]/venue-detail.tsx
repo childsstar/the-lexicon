@@ -5,11 +5,16 @@ import PageHeader from "@/components/page-header";
 import DiscordCta from "@/components/discord-cta";
 import { getSupabaseClient } from "@/lib/supabase";
 import { venueTypeLabel, type Venue } from "@/lib/venues";
+import { venuePreferredRealmKey } from "@/lib/active-context-matching";
+import { REALMS } from "@/lib/realms";
+import { useActiveUniverse } from "@/components/active-universe-provider";
 import { MapPinIcon, CalendarIcon, UsersIcon } from "@/components/icons";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export default function VenueDetail({ id }: { id: string }) {
+  const { realmKey: activeRealmKey, gameKey: activeGameKey } =
+    useActiveUniverse();
   const [venue, setVenue] = useState<Venue | null>(null);
   const [state, setState] = useState<"loading" | "found" | "missing">(
     "loading"
@@ -34,6 +39,13 @@ export default function VenueDetail({ id }: { id: string }) {
         }
       });
   }, [id]);
+
+  const discordCommunityRealmKey = venue
+    ? venuePreferredRealmKey(venue, {
+        realmKey: activeRealmKey,
+        gameKey: activeGameKey,
+      })
+    : undefined;
 
   return (
     <div>
@@ -98,7 +110,14 @@ export default function VenueDetail({ id }: { id: string }) {
           </div>
 
           <div className="space-y-3">
-            <DiscordCta url={venue.discord_invite_url} />
+            <DiscordCta
+              url={venue.discord_invite_url}
+              communityLabel={
+                discordCommunityRealmKey
+                  ? REALMS[discordCommunityRealmKey].name
+                  : undefined
+              }
+            />
             <div className="card flex items-start gap-4 p-5">
               <CalendarIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-500" />
               <div>
