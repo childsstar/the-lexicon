@@ -7,10 +7,14 @@ import EmptyState from "@/components/empty-state";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
 import {
+  distanceInMiles,
+  formatDistanceMiles,
   friendlyVenueError,
   locationTokens,
   venueIsNearby,
   venueTypeLabel,
+  VENUE_TYPES,
+  type Coordinates,
   type Venue,
 } from "@/lib/venues";
 import { MapPinIcon, PlusIcon, ChevronRightIcon } from "@/components/icons";
@@ -21,6 +25,7 @@ type VenueCardProps = {
   venue: Venue;
   nearby: boolean;
   selected: boolean;
+  distanceMiles?: number;
   onSelect: (venue: Venue) => void;
 };
 
@@ -37,7 +42,7 @@ function isMappableVenue(venue: Venue): venue is Venue & { latitude: number; lon
   );
 }
 
-function VenueCard({ venue, nearby, selected, onSelect }: VenueCardProps) {
+function VenueCard({ venue, nearby, selected, distanceMiles, onSelect }: VenueCardProps) {
   return (
     <article
       className={`card flex items-center gap-4 p-5 transition-colors ${
@@ -62,9 +67,9 @@ function VenueCard({ venue, nearby, selected, onSelect }: VenueCardProps) {
             {venue.region ? ` · ${venue.region}` : ""}
           </p>
         </div>
-        {nearby && (
+        {(nearby || typeof distanceMiles === "number") && (
           <span className="hidden shrink-0 rounded-full border border-gold-600/60 px-3 py-1 text-xs font-medium text-gold-300 sm:inline-flex">
-            Near you
+            {typeof distanceMiles === "number" ? formatDistanceMiles(distanceMiles) : "Near you"}
           </span>
         )}
       </button>
@@ -128,6 +133,8 @@ function mapTilerResourceUrl(url: string, key: string) {
   if (/([?&])key=/.test(resolvedUrl)) return resolvedUrl;
   return `${resolvedUrl}${resolvedUrl.includes("?") ? "&" : "?"}key=${encodeURIComponent(key)}`;
 }
+
+type UserLocation = Coordinates;
 
 type MapLibreModule = {
   Map: new (options: Record<string, unknown>) => MapLibreMap;
@@ -207,7 +214,7 @@ function createVenueMarkerElement(venue: Venue, selected: boolean, onSelect: (ve
   return button;
 }
 
-function FallbackVenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selectedVenue: Venue | null; onSelect: (venue: Venue) => void; }) {
+function FallbackVenuesMap({ venues, selectedVenue, userLocation, onSelect }: { venues: Venue[]; selectedVenue: Venue | null; userLocation: UserLocation | null; onSelect: (venue: Venue) => void; }) {
   const mappableVenues = venues.filter(isMappableVenue);
   const selectedMappable = selectedVenue && isMappableVenue(selectedVenue) ? selectedVenue : null;
   const bounds = useMemo(() => {
@@ -243,9 +250,9 @@ function FallbackVenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[
     );
   }
 
-  const positionFor = (venue: Venue & { latitude: number; longitude: number }) => ({
-    left: `${((venue.longitude - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * 100}%`,
-    top: `${(1 - (venue.latitude - bounds.minLat) / (bounds.maxLat - bounds.minLat)) * 100}%`,
+  const positionFor = (position: { latitude: number; longitude: number }) => ({
+    left: `${((position.longitude - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * 100}%`,
+    top: `${(1 - (position.latitude - bounds.minLat) / (bounds.maxLat - bounds.minLat)) * 100}%`,
   });
 
   return (
@@ -255,6 +262,13 @@ function FallbackVenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[
         <div className="absolute left-4 top-4 z-20 rounded-full border border-gold-600/50 bg-background/80 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-300">
           {mappableVenues.length} mapped · add MapTiler key for basemap
         </div>
+        {userLocation && (
+          <div
+            className="absolute z-20 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-background bg-sky-300 shadow-[0_0_0_6px_rgba(125,211,252,0.18)]"
+            style={positionFor(userLocation)}
+            aria-label="Your location"
+          />
+        )}
         {mappableVenues.map((venue) => {
           const selected = venue.id === selectedVenue?.id;
           return (
@@ -280,10 +294,11 @@ function FallbackVenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[
   );
 }
 
-function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selectedVenue: Venue | null; onSelect: (venue: Venue) => void; }) {
+function VenuesMap({ venues, selectedVenue, userLocation, onSelect }: { venues: Venue[]; selectedVenue: Venue | null; userLocation: UserLocation | null; onSelect: (venue: Venue) => void; }) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<MapLibreMarker[]>([]);
+  const userMarkerRef = useRef<MapLibreMarker | null>(null);
   const [mapError, setMapError] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const mappableVenues = useMemo(() => venues.filter(isMappableVenue), [venues]);
@@ -343,6 +358,8 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
       resizeObserver.disconnect();
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
+      userMarkerRef.current?.remove();
+      userMarkerRef.current = null;
       mapRef.current?.remove();
       mapRef.current = null;
       setMapReady(false);
@@ -374,12 +391,24 @@ function VenuesMap({ venues, selectedVenue, onSelect }: { venues: Venue[]; selec
 
   useEffect(() => {
     const map = mapRef.current;
+    if (!mapReady || !map || !userLocation || !window.maplibregl) return;
+    userMarkerRef.current?.remove();
+    const element = document.createElement("div");
+    element.className = "venue-user-location-marker";
+    userMarkerRef.current = new window.maplibregl.Marker({ element, anchor: "center" })
+      .setLngLat([userLocation.longitude, userLocation.latitude])
+      .addTo(map);
+    map.flyTo({ center: [userLocation.longitude, userLocation.latitude], zoom: 12, duration: 900, essential: true });
+  }, [mapReady, userLocation]);
+
+  useEffect(() => {
+    const map = mapRef.current;
     if (!map || !selectedVenue || !isMappableVenue(selectedVenue)) return;
     map.flyTo({ center: [selectedVenue.longitude, selectedVenue.latitude], zoom: 12, duration: 700, essential: true });
   }, [selectedVenue]);
 
   if (!maptilerKey || mapError || mappableVenues.length === 0) {
-    return <FallbackVenuesMap venues={venues} selectedVenue={selectedVenue} onSelect={onSelect} />;
+    return <FallbackVenuesMap venues={venues} selectedVenue={selectedVenue} userLocation={userLocation} onSelect={onSelect} />;
   }
 
   return (
@@ -406,6 +435,10 @@ export default function VenuesClient() {
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [selectedVenueId, setSelectedVenueId] = useState<string | null>(null);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [locationMessage, setLocationMessage] = useState<string | null>(null);
 
   useEffect(() => {
     getSupabaseClient()
@@ -422,11 +455,51 @@ export default function VenuesClient() {
     () => locationTokens(profile?.home_locations),
     [profile]
   );
-  const nearby = (venues ?? []).filter((v) => venueIsNearby(v, tokens));
-  const elsewhere = (venues ?? []).filter((v) => !venueIsNearby(v, tokens));
-  const selectedVenue = (venues ?? []).find((v) => v.id === selectedVenueId) ?? null;
+  const filteredVenues = useMemo(() => {
+    const source = venues ?? [];
+    return selectedTypes.length === 0
+      ? source
+      : source.filter((venue) => selectedTypes.includes(venue.venue_type));
+  }, [selectedTypes, venues]);
+  const venueDistance = (venue: Venue) =>
+    userLocation && isMappableVenue(venue) ? distanceInMiles(userLocation, venue) : undefined;
+  const sortedFilteredVenues = useMemo(() => {
+    if (!userLocation) return filteredVenues;
+    return [...filteredVenues].sort((a, b) => (venueDistance(a) ?? Number.POSITIVE_INFINITY) - (venueDistance(b) ?? Number.POSITIVE_INFINITY));
+  }, [filteredVenues, userLocation]);
+  const nearby = sortedFilteredVenues.filter((v) => userLocation ? venueDistance(v) !== undefined : venueIsNearby(v, tokens));
+  const elsewhere = sortedFilteredVenues.filter((v) => userLocation ? venueDistance(v) === undefined : !venueIsNearby(v, tokens));
+  const selectedVenue = filteredVenues.find((v) => v.id === selectedVenueId) ?? null;
   const showList = viewMode === "list" || viewMode === "both";
   const showMap = viewMode === "map" || viewMode === "both";
+
+  function toggleVenueType(type: string) {
+    setSelectedTypes((current) =>
+      current.includes(type) ? current.filter((value) => value !== type) : [...current, type]
+    );
+  }
+
+  function locateAroundMe() {
+    if (typeof window === "undefined" || !("geolocation" in navigator)) {
+      setLocationMessage("Your browser cannot share location right now. The atlas is still available.");
+      return;
+    }
+    setLocating(true);
+    setLocationMessage(null);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+        setLocationMessage("Centered the atlas on your location and sorted mapped venues by distance.");
+        setLocating(false);
+        if (viewMode === "list") setViewMode("both");
+      },
+      () => {
+        setLocationMessage("Location was not shared. You can still browse and filter the venue atlas.");
+        setLocating(false);
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+    );
+  }
 
   function handleSelectVenue(venue: Venue) {
     setSelectedVenueId(venue.id);
@@ -438,11 +511,11 @@ export default function VenuesClient() {
       {nearby.length > 0 && (
         <div className="mb-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gold-500">
-            Near your home locations
+            {userLocation ? "Nearest mapped venues" : "Near your home locations"}
           </p>
           <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0 [.venues-both_&]:lg:block [.venues-both_&]:lg:space-y-3">
             {nearby.map((v) => (
-              <VenueCard key={v.id} venue={v} nearby selected={v.id === selectedVenueId} onSelect={handleSelectVenue} />
+              <VenueCard key={v.id} venue={v} nearby selected={v.id === selectedVenueId} distanceMiles={venueDistance(v)} onSelect={handleSelectVenue} />
             ))}
           </div>
         </div>
@@ -455,7 +528,7 @@ export default function VenuesClient() {
           </p>
           <div className="space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0 [.venues-both_&]:lg:block [.venues-both_&]:lg:space-y-3">
             {elsewhere.map((v) => (
-              <VenueCard key={v.id} venue={v} nearby={false} selected={v.id === selectedVenueId} onSelect={handleSelectVenue} />
+              <VenueCard key={v.id} venue={v} nearby={false} selected={v.id === selectedVenueId} distanceMiles={venueDistance(v)} onSelect={handleSelectVenue} />
             ))}
           </div>
         </div>
@@ -503,6 +576,36 @@ export default function VenuesClient() {
 
       {venues !== null && venues.length > 0 && (
         <>
+          <div className="mb-5 space-y-4 rounded-2xl border border-border bg-surface/80 p-4 shadow-inner shadow-ink-950/20">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gold-500">Atlas filters</p>
+                <p className="mt-1 text-xs text-text-subtle">Choose the kinds of tables, halls, and gathering places you want to scout.</p>
+              </div>
+              <button
+                type="button"
+                onClick={locateAroundMe}
+                disabled={locating}
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-gold-600/60 px-3 py-2 text-sm font-semibold text-gold-300 transition-colors hover:bg-gold-500/10 disabled:cursor-wait disabled:opacity-70"
+              >
+                <MapPinIcon className="h-4 w-4" />
+                {locating ? "Finding you…" : "Locate around me"}
+              </button>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap">
+              <button type="button" onClick={() => setSelectedTypes([])} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${selectedTypes.length === 0 ? "border-gold-500 bg-gold-500 text-ink-950" : "border-border-muted text-text-muted hover:border-gold-600/60 hover:text-gold-300"}`}>All venues</button>
+              {VENUE_TYPES.map((type) => {
+                const active = selectedTypes.includes(type.value);
+                return (
+                  <button key={type.value} type="button" onClick={() => toggleVenueType(type.value)} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${active ? "border-gold-500 bg-gold-500 text-ink-950" : "border-border-muted text-text-muted hover:border-gold-600/60 hover:text-gold-300"}`}>
+                    {type.label}
+                  </button>
+                );
+              })}
+            </div>
+            {locationMessage && <p className="text-xs text-text-subtle">{locationMessage}</p>}
+          </div>
+
           <div className="mb-5 inline-flex rounded-lg border border-border bg-surface p-1">
             {(["list", "map", "both"] as const).map((mode) => (
               <button
@@ -520,10 +623,14 @@ export default function VenuesClient() {
             ))}
           </div>
 
-          <div className={viewMode === "both" ? "venues-both grid gap-6 lg:grid-cols-[minmax(360px,420px)_minmax(0,1fr)]" : ""}>
-            {showList && <div className={viewMode === "both" ? "min-w-0 lg:max-h-[calc(100vh-18rem)] lg:overflow-y-auto lg:pr-2" : ""}>{listContent}</div>}
-            {showMap && <div className={viewMode === "both" ? "min-w-0 lg:sticky lg:top-6 lg:self-start" : ""}><VenuesMap venues={venues} selectedVenue={selectedVenue} onSelect={handleSelectVenue} /></div>}
-          </div>
+          {filteredVenues.length === 0 ? (
+            <div className="card p-8 text-center text-sm text-text-muted">No venues match these filters.</div>
+          ) : (
+            <div className={viewMode === "both" ? "venues-both grid gap-6 lg:grid-cols-[minmax(360px,420px)_minmax(0,1fr)]" : ""}>
+              {showList && <div className={viewMode === "both" ? "min-w-0 lg:max-h-[calc(100vh-18rem)] lg:overflow-y-auto lg:pr-2" : ""}>{listContent}</div>}
+              {showMap && <div className={viewMode === "both" ? "min-w-0 lg:sticky lg:top-6 lg:self-start" : ""}><VenuesMap venues={filteredVenues} selectedVenue={selectedVenue} userLocation={userLocation} onSelect={handleSelectVenue} /></div>}
+            </div>
+          )}
         </>
       )}
 
