@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
 import { useAuth } from "@/components/auth-provider";
@@ -8,6 +8,7 @@ import ProfileForm, {
   type ProfileFormDefaults,
 } from "@/components/profile-form";
 import { LexiconMark } from "@/components/icons";
+import PassportOnboarding from "@/components/onboarding/passport-onboarding";
 
 type Metadata = Record<string, unknown>;
 
@@ -63,7 +64,27 @@ export default function ProfileSetupClient() {
     [user]
   );
 
+  // Locked in at mount, not recomputed from the live `profile` — saving the
+  // passport form calls refreshProfile() mid-flow (so AuthGuard sees a
+  // completed profile once onboarding finishes), which would otherwise flip
+  // this branch and yank the user out of the Traveler's Briefing step.
+  const [firstRun] = useState(() => profile === null);
+
   if (!user) return null; // AuthGuard handles the redirect.
+
+  // First-run: the full arrival → identity → discover → banner → passport
+  // sequence. Returning users completing a profile the setup flow never
+  // finished (e.g. a fresh database) get the plain form below instead — no
+  // need to replay the arrival ceremony for them.
+  if (firstRun) {
+    return (
+      <PassportOnboarding
+        userId={user.id}
+        importedDefaults={importedDefaults ?? undefined}
+        onSaved={refreshProfile}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-md">
@@ -73,7 +94,7 @@ export default function ProfileSetupClient() {
           Forge your commander identity
         </p>
         <h1 className="mt-2 font-display text-3xl font-semibold text-text">
-          {profile ? "Complete your profile" : "Who takes the field?"}
+          Complete your profile
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-text-muted">
           A username and your availability are all The Lexicon needs to open

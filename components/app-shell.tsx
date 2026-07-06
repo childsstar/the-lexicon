@@ -36,6 +36,16 @@ export default function AppShell({
 }) {
   const pathname = usePathname();
 
+  // The passport onboarding sequence (app/(app)/profile/setup) wants a
+  // full-bleed, chrome-free presentation — like the chronicle quiz
+  // experiences under (marketing) — rather than the app shell's nav and tab
+  // bar, which would undercut the "entering a world" feel and don't do
+  // anything useful before the profile exists anyway (AuthGuard bounces any
+  // other tab straight back here).
+  if (pathname === "/profile/setup") {
+    return <div className="min-h-dvh">{children}</div>;
+  }
+
   return (
     <div className="flex min-h-dvh w-full flex-col">
       {/* Top bar */}
