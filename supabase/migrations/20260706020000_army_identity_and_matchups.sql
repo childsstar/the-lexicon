@@ -66,9 +66,19 @@ create index if not exists army_matchups_creator_idx
 create index if not exists army_matchups_opponent_idx
   on public.army_matchups (opponent_user_id, created_at desc);
 
-create trigger army_matchups_set_updated_at
-  before update on public.army_matchups
-  for each row execute function public.set_updated_at();
+do $$
+begin
+  if not exists (
+    select 1 from pg_trigger
+    where tgname = 'army_matchups_set_updated_at'
+      and tgrelid = 'public.army_matchups'::regclass
+  ) then
+    create trigger army_matchups_set_updated_at
+      before update on public.army_matchups
+      for each row execute function public.set_updated_at();
+  end if;
+end;
+$$;
 
 alter table public.army_matchups enable row level security;
 
@@ -81,38 +91,67 @@ alter table public.army_matchups enable row level security;
 -- migration should move the redaction into a SECURITY DEFINER function
 -- so the guarantee holds even against direct REST/table queries.
 
-create policy "Participants can read their own matchups"
-  on public.army_matchups for select
-  to authenticated
-  using ((select auth.uid()) in (creator_user_id, opponent_user_id));
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'army_matchups'
+      and policyname = 'Participants can read their own matchups'
+  ) then
+    create policy "Participants can read their own matchups"
+      on public.army_matchups for select
+      to authenticated
+      using ((select auth.uid()) in (creator_user_id, opponent_user_id));
+  end if;
 
-create policy "Creators can start a matchup with their own army"
-  on public.army_matchups for insert
-  to authenticated
-  with check (
-    (select auth.uid()) = creator_user_id
-    and exists (
-      select 1 from public.army_lists
-      where id = creator_army_id and user_id = (select auth.uid())
-    )
-  );
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'army_matchups'
+      and policyname = 'Creators can start a matchup with their own army'
+  ) then
+    create policy "Creators can start a matchup with their own army"
+      on public.army_matchups for insert
+      to authenticated
+      with check (
+        (select auth.uid()) = creator_user_id
+        and exists (
+          select 1 from public.army_lists
+          where id = creator_army_id and user_id = (select auth.uid())
+        )
+      );
+  end if;
 
--- Updates are only ever performed through
--- app/api/matchups/[id]/lock/route.ts, which derives which side is
--- locking from the authenticated user and only ever writes that side's
--- lock timestamp + snapshot (plus the recomputed status/revealed_at).
--- The policy still restricts writes to participants as defense in depth.
-create policy "Participants can lock their own side"
-  on public.army_matchups for update
-  to authenticated
-  using ((select auth.uid()) in (creator_user_id, opponent_user_id))
-  with check ((select auth.uid()) in (creator_user_id, opponent_user_id));
+  -- Updates are only ever performed through
+  -- app/api/matchups/[id]/lock/route.ts, which derives which side is
+  -- locking from the authenticated user and only ever writes that
+  -- side's lock timestamp + snapshot (plus the recomputed
+  -- status/revealed_at). The policy still restricts writes to
+  -- participants as defense in depth.
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'army_matchups'
+      and policyname = 'Participants can lock their own side'
+  ) then
+    create policy "Participants can lock their own side"
+      on public.army_matchups for update
+      to authenticated
+      using ((select auth.uid()) in (creator_user_id, opponent_user_id))
+      with check ((select auth.uid()) in (creator_user_id, opponent_user_id));
+  end if;
 
-create policy "An invited opponent can join by user id"
-  on public.army_matchups for update
-  to authenticated
-  using (opponent_user_id is null and (select auth.uid()) <> creator_user_id)
-  with check (opponent_user_id = (select auth.uid()));
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'army_matchups'
+      and policyname = 'An invited opponent can join by user id'
+  ) then
+    create policy "An invited opponent can join by user id"
+      on public.army_matchups for update
+      to authenticated
+      using (opponent_user_id is null and (select auth.uid()) <> creator_user_id)
+      with check (opponent_user_id = (select auth.uid()));
+  end if;
+end;
+$$;
 
 -- ---------------------------------------------------------------------
 -- Account deletion must also clear matchups the account participates in.
