@@ -74,12 +74,8 @@ export default function CompletePassportStep({
         username: cleanUsername,
         display_name: displayName.trim() || null,
         availability,
-        preferred_game_systems: bannerSelection.gameSystem
-          ? [bannerSelection.gameSystem]
-          : [],
-        primary_factions: bannerSelection.primaryFaction
-          ? [bannerSelection.primaryFaction]
-          : [],
+        preferred_game_systems: bannerSelection.gameSystems,
+        primary_factions: bannerSelection.primaryFactions,
         home_locations: toList(homeTerritories),
         home_venue_id: venueId,
         travel_radius_miles: travelRadius ? Number(travelRadius) : null,

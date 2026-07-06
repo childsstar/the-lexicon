@@ -20,6 +20,9 @@ const EMPTY_BANNER: BannerSelection = {
   bannerName: null,
   gameSystem: null,
   primaryFaction: null,
+  bannerIds: [],
+  gameSystems: [],
+  primaryFactions: [],
 };
 
 function ArrivalStep({ hasDiscord, onDone }: { hasDiscord: boolean; onDone: () => void }) {
