@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { parseArmyList } from "@/lib/army-lists/parser";
+import { buildTacticalOverview, EMPTY_TACTICAL_SUMMARY } from "@/lib/army-lists/tactical-overview";
+import { generateFallbackArmyName } from "@/lib/army-lists/naming";
+import { generateVisualIdentity } from "@/lib/armies/visual-identity";
 import type { ParsedArmyList } from "@/lib/army-lists/types";
 
 const MAX_RAW_TEXT_LENGTH = 40_000;
@@ -34,7 +37,11 @@ export async function POST(request: Request) {
   }
 
   const rawText = typeof body.rawText === "string" ? body.rawText.trim() : "";
-  const name = typeof body.name === "string" && body.name.trim() ? body.name.trim() : null;
+  // The user-entered name is sacred: it is only ever read here and passed
+  // straight through to the insert below. The parser is never allowed to
+  // overwrite it — if it's blank, generateFallbackArmyName() below fills
+  // in a neutral placeholder from the parsed faction instead.
+  const userEnteredName = typeof body.name === "string" && body.name.trim() ? body.name.trim() : null;
   const gameSystem =
     typeof body.gameSystem === "string" && body.gameSystem.trim()
       ? body.gameSystem.trim()
@@ -45,11 +52,11 @@ export async function POST(request: Request) {
       : null;
 
   if (!rawText) {
-    return NextResponse.json({ error: "Paste an army list before importing." }, { status: 400 });
+    return NextResponse.json({ error: "Paste a roster before mustering this army." }, { status: 400 });
   }
   if (rawText.length > MAX_RAW_TEXT_LENGTH) {
     return NextResponse.json(
-      { error: "Army list text is too long for this MVP import. Please trim it and try again." },
+      { error: "Roster text is too long for this MVP import. Please trim it and try again." },
       { status: 400 }
     );
   }
@@ -63,7 +70,7 @@ export async function POST(request: Request) {
 
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError || !userData.user) {
-    return NextResponse.json({ error: "Sign in to import an army list." }, { status: 401 });
+    return NextResponse.json({ error: "Sign in to muster an army." }, { status: 401 });
   }
 
   let parsed: ParsedArmyList | null = null;
@@ -71,11 +78,21 @@ export async function POST(request: Request) {
   let parserError: string | null = null;
 
   try {
-    parsed = await parseArmyList({ rawText, gameSystem, faction, name });
+    parsed = await parseArmyList({ rawText, gameSystem, faction, name: userEnteredName });
   } catch (err) {
     parserStatus = "failed";
     parserError = err instanceof Error ? err.message : "Army list parsing failed.";
   }
+
+  const resolvedFaction = parsed?.faction ?? faction;
+  const resolvedGameSystem = parsed?.game_system ?? gameSystem;
+  const name = userEnteredName || generateFallbackArmyName({ faction: resolvedFaction, gameSystem: resolvedGameSystem });
+  const tacticalSummary = parsed && parsed.units.length ? buildTacticalOverview(parsed) : EMPTY_TACTICAL_SUMMARY;
+  const visualIdentity = generateVisualIdentity({
+    faction: resolvedFaction,
+    name,
+    playstyleTags: parsed?.inferred_playstyle_tags ?? [],
+  });
 
   const { data, error } = await supabase
     .from("army_lists")
@@ -83,13 +100,22 @@ export async function POST(request: Request) {
       user_id: userData.user.id,
       profile_id: userData.user.id,
       name,
-      game_system: parsed?.game_system ?? gameSystem,
-      faction: parsed?.faction ?? faction,
+      game_system: resolvedGameSystem,
+      faction: resolvedFaction,
+      subfaction: parsed?.subfaction ?? null,
       points_total: parsed?.points_total ?? null,
+      datasheet_count: parsed?.unit_count ?? parsed?.units.length ?? null,
+      model_count: parsed?.model_count ?? null,
+      detachment_names: parsed?.detachment_names ?? [],
+      detachment_points: parsed?.detachment_points ?? null,
       raw_text: rawText,
       parsed_json: parsed,
+      playstyle_tags: parsed?.inferred_playstyle_tags ?? [],
+      tactical_summary: tacticalSummary,
       parser_status: parserStatus,
       parser_error: parserError,
+      visibility: "private",
+      visual_identity_json: visualIdentity,
     })
     .select("*")
     .single();
