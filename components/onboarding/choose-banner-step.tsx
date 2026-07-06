@@ -5,25 +5,33 @@ import { BANNERS } from "@/lib/chronicle/banners";
 import { filterBannersForActiveContext, type Banner } from "@/lib/chronicle/types";
 import { useActiveUniverse } from "@/components/active-universe-provider";
 import { isGameKey } from "@/lib/games";
+import { GAME_SYSTEMS, type GameSystemKey } from "@/lib/game-systems";
 import BannerArt from "@/components/chronicle/banner-art";
 import { SectionRule } from "@/components/chronicle/frame";
 
 export type BannerSelection = {
+  /** First banner chosen — kept for the fields that only have room for one
+   * (e.g. the `banner_id` column, the Traveler's Briefing headline). */
   bannerId: string | null;
   bannerName: string | null;
   gameSystem: string | null;
   primaryFaction: string | null;
+  /** Every banner chosen, in pick order — the full multi-select. */
+  bannerIds: string[];
+  gameSystems: string[];
+  primaryFactions: string[];
 };
 
 const PICKER_SIZE = 6;
+const DEFAULT_SYSTEM: GameSystemKey = "warhammer-40k";
 
 /**
  * "Every traveler carries a banner." A quick, real picker drawn from the
  * same Hall of Banners data as Find Your Banner — scoped to the active
- * realm when one is set. Picking one here updates the active
- * universe/realm/game (same real decision Find Your Banner makes), and the
- * choice travels into the final passport save. Skippable: no banner is
- * required to enter The Lexicon.
+ * realm when one is set. Travelers can march under more than one banner;
+ * picking any of them updates the active universe/realm/game (same real
+ * decision Find Your Banner makes), and the full set travels into the final
+ * passport save. Skippable: no banner is required to enter The Lexicon.
  */
 export default function ChooseBannerStep({
   onContinue,
@@ -33,31 +41,83 @@ export default function ChooseBannerStep({
   onSkip: () => void;
 }) {
   const { realmKey, gameKey, setGame } = useActiveUniverse();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const picks = useMemo(() => {
-    const { banners } = filterBannersForActiveContext(BANNERS, {
-      realmKey,
-      gameKey,
-    });
-    return banners.slice(0, PICKER_SIZE);
-  }, [realmKey, gameKey]);
+  const { banners: contextBanners } = useMemo(
+    () => filterBannersForActiveContext(BANNERS, { realmKey, gameKey }),
+    [realmKey, gameKey]
+  );
 
-  const selected: Banner | undefined = picks.find((b) => b.id === selectedId);
+  // Which game systems actually have banners in the active context — used
+  // to offer "looking for more than 40K?" only when there's somewhere else
+  // to send them. Defaults to Warhammer 40,000 when it's on offer; falls
+  // back to whichever system appears first otherwise (e.g. a realm already
+  // scoped to something else).
+  const availableSystems = useMemo(() => {
+    const seen = new Set<GameSystemKey>();
+    const ordered: GameSystemKey[] = [];
+    for (const banner of contextBanners) {
+      if (!seen.has(banner.gameSystemKey)) {
+        seen.add(banner.gameSystemKey);
+        ordered.push(banner.gameSystemKey);
+      }
+    }
+    return ordered;
+  }, [contextBanners]);
+
+  const [selectedSystem, setSelectedSystem] = useState<GameSystemKey | null>(
+    null
+  );
+  const activeSystem =
+    selectedSystem ??
+    (availableSystems.includes(DEFAULT_SYSTEM)
+      ? DEFAULT_SYSTEM
+      : availableSystems[0] ?? DEFAULT_SYSTEM);
+
+  const picks = useMemo(
+    () =>
+      contextBanners
+        .filter((banner) => banner.gameSystemKey === activeSystem)
+        .slice(0, PICKER_SIZE),
+    [contextBanners, activeSystem]
+  );
+
+  const selected: Banner[] = useMemo(
+    () =>
+      selectedIds
+        .map((id) => BANNERS.find((b) => b.id === id))
+        .filter((b): b is Banner => Boolean(b)),
+    [selectedIds]
+  );
 
   function choose(banner: Banner) {
-    setSelectedId((current) => (current === banner.id ? null : banner.id));
+    setSelectedIds((current) =>
+      current.includes(banner.id)
+        ? current.filter((id) => id !== banner.id)
+        : [...current, banner.id]
+    );
     if (isGameKey(banner.gameSystemKey)) setGame(banner.gameSystemKey);
   }
 
   function continueOnward() {
+    const first = selected[0];
     onContinue({
-      bannerId: selected?.id ?? null,
-      bannerName: selected?.name ?? null,
-      gameSystem: selected?.gameSystem ?? null,
-      primaryFaction: selected?.primaryFaction ?? null,
+      bannerId: first?.id ?? null,
+      bannerName: first?.name ?? null,
+      gameSystem: first?.gameSystem ?? null,
+      primaryFaction: first?.primaryFaction ?? null,
+      bannerIds: selected.map((b) => b.id),
+      gameSystems: [...new Set(selected.map((b) => b.gameSystem).filter((s): s is string => Boolean(s)))],
+      primaryFactions: [...new Set(selected.map((b) => b.primaryFaction))],
     });
   }
+
+  const continueLabel =
+    selected.length === 0
+      ? "Continue"
+      : selected.length === 1
+        ? `March under ${selected[0].name}`
+        : `March under ${selected.length} banners`;
 
   return (
     <div className="flex flex-1 flex-col justify-center py-10">
@@ -69,23 +129,29 @@ export default function ChooseBannerStep({
           Which worlds call to you?
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-text-muted">
-          Pick a banner to march under, or leave this for later.
+          Pick as many banners as call to you, or leave this for later.
         </p>
 
         <div className="mt-8">
-          <SectionRule label="A few callings" />
+          <SectionRule label={`A few callings — ${GAME_SYSTEMS[activeSystem].name}`} />
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {picks.map((banner) => {
-              const isSelected = banner.id === selectedId;
+              const isSelected = selectedIds.includes(banner.id);
               return (
                 <button
                   key={banner.id}
                   type="button"
                   onClick={() => choose(banner)}
-                  className={`card overflow-hidden text-left transition-colors ${
+                  aria-pressed={isSelected}
+                  className={`card relative overflow-hidden text-left transition-colors ${
                     isSelected ? "border-gold-400" : ""
                   }`}
                 >
+                  {isSelected && (
+                    <span className="absolute right-2 top-2 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-[0.65rem] font-bold text-ink-950">
+                      ✓
+                    </span>
+                  )}
                   <BannerArt
                     palette={banner.palette}
                     bannerId={banner.id}
@@ -104,6 +170,27 @@ export default function ChooseBannerStep({
               );
             })}
           </div>
+
+          {availableSystems.length > 1 && (
+            <p className="mt-4 text-xs text-text-subtle">
+              Looking for more than {GAME_SYSTEMS[activeSystem].name}?{" "}
+              {availableSystems
+                .filter((system) => system !== activeSystem)
+                .map((system, i, arr) => (
+                  <span key={system}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSystem(system)}
+                      className="font-medium text-gold-300 underline-offset-2 transition-colors hover:text-gold-200 hover:underline"
+                    >
+                      Browse {GAME_SYSTEMS[system].name}
+                    </button>
+                    {i < arr.length - 1 ? " · " : ""}
+                  </span>
+                ))}
+            </p>
+          )}
+
           <a
             href="/chronicles/find-your-banner"
             target="_blank"
@@ -120,7 +207,7 @@ export default function ChooseBannerStep({
             onClick={continueOnward}
             className="w-full rounded-md bg-gold-500 px-6 py-3.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400"
           >
-            {selected ? `March under ${selected.name}` : "Continue"}
+            {continueLabel}
           </button>
           <button
             type="button"
