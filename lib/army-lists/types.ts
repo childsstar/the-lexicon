@@ -1,3 +1,6 @@
+import type { TacticalSummary } from "./tactical-overview";
+import type { VisualIdentity } from "@/lib/armies/visual-identity";
+
 export type ParsedArmyUnit = {
   name: string;
   quantity: number | null;
@@ -38,6 +41,8 @@ export type ArmyListParser = {
 
 
 
+export type ArmyVisibility = "private" | "shareable" | "matched_only";
+
 export type ArmyList = {
   id: string;
   user_id: string;
@@ -45,11 +50,26 @@ export type ArmyList = {
   name: string | null;
   game_system: string | null;
   faction: string | null;
+  subfaction: string | null;
   points_total: number | null;
+  datasheet_count: number | null;
+  model_count: number | null;
+  detachment_names: string[];
+  detachment_points: number | null;
   raw_text: string;
   parsed_json: ParsedArmyList | null;
+  playstyle_tags: string[];
+  tactical_summary: TacticalSummary | null;
   parser_status: "pending" | "succeeded" | "failed";
   parser_error: string | null;
+  visibility: ArmyVisibility;
+  locked_at: string | null;
+  visual_identity_json: VisualIdentity | null;
   created_at: string;
   updated_at: string;
 };
+
+// Re-exported here so callers importing the DB row type also get the
+// nested identity/tactical shapes without a second import.
+export type { TacticalSummary, UnitTacticalNote } from "./tactical-overview";
+export type { VisualIdentity, SigilAccent, SigilFrame, SigilTexture, SigilIconKey } from "@/lib/armies/visual-identity";
