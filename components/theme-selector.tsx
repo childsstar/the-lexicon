@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Flame, Scroll } from "lucide-react";
+import { FlameIcon, ScrollIcon } from "@/components/icons";
 
 type ThemeChoice = "dark" | "light";
 
@@ -37,7 +37,7 @@ export default function ThemeSelector() {
     applyTheme(next);
   }
 
-  const Icon = choice === "dark" ? Flame : Scroll;
+  const Icon = choice === "dark" ? FlameIcon : ScrollIcon;
 
   return (
     <button
