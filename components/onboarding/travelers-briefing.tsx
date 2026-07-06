@@ -41,7 +41,10 @@ function buildBriefing(venue: Venue | null, banner: BannerSelection): Briefing[]
     banner.bannerName
       ? {
           icon: <ScrollIcon className="h-4 w-4" />,
-          label: `Muster your first ${banner.primaryFaction ?? "force"}`,
+          label:
+            banner.primaryFactions.length > 1
+              ? `Muster your first force — ${banner.primaryFactions.join(", ")}`
+              : `Muster your first ${banner.primaryFaction ?? "force"}`,
           href: "/armies/muster",
         }
       : {
