@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/page-header";
 import { useAuth } from "@/components/auth-provider";
-import { getSupabaseClient } from "@/lib/supabase";
 
 const GAME_SYSTEMS = [
   "Warhammer 40,000",
@@ -19,7 +18,7 @@ const GAME_SYSTEMS = [
 
 export default function ImportArmyListClient() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, profile, session, loading } = useAuth();
   const [name, setName] = useState("");
   const [gameSystem, setGameSystem] = useState("");
   const [rawText, setRawText] = useState("");
@@ -37,11 +36,14 @@ export default function ImportArmyListClient() {
 
     setSubmitting(true);
     try {
-      const supabase = getSupabaseClient();
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
+      if (loading) {
+        setError("Still checking your sign-in session. Please try again in a moment.");
+        return;
+      }
+
+      const token = session?.access_token;
       if (!user || !token) {
-        setError("Sign in again before importing an army list.");
+        setError("Sign in to import an army list.");
         return;
       }
 
@@ -78,6 +80,18 @@ export default function ImportArmyListClient() {
       />
 
       <form onSubmit={handleSubmit} className="card space-y-5 p-5">
+        {loading && (
+          <div className="rounded-md border border-border bg-surface-raised px-4 py-3 text-sm text-text-muted">
+            Checking your Lexicon session before enabling saved imports…
+          </div>
+        )}
+
+        {!loading && !user && (
+          <div className="rounded-md border border-gold-700/50 bg-gold-950/20 px-4 py-3 text-sm text-gold-100">
+            <p className="font-semibold">Sign in to import an army list.</p>
+            <p className="mt-1 text-gold-100/80">Saved army lists are tied to your commander profile.</p>
+          </div>
+        )}
         {error && (
           <div className="rounded-md border border-ember-500/50 bg-ember-950/30 px-4 py-3 text-sm text-ember-200">
             {error}
@@ -125,11 +139,16 @@ export default function ImportArmyListClient() {
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || loading || !user}
           className="w-full rounded-md bg-gold-600 px-6 py-3 text-sm font-bold text-ink shadow-candle transition-colors hover:bg-gold-500 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {submitting ? "Reading the roster…" : "Import army list"}
+          {loading ? "Checking session…" : submitting ? "Reading the roster…" : "Import army list"}
         </button>
+        {!loading && user && (
+          <p className="text-center text-xs text-text-subtle">
+            This import will be saved to {profile?.display_name || profile?.username || "your commander profile"}.
+          </p>
+        )}
       </form>
     </div>
   );

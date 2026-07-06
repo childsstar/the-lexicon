@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import type { User } from "@supabase/supabase-js";
+import type { Session, User } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase";
 import { fetchProfile } from "@/lib/profiles";
 import type { Profile } from "@/lib/types";
@@ -19,6 +19,7 @@ import { useActiveUniverse } from "@/components/active-universe-provider";
 
 type AuthState = {
   user: User | null;
+  session: Session | null;
   profile: Profile | null;
   /** True until the initial session + profile fetch settles. */
   loading: boolean;
@@ -33,6 +34,7 @@ const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { reset: resetActiveUniverse } = useActiveUniverse();
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);
@@ -49,8 +51,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     let cancelled = false;
 
-    async function syncUser(nextUser: User | null) {
+    async function syncSession(nextSession: Session | null) {
       if (cancelled) return;
+      const nextUser = nextSession?.user ?? null;
+      setSession(nextSession);
       setUser(nextUser);
       if (!nextUser) {
         setProfile(null);
@@ -65,12 +69,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     supabase.auth.getSession().then(({ data }) => {
-      void syncUser(data.session?.user ?? null);
+      void syncSession(data.session ?? null);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        void syncUser(session?.user ?? null);
+        void syncSession(session ?? null);
       }
     );
 
@@ -89,6 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = useCallback(async () => {
     const supabase = getSupabaseClient();
     await supabase.auth.signOut();
+    setSession(null);
     setUser(null);
     setProfile(null);
     // A stale realm/game selection from this session shouldn't greet
@@ -99,7 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, profile, loading, configError, refreshProfile, signOut }}
+      value={{ user, session, profile, loading, configError, refreshProfile, signOut }}
     >
       {children}
     </AuthContext.Provider>
