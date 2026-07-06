@@ -12,9 +12,11 @@ import {
   friendlyVenueError,
   locationTokens,
   venueIsNearby,
+  venueMatchesPrimaryFilter,
   venueTypeLabel,
-  VENUE_TYPES,
+  PRIMARY_VENUE_FILTERS,
   type Coordinates,
+  type PrimaryVenueFilterValue,
   type Venue,
 } from "@/lib/venues";
 import { venueContextRelevance } from "@/lib/active-context-matching";
@@ -441,7 +443,7 @@ export default function VenuesClient() {
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [selectedVenueId, setSelectedVenueId] = useState<string | null>(null);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<PrimaryVenueFilterValue[]>([]);
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
   const [locating, setLocating] = useState(false);
   const [locationMessage, setLocationMessage] = useState<string | null>(null);
@@ -463,10 +465,10 @@ export default function VenuesClient() {
   );
   const filteredVenues = useMemo(() => {
     const source = venues ?? [];
-    return selectedTypes.length === 0
+    return selectedFilters.length === 0
       ? source
-      : source.filter((venue) => selectedTypes.includes(venue.venue_type));
-  }, [selectedTypes, venues]);
+      : source.filter((venue) => selectedFilters.some((filter) => venueMatchesPrimaryFilter(venue, filter)));
+  }, [selectedFilters, venues]);
   const venueDistance = (venue: Venue) =>
     userLocation && isMappableVenue(venue) ? distanceInMiles(userLocation, venue) : undefined;
   const sortedFilteredVenues = useMemo(() => {
@@ -498,9 +500,9 @@ export default function VenuesClient() {
   const showList = viewMode === "list" || viewMode === "both";
   const showMap = viewMode === "map" || viewMode === "both";
 
-  function toggleVenueType(type: string) {
-    setSelectedTypes((current) =>
-      current.includes(type) ? current.filter((value) => value !== type) : [...current, type]
+  function toggleFilter(filter: PrimaryVenueFilterValue) {
+    setSelectedFilters((current) =>
+      current.includes(filter) ? current.filter((value) => value !== filter) : [...current, filter]
     );
   }
 
@@ -614,16 +616,16 @@ export default function VenuesClient() {
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-gold-600/60 px-3 py-2 text-sm font-semibold text-gold-300 transition-colors hover:bg-gold-500/10 disabled:cursor-wait disabled:opacity-70"
               >
                 <MapPinIcon className="h-4 w-4" />
-                {locating ? "Finding you…" : "Locate around me"}
+                {locating ? "Finding you…" : "Near Me"}
               </button>
             </div>
             <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap">
-              <button type="button" onClick={() => setSelectedTypes([])} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${selectedTypes.length === 0 ? "border-gold-500 bg-gold-500 text-ink-950" : "border-border-muted text-text-muted hover:border-gold-600/60 hover:text-gold-300"}`}>All venues</button>
-              {VENUE_TYPES.map((type) => {
-                const active = selectedTypes.includes(type.value);
+              <button type="button" onClick={() => setSelectedFilters([])} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${selectedFilters.length === 0 ? "border-gold-500 bg-gold-500 text-ink-950" : "border-border-muted text-text-muted hover:border-gold-600/60 hover:text-gold-300"}`}>All</button>
+              {PRIMARY_VENUE_FILTERS.map((filter) => {
+                const active = selectedFilters.includes(filter.value);
                 return (
-                  <button key={type.value} type="button" onClick={() => toggleVenueType(type.value)} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${active ? "border-gold-500 bg-gold-500 text-ink-950" : "border-border-muted text-text-muted hover:border-gold-600/60 hover:text-gold-300"}`}>
-                    {type.label}
+                  <button key={filter.value} type="button" onClick={() => toggleFilter(filter.value)} className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${active ? "border-gold-500 bg-gold-500 text-ink-950" : "border-border-muted text-text-muted hover:border-gold-600/60 hover:text-gold-300"}`}>
+                    {filter.label}
                   </button>
                 );
               })}

@@ -103,6 +103,96 @@ export function venueTypeLabel(value: string | null | undefined): string {
   return VENUE_TYPES.find((t) => t.value === value)?.label ?? value.replaceAll("_", " ");
 }
 
+/**
+ * The Venues page shows only these six primary filters (instead of every
+ * raw venue_type). Each one is a presentation-layer view over the richer
+ * venue_type / venue_categories / supported_game_systems metadata below.
+ */
+export const PRIMARY_VENUE_FILTERS = [
+  { value: "game_shops", label: "Game Shops" },
+  { value: "warhammer", label: "Warhammer" },
+  { value: "board_game_cafes", label: "Board Game Cafés" },
+  { value: "community_spaces", label: "Community Spaces" },
+  { value: "private_tables", label: "Private Tables" },
+] as const;
+
+export type PrimaryVenueFilterValue = (typeof PRIMARY_VENUE_FILTERS)[number]["value"];
+
+const GAME_SHOP_VENUE_TYPES: readonly string[] = ["game_store"];
+const GAME_SHOP_CATEGORIES: readonly string[] = ["game_shop", "hobby_shop", "retail", "flgs", "warhammer_store"];
+
+const WARHAMMER_VENUE_TYPES: readonly string[] = ["warhammer_store"];
+const WARHAMMER_CATEGORIES: readonly string[] = ["warhammer_store"];
+const WARHAMMER_GAME_SYSTEMS: readonly string[] = [
+  "warhammer",
+  "warhammer_40000",
+  "age_of_sigmar",
+  "horus_heresy",
+  "the_old_world",
+];
+
+const BOARD_GAME_CAFE_VENUE_TYPES: readonly string[] = ["board_game_cafe", "cafe_restaurant"];
+const BOARD_GAME_CAFE_CATEGORIES: readonly string[] = ["board_game_cafe", "cafe", "restaurant"];
+
+const COMMUNITY_SPACE_VENUE_TYPES: readonly string[] = [
+  "library",
+  "community_gathering_space",
+  "community_center",
+  "event_space",
+  "convention_center",
+  "brewery_pub",
+  "hobby_maker_space",
+];
+// "community_space" is included alongside the named categories below so
+// venues tagged generically (e.g. via backfill) still surface here.
+const COMMUNITY_SPACE_CATEGORIES: readonly string[] = [
+  "library",
+  "community_center",
+  "event_space",
+  "convention_center",
+  "brewery_pub",
+  "hobby_maker_space",
+  "community_space",
+];
+
+const PRIVATE_TABLE_VENUE_TYPES: readonly string[] = ["club", "private"];
+const PRIVATE_TABLE_CATEGORIES: readonly string[] = ["club_private_venue", "private_table", "club"];
+
+function includesAny(values: string[] | null | undefined, candidates: readonly string[]): boolean {
+  if (!values || values.length === 0) return false;
+  return values.some((value) => candidates.includes(value));
+}
+
+export function venueMatchesPrimaryFilter(venue: Venue, filter: PrimaryVenueFilterValue): boolean {
+  switch (filter) {
+    case "game_shops":
+      return GAME_SHOP_VENUE_TYPES.includes(venue.venue_type) || includesAny(venue.venue_categories, GAME_SHOP_CATEGORIES);
+    case "warhammer":
+      return (
+        WARHAMMER_VENUE_TYPES.includes(venue.venue_type) ||
+        includesAny(venue.venue_categories, WARHAMMER_CATEGORIES) ||
+        includesAny(venue.supported_game_systems, WARHAMMER_GAME_SYSTEMS)
+      );
+    case "board_game_cafes":
+      return (
+        BOARD_GAME_CAFE_VENUE_TYPES.includes(venue.venue_type) ||
+        includesAny(venue.venue_categories, BOARD_GAME_CAFE_CATEGORIES)
+      );
+    case "community_spaces":
+      return (
+        COMMUNITY_SPACE_VENUE_TYPES.includes(venue.venue_type) ||
+        includesAny(venue.venue_categories, COMMUNITY_SPACE_CATEGORIES)
+      );
+    case "private_tables":
+      return (
+        PRIVATE_TABLE_VENUE_TYPES.includes(venue.venue_type) ||
+        includesAny(venue.venue_categories, PRIVATE_TABLE_CATEGORIES)
+      );
+    default:
+      return false;
+  }
+}
+
 export type Coordinates = { latitude: number; longitude: number };
 
 export function distanceInMiles(a: Coordinates, b: Coordinates): number {
