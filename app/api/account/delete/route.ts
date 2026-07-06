@@ -1,68 +1,93 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-function getSupabaseClients(request: Request) {
+// The Supabase Admin API (and the service role key it needs) must only ever
+// run server-side. Pinning this route to the Node.js runtime keeps it off
+// the Edge runtime, where env access and the Admin SDK behave differently.
+export const runtime = "nodejs";
+
+const isProduction = process.env.NODE_ENV === "production";
+
+const UNAVAILABLE_MESSAGE =
+  "Account deletion is temporarily unavailable. Please try again later.";
+const DELETE_FAILED_MESSAGE =
+  "We couldn't delete your account. Please try again or contact support.";
+const PARTIAL_FAILURE_MESSAGE =
+  "Your Lexicon data was removed, but we couldn't finish closing your account. Please contact support so we can complete it.";
+
+function missingConfigResponse(missingVar: string, devHint: string) {
+  console.error(
+    `[account/delete] ${missingVar} is not set. Add it as a server-only ` +
+      "environment variable (never prefix it with NEXT_PUBLIC_) in your " +
+      "deployment settings and redeploy, then restart `npm run dev` locally."
+  );
+  const message = isProduction ? UNAVAILABLE_MESSAGE : devHint;
+  return NextResponse.json({ error: message }, { status: 500 });
+}
+
+export async function POST(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const authorization = request.headers.get("authorization") ?? "";
 
-  if (!url || !anonKey) throw new Error("Supabase is not configured.");
-  if (!serviceRoleKey) {
-    throw new Error("Supabase service role key is not configured.");
+  if (!url || !anonKey) {
+    return missingConfigResponse(
+      "NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "Account deletion is not configured: Supabase URL/anon key are missing. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local."
+    );
   }
 
-  return {
-    userClient: createClient(url, anonKey, {
-      global: { headers: authorization ? { authorization } : {} },
-      auth: { persistSession: false },
-    }),
-    adminClient: createClient(url, serviceRoleKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    }),
-  };
-}
+  const userClient = createClient(url, anonKey, {
+    global: { headers: authorization ? { authorization } : {} },
+    auth: { persistSession: false },
+  });
 
-async function deleteUserOwnedData(
-  userClient: ReturnType<typeof createClient<any>>,
-  userId: string
-) {
-  const { error } = await userClient.rpc("delete_account_owned_data", {
+  // Require a valid authenticated session before anything else — this check
+  // must succeed on the anon key alone, independent of admin configuration.
+  const { data: userData, error: userError } = await userClient.auth.getUser();
+  if (userError || !userData.user) {
+    return NextResponse.json(
+      { error: "Sign in before deleting your account." },
+      { status: 401 }
+    );
+  }
+
+  if (!serviceRoleKey) {
+    return missingConfigResponse(
+      "SUPABASE_SERVICE_ROLE_KEY",
+      "Account deletion is not configured: SUPABASE_SERVICE_ROLE_KEY is missing. Add it to .env.local (server-only) and restart the dev server."
+    );
+  }
+
+  const userId = userData.user.id;
+  const adminClient = createClient(url, serviceRoleKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  // Delete/anonymize user-owned Lexicon data first so nothing is orphaned
+  // if the Auth user disappears out from under it.
+  const { error: dataError } = await userClient.rpc("delete_account_owned_data", {
     target_user_id: userId,
   });
-  if (error) throw new Error(error.message);
-}
-
-export async function POST(request: Request) {
-  let clients: ReturnType<typeof getSupabaseClients>;
-  try {
-    clients = getSupabaseClients(request);
-  } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : String(err) },
-      { status: 500 }
+  if (dataError) {
+    console.error(
+      `[account/delete] Failed to delete owned data for user ${userId}:`,
+      dataError
     );
+    return NextResponse.json({ error: DELETE_FAILED_MESSAGE }, { status: 500 });
   }
 
-  const { data: userData, error: userError } =
-    await clients.userClient.auth.getUser();
-  if (userError || !userData.user) {
-    return NextResponse.json({ error: "Sign in before deleting your account." }, { status: 401 });
-  }
-
-  try {
-    await deleteUserOwnedData(clients.userClient, userData.user.id);
-    const { error: deleteError } =
-      await clients.adminClient.auth.admin.deleteUser(userData.user.id);
-    if (deleteError) throw new Error(deleteError.message);
-  } catch (err) {
-    return NextResponse.json(
-      {
-        error:
-          err instanceof Error ? err.message : "Account deletion failed.",
-      },
-      { status: 500 }
+  // Then remove the Supabase Auth user itself.
+  const { error: authDeleteError } = await adminClient.auth.admin.deleteUser(userId);
+  if (authDeleteError) {
+    console.error(
+      `[account/delete] Deleted owned data for user ${userId} but failed to ` +
+        "delete the Supabase Auth user. Manual cleanup required in the " +
+        "Supabase dashboard (Authentication → Users).",
+      authDeleteError
     );
+    return NextResponse.json({ error: PARTIAL_FAILURE_MESSAGE }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });
