@@ -19,10 +19,22 @@ export type Profile = {
   preferred_universe_key: string | null;
   preferred_realm_key: string | null;
   preferred_game_key: string | null;
+  /** Which chronicle banner (lib/chronicle/banners.ts) a traveler chose
+   * during onboarding, if any. */
+  banner_id: string | null;
+  travel_radius_miles: number | null;
   profile_completed_at: string | null;
   created_at: string;
   updated_at: string;
 };
+
+export const TRAVEL_RADIUS_OPTIONS = [
+  { value: 5, label: "5 miles — walking distance" },
+  { value: 10, label: "10 miles" },
+  { value: 25, label: "25 miles" },
+  { value: 50, label: "50 miles" },
+  { value: 100, label: "100 miles — I'll travel for a good game" },
+] as const;
 
 export const EXPERIENCE_LEVELS = [
   { value: "new", label: "New recruit — just starting out" },

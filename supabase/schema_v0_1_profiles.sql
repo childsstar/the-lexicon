@@ -66,6 +66,15 @@ create table if not exists public.profiles (
   preferred_universe_key text,
   preferred_realm_key    text,
   preferred_game_key     text,
+  -- Onboarding passport fields (see
+  -- supabase/migrations/20260706000000_add_passport_fields_to_profiles.sql).
+  -- Which chronicle banner (lib/chronicle/banners.ts) a traveler chose
+  -- during onboarding, if any — plain id, not a foreign key: banners are
+  -- static data, not a table.
+  banner_id              text,
+  travel_radius_miles    integer
+                           check (travel_radius_miles is null or
+                             (travel_radius_miles > 0 and travel_radius_miles <= 500)),
   profile_completed_at   timestamptz,
   created_at             timestamptz not null default now(),
   updated_at             timestamptz not null default now()
