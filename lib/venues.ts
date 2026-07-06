@@ -1,3 +1,5 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 export type Venue = {
   id: string;
   created_by: string | null;
@@ -163,6 +165,33 @@ export function venueIsNearby(venue: Venue, tokens: string[]): boolean {
   if (tokens.length === 0) return false;
   const hay = (venue.region ?? "").toLowerCase();
   return tokens.some((t) => hay.includes(t));
+}
+
+/**
+ * City/state and ZIP suggestions drawn from existing venues, so the home
+ * locations autocomplete points at real communities rather than requiring a
+ * geocoding API (see the TODO on locationTokens above).
+ */
+export async function fetchLocationSuggestions(
+  supabase: SupabaseClient
+): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("venues")
+    .select("city, region_code, postal_code")
+    .not("city", "is", null)
+    .limit(2000);
+  if (error || !data) return [];
+
+  const suggestions = new Set<string>();
+  for (const row of data as Pick<Venue, "city" | "region_code" | "postal_code">[]) {
+    if (row.city) {
+      suggestions.add(
+        row.region_code ? `${row.city}, ${row.region_code}` : row.city
+      );
+    }
+    if (row.postal_code) suggestions.add(row.postal_code);
+  }
+  return Array.from(suggestions).sort();
 }
 
 /** Friendly errors for the venues table, mirroring lib/profiles.ts. */

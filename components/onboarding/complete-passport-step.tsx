@@ -4,13 +4,14 @@ import { useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase";
 import { friendlyProfileError } from "@/lib/profiles";
 import { useActiveUniverse } from "@/components/active-universe-provider";
+import LocationTagInput from "@/components/location-tag-input";
 import {
   AVAILABILITY_OPTIONS,
   TRAVEL_RADIUS_OPTIONS,
   USERNAME_PATTERN,
 } from "@/lib/types";
 import type { BannerSelection } from "@/components/onboarding/choose-banner-step";
-import { toList, type ProfileFormDefaults } from "@/components/profile-form";
+import type { ProfileFormDefaults } from "@/components/profile-form";
 
 function suggestUsername(seed: string | null): string {
   if (!seed) return "";
@@ -44,7 +45,7 @@ export default function CompletePassportStep({
     importedDefaults?.display_name ?? ""
   );
   const [availability, setAvailability] = useState("");
-  const [homeTerritories, setHomeTerritories] = useState("");
+  const [homeLocations, setHomeLocations] = useState<string[]>([]);
   const [travelRadius, setTravelRadius] = useState<string>("");
   const [bio, setBio] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -76,7 +77,7 @@ export default function CompletePassportStep({
         availability,
         preferred_game_systems: bannerSelection.gameSystems,
         primary_factions: bannerSelection.primaryFactions,
-        home_locations: toList(homeTerritories),
+        home_locations: homeLocations,
         home_venue_id: venueId,
         travel_radius_miles: travelRadius ? Number(travelRadius) : null,
         banner_id: bannerSelection.bannerId,
@@ -182,18 +183,16 @@ export default function CompletePassportStep({
             >
               Home territories
             </label>
-            <input
+            <LocationTagInput
               id="ob_home_territories"
-              type="text"
-              value={homeTerritories}
-              onChange={(e) => setHomeTerritories(e.target.value)}
+              values={homeLocations}
+              onChange={setHomeLocations}
               placeholder="e.g. Brooklyn NY, Austin TX, 94607"
-              className="field"
             />
             <p className="mt-1.5 text-xs text-text-subtle">
-              One or more cities or ZIP codes, comma separated — each one
-              anchors you to a local community. Add every city you actually
-              spend time in.
+              One or more cities or ZIP codes — each one anchors you to a
+              local community. Add every city you actually spend time in,
+              pressing Enter after each.
             </p>
           </div>
 
