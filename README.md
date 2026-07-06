@@ -42,15 +42,26 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 For local development, put them in `.env.local` (never committed). Without
 them the public pages still render, but sign-in and the app shell show a
-clear configuration error. Never add the service role key to this project —
-it must not reach the browser.
+clear configuration error. Never give the service role key a `NEXT_PUBLIC_`
+prefix — it must not reach the browser.
 
 Server-only (no `NEXT_PUBLIC_` prefix — must never reach the browser):
 
 ```
-ANTHROPIC_API_KEY=...   # powers Chronicle readings via /api/chronicle
-CHRONICLE_MODEL=...     # optional; defaults to claude-opus-4-8
+SUPABASE_SERVICE_ROLE_KEY=...   # required for account deletion (/api/account/delete)
+ANTHROPIC_API_KEY=...           # powers Chronicle readings via /api/chronicle
+CHRONICLE_MODEL=...             # optional; defaults to claude-opus-4-8
 ```
+
+`SUPABASE_SERVICE_ROLE_KEY` is read server-side only, by a route pinned to
+the Node.js runtime, to call the Supabase Admin API
+(`auth.admin.deleteUser`). If it's missing, `/api/account/delete` logs a
+setup message on the server and returns a safe, user-facing error instead of
+leaking env-var details — in development that error names the missing
+variable; in production it's a generic "temporarily unavailable" message. On
+Netlify, add it as a server-side environment variable (never `NEXT_PUBLIC_`)
+in Site settings → Environment variables, then trigger a redeploy so the
+running functions pick up the new value.
 
 Find Your Banner works without the key too: `/api/chronicle` falls back to
 the deterministic template generator whenever the key is missing, the model
