@@ -12,7 +12,8 @@
     "validate:army-list-parser": "node scripts/validate-army-list-parser.mjs",
     "validate:discord-link": "node scripts/validate-discord-link.mjs",
     "validate:discord-cta": "node scripts/validate-discord-cta.mjs",
-    "validate:active-context": "node scripts/validate-active-context.mjs"
+    "validate:active-context": "node scripts/validate-active-context.mjs",
+    "validate:death-guard-parser": "node scripts/validate-death-guard-army-list-parser.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0",

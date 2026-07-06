@@ -6,6 +6,8 @@ export type ParsedArmyUnit = {
   enhancements: string[];
   upgrades: string[];
   wargear: string[];
+  section?: string | null;
+  category?: string | null;
 };
 
 export type ParsedArmyList = {
@@ -14,6 +16,10 @@ export type ParsedArmyList = {
   subfaction: string | null;
   points_total: number | null;
   units: ParsedArmyUnit[];
+  unit_count?: number | null;
+  model_count?: number | null;
+  detachment_names?: string[];
+  detachment_points?: number | null;
   inferred_playstyle_tags: string[];
   confidence: number;
   warnings: string[];

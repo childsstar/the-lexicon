@@ -154,7 +154,8 @@ function ParsedSummary({ result, rawText }: { result: ImportResult | null; rawTe
   }
 
   const parsed = result.parsed_json;
-  const unitCount = parsed.units.reduce((sum, unit) => sum + (unit.quantity ?? 1), 0);
+  const unitCount = parsed.unit_count ?? parsed.units.length;
+  const detachmentLine = parsed.detachment_names?.length ? `${parsed.detachment_names.join(" / ")}${parsed.detachment_points ? ` (${parsed.detachment_points} DP)` : ""}` : parsed.subfaction || "Unknown";
   const factionLine = [result.faction || parsed.faction, parsed.subfaction].filter(Boolean).join(" / ") || "Unknown";
 
   return (
@@ -172,7 +173,8 @@ function ParsedSummary({ result, rawText }: { result: ImportResult | null; rawTe
           <Summary label="Game system" value={result.game_system || parsed.game_system || "Unknown"} />
           <Summary label="Faction" value={factionLine} />
           <Summary label="Points total" value={String(result.parsed_json.points_total ?? "Unknown")} />
-          <Summary label="Unit count" value={String(unitCount)} />
+          <Summary label="Datasheet count" value={String(unitCount)} />
+          <Summary label="Detachments" value={detachmentLine} />
         </dl>
       </div>
 
