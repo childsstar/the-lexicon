@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
-import ImportArmyListClient from "./import-army-list-client";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Import Army List" };
-
-export default function ImportArmyListPage() {
-  return <ImportArmyListClient />;
+// "Import Army List" was folded into the "Muster an Army" flow — this
+// route is kept so old links/bookmarks still land somewhere useful.
+export default function ImportArmyListRedirectPage() {
+  redirect("/armies/muster");
 }

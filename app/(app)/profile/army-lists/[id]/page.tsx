@@ -1,9 +1,13 @@
-import type { Metadata } from "next";
-import ArmyListDetailClient from "./army-list-detail-client";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Army List" };
-
-export default async function ArmyListDetailPage({ params }: { params: Promise<{ id: string }> }) {
+// Army list detail pages now live at /armies/[id] as part of the
+// "Muster an Army" overhaul — this route is kept so old links/bookmarks
+// still land on the right army.
+export default async function ArmyListDetailRedirectPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
-  return <ArmyListDetailClient id={id} />;
+  redirect(`/armies/${id}`);
 }

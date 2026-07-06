@@ -157,10 +157,10 @@ export default function ProfileClient() {
         action={
           <div className="flex shrink-0 gap-2">
             <Link
-              href="/profile/army-lists/import"
+              href="/armies/muster"
               className="rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200"
             >
-              Import Army List
+              Muster an Army
             </Link>
             <button
               onClick={() => setEditing(true)}
