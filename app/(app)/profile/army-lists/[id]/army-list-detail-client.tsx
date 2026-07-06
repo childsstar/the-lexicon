@@ -30,7 +30,8 @@ export default function ArmyListDetailClient({ id }: { id: string }) {
   }, [id]);
 
   const parsed = armyList?.parsed_json;
-  const unitCount = parsed?.units.reduce((sum, unit) => sum + (unit.quantity ?? 1), 0) ?? 0;
+  const unitCount = parsed?.unit_count ?? parsed?.units.length ?? 0;
+  const detachmentLine = parsed?.detachment_names?.length ? `${parsed.detachment_names.join(" / ")}${parsed.detachment_points ? ` (${parsed.detachment_points} DP)` : ""}` : parsed?.subfaction || "Unknown";
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -67,8 +68,9 @@ export default function ArmyListDetailClient({ id }: { id: string }) {
             <dl className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Summary label="Game system" value={armyList.game_system || parsed?.game_system || "Unknown"} />
               <Summary label="Faction" value={[armyList.faction || parsed?.faction, parsed?.subfaction].filter(Boolean).join(" / ") || "Unknown"} />
-              <Summary label="Points" value={String(armyList.points_total ?? parsed?.points_total ?? "Unknown")} />
-              <Summary label="Unit count" value={String(unitCount)} />
+              <Summary label="Points total" value={String(armyList.points_total ?? parsed?.points_total ?? "Unknown")} />
+              <Summary label="Datasheet count" value={String(unitCount)} />
+              <Summary label="Detachments" value={detachmentLine} />
             </dl>
           </div>
 
@@ -98,7 +100,7 @@ export default function ArmyListDetailClient({ id }: { id: string }) {
                 <div key={`${unit.name}-${index}`} className="p-4">
                   <div className="flex flex-wrap justify-between gap-3">
                     <p className="font-semibold text-text">{unit.quantity ? `${unit.quantity}× ` : ""}{unit.name}</p>
-                    <p className="text-sm text-text-muted">{unit.points ?? "—"} pts{unit.role ? ` · ${unit.role}` : ""}</p>
+                    <p className="text-sm text-text-muted">{unit.points ?? "—"} pts{unit.section ? ` · ${unit.section}` : ""}{unit.role ? ` · ${unit.role}` : ""}</p>
                   </div>
                   {[...unit.enhancements, ...unit.upgrades, ...unit.wargear].length > 0 && (
                     <p className="mt-2 text-sm text-text-muted">{[...unit.enhancements, ...unit.upgrades, ...unit.wargear].join(", ")}</p>

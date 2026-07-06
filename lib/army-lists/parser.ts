@@ -11,6 +11,10 @@ export const EMPTY_PARSED_ARMY_LIST: ParsedArmyList = {
   inferred_playstyle_tags: [],
   confidence: 0,
   warnings: [],
+  unit_count: 0,
+  model_count: null,
+  detachment_names: [],
+  detachment_points: null,
 };
 
 export const ARMY_LIST_SCHEMA = {
@@ -25,6 +29,10 @@ export const ARMY_LIST_SCHEMA = {
     "inferred_playstyle_tags",
     "confidence",
     "warnings",
+    "unit_count",
+    "model_count",
+    "detachment_names",
+    "detachment_points",
   ],
   properties: {
     game_system: { type: ["string", "null"] },
@@ -51,6 +59,10 @@ export const ARMY_LIST_SCHEMA = {
     inferred_playstyle_tags: { type: "array", items: { type: "string" } },
     confidence: { type: "number", minimum: 0, maximum: 1 },
     warnings: { type: "array", items: { type: "string" } },
+    unit_count: { type: ["number", "null"] },
+    model_count: { type: ["number", "null"] },
+    detachment_names: { type: "array", items: { type: "string" } },
+    detachment_points: { type: ["number", "null"] },
   },
 } as const;
 
@@ -123,10 +135,13 @@ export const defaultArmyListParser: ArmyListParser = {
 };
 
 export async function parseArmyList(input: ArmyListParserInput): Promise<ParsedArmyList> {
+  const deterministic = parseArmyListDeterministically(input);
+  if (deterministic.game_system === "Warhammer 40,000" && deterministic.faction && deterministic.points_total && deterministic.units.length) return deterministic;
+
   try {
     return await parseArmyListWithAi(input);
   } catch (error) {
-    const fallback = parseArmyListDeterministically(input);
+    const fallback = deterministic;
     fallback.warnings = [
       ...fallback.warnings,
       `AI parser unavailable or failed: ${error instanceof Error ? error.message : "Unknown parser error."}`,
