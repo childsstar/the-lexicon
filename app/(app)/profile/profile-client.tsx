@@ -51,8 +51,21 @@ export default function ProfileClient() {
   const { user, profile, refreshProfile, signOut } = useAuth();
   const [editing, setEditing] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleteText, setDeleteText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [accountError, setAccountError] = useState<string | null>(null);
+  const [resettingOnboarding, setResettingOnboarding] = useState(false);
+  const isDevelopment = process.env.NODE_ENV !== "production";
 
   if (!user) return null; // AuthGuard handles the redirect.
+
+  async function getAccessToken() {
+    const { getSupabaseClient } = await import("@/lib/supabase");
+    const supabase = getSupabaseClient();
+    const { data } = await supabase.auth.getSession();
+    return data.session?.access_token ?? null;
+  }
 
   async function handleSignOut() {
     setSigningOut(true);
@@ -60,6 +73,59 @@ export default function ProfileClient() {
     // Full navigation (not router.replace) so the auth guard can't race us
     // to /sign-in and the app remounts with a clean slate.
     window.location.assign("/");
+  }
+
+  async function handleResetOnboarding() {
+    setAccountError(null);
+    setResettingOnboarding(true);
+    try {
+      const accessToken = await getAccessToken();
+      const response = await fetch("/api/account/reset-onboarding", {
+        method: "POST",
+        headers: accessToken ? { authorization: `Bearer ${accessToken}` } : {},
+      });
+      const payload = (await response.json().catch(() => ({}))) as {
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(payload.error ?? "Onboarding reset failed.");
+      }
+      try {
+        localStorage.removeItem("lexicon-active-universe");
+      } catch {
+        /* localStorage unavailable — server state was still reset */
+      }
+      await refreshProfile();
+      router.replace("/profile/setup");
+    } catch (err) {
+      setAccountError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setResettingOnboarding(false);
+    }
+  }
+
+  async function handleDeleteAccount() {
+    if (deleteText !== "DELETE") return;
+    setAccountError(null);
+    setDeleting(true);
+    try {
+      const accessToken = await getAccessToken();
+      const response = await fetch("/api/account/delete", {
+        method: "POST",
+        headers: accessToken ? { authorization: `Bearer ${accessToken}` } : {},
+      });
+      const payload = (await response.json().catch(() => ({}))) as {
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(payload.error ?? "Account deletion failed.");
+      }
+      await signOut();
+      window.location.assign("/");
+    } catch (err) {
+      setDeleting(false);
+      setAccountError(err instanceof Error ? err.message : String(err));
+    }
   }
 
   if (editing) {
@@ -169,6 +235,90 @@ export default function ProfileClient() {
           <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-text-soft">
             {profile.bio}
           </p>
+        </div>
+      )}
+
+
+      <section className="card mt-8 border-ember-900/60 p-5">
+        <p className="text-xs font-semibold uppercase tracking-widest text-ember-400">
+          Account
+        </p>
+        <h2 className="mt-2 font-display text-xl font-semibold text-text">
+          Account settings
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-text-muted">
+          Manage development onboarding state or permanently close your Lexicon
+          account. Deletion removes your profile and user-owned records before
+          removing your Supabase Auth user.
+        </p>
+
+        {accountError && (
+          <p className="mt-4 rounded-md border border-ember-800/60 bg-ember-950/30 px-4 py-3 text-sm text-ember-300">
+            {accountError}
+          </p>
+        )}
+
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+          {isDevelopment && (
+            <button
+              onClick={handleResetOnboarding}
+              disabled={resettingOnboarding || deleting}
+              className="rounded-md border border-border-strong px-4 py-2 text-sm font-semibold text-text-muted transition-colors hover:border-gold-600 hover:text-gold-300 disabled:opacity-60"
+            >
+              {resettingOnboarding ? "Resetting…" : "Reset onboarding"}
+            </button>
+          )}
+          <button
+            onClick={() => {
+              setDeleteText("");
+              setConfirmingDelete(true);
+            }}
+            disabled={deleting}
+            className="rounded-md border border-ember-700 px-4 py-2 text-sm font-semibold text-ember-300 transition-colors hover:border-ember-500 hover:text-ember-200 disabled:opacity-60"
+          >
+            Delete Account
+          </button>
+        </div>
+      </section>
+
+      {confirmingDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink-950/80 p-4 backdrop-blur-sm">
+          <div className="card w-full max-w-md border-ember-800 p-6 shadow-2xl">
+            <p className="text-xs font-semibold uppercase tracking-widest text-ember-400">
+              Permanent action
+            </p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-text">
+              Delete your account?
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-text-muted">
+              This removes your profile, armies, army lists, battles,
+              connections, created campaigns, created venues, and Auth user.
+              Type DELETE to confirm.
+            </p>
+            <input
+              value={deleteText}
+              onChange={(event) => setDeleteText(event.target.value)}
+              placeholder="DELETE"
+              className="mt-5 w-full rounded-md border border-border-strong bg-surface px-3 py-2 text-sm text-text outline-none transition-colors focus:border-ember-500"
+              autoFocus
+            />
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                onClick={() => setConfirmingDelete(false)}
+                disabled={deleting}
+                className="rounded-md border border-border-strong px-4 py-2 text-sm font-medium text-text-muted transition-colors hover:text-text disabled:opacity-60"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleteText !== "DELETE" || deleting}
+                className="rounded-md bg-ember-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-ember-500 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {deleting ? "Deleting…" : "Delete Account"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
