@@ -14,7 +14,13 @@
     "validate:discord-cta": "node scripts/validate-discord-cta.mjs",
     "validate:active-context": "node scripts/validate-active-context.mjs",
     "validate:death-guard-parser": "node scripts/validate-death-guard-army-list-parser.mjs",
-    "validate:army-list-import-auth": "node scripts/validate-army-list-import-auth.mjs"
+    "validate:army-list-import-auth": "node scripts/validate-army-list-import-auth.mjs",
+    "validate:tactical-overview": "node scripts/validate-tactical-overview.mjs",
+    "validate:visual-identity": "node scripts/validate-visual-identity.mjs",
+    "validate:army-naming": "node scripts/validate-army-naming.mjs",
+    "validate:matchup-reveal": "node scripts/validate-matchup-reveal.mjs",
+    "validate:army-card": "node scripts/validate-army-card.mjs",
+    "validate:all": "node scripts/validate-all.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0",
