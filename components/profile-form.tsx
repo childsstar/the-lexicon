@@ -10,6 +10,7 @@ import {
   KNOWN_FACTION_NAMES,
 } from "@/lib/game-data";
 import { useActiveUniverse } from "@/components/active-universe-provider";
+import LocationTagInput from "@/components/location-tag-input";
 import {
   AVAILABILITY_OPTIONS,
   EXPERIENCE_LEVELS,
@@ -109,8 +110,8 @@ export default function ProfileForm({
   const [factionInterests, setFactionInterests] = useState(
     fromList(initial?.faction_interests)
   );
-  const [homeLocations, setHomeLocations] = useState(
-    fromList(initial?.home_locations)
+  const [homeLocations, setHomeLocations] = useState<string[]>(
+    initial?.home_locations ?? []
   );
   const [discordUsername, setDiscordUsername] = useState(
     initial?.discord_username ?? importedDefaults?.discord_username ?? ""
@@ -184,7 +185,7 @@ export default function ProfileForm({
         preferred_game_systems: [...systems, ...toList(otherSystems)],
         primary_factions: [...factions, ...toList(otherFactions)],
         faction_interests: toList(factionInterests),
-        home_locations: toList(homeLocations),
+        home_locations: homeLocations,
         discord_username: discordUsername.trim() || null,
         avatar_url: avatarUrl,
         bio: bio.trim() || null,
@@ -411,17 +412,15 @@ export default function ProfileForm({
         >
           Home locations
         </label>
-        <input
+        <LocationTagInput
           id="home_locations"
-          type="text"
-          value={homeLocations}
-          onChange={(e) => setHomeLocations(e.target.value)}
-          placeholder="e.g. Brooklyn, NY 11215, 94607"
-          className="field"
+          values={homeLocations}
+          onChange={setHomeLocations}
+          placeholder="e.g. Brooklyn, NY or 11215"
         />
         <p className="mt-1.5 text-xs text-text-subtle">
-          One or more cities or ZIP codes, comma separated — each one anchors
-          you to a local community.
+          One or more cities or ZIP codes — each one anchors you to a local
+          community. Type one and press Enter to add it.
         </p>
       </div>
 
