@@ -29,8 +29,8 @@ function ArrivalStep({ hasDiscord, onDone }: { hasDiscord: boolean; onDone: () =
   const [visible, setVisible] = useState(1);
 
   const items = hasDiscord
-    ? ["Discord identity connected", "Profile recovered", "Preparing your tabletop passport"]
-    : ["Account created", "Starting with a clean slate", "Preparing your tabletop passport"];
+    ? ["Discord identity connected", "Profile recovered", "Preparing your Tabletop Passport"]
+    : ["Account created", "Starting with a clean slate", "Preparing your Tabletop Passport"];
 
   useEffect(() => {
     const timers = [
@@ -49,7 +49,7 @@ function ArrivalStep({ hasDiscord, onDone }: { hasDiscord: boolean; onDone: () =
         Welcome to The Lexicon.
       </p>
       <p className="mt-2 text-sm text-text-muted animate-rise">
-        The Archivists are preparing your passport…
+        The Archivists are preparing your Tabletop Passport…
       </p>
       <div className="mt-8 space-y-3 text-left">
         {items.slice(0, visible).map((item) => (
@@ -96,7 +96,7 @@ function IdentityStep({
         Welcome, {displayName}.
       </p>
       <p className="mt-2 text-sm text-text-muted animate-rise">
-        Your passport has been created.
+        Your Tabletop Passport has been created.
       </p>
       {discordUsername && (
         <p className="mt-3 rounded-full border border-border bg-surface px-3 py-1 text-xs text-text-subtle animate-rise">
@@ -107,7 +107,7 @@ function IdentityStep({
         onClick={onContinue}
         className="mt-10 w-full max-w-xs rounded-md bg-gold-500 px-8 py-4 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400"
       >
-        Open your passport
+        Open your Tabletop Passport
       </button>
     </div>
   );

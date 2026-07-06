@@ -276,7 +276,7 @@ export default function WorldExperience() {
       <div className="pb-16 pt-4">
         <div className="animate-reveal card border-gold-600/50 p-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
-            Your passport is stamped
+            Your Tabletop Passport is stamped
           </p>
           <p className="mt-6 text-sm text-text-muted">
             We think you&apos;d enjoy:

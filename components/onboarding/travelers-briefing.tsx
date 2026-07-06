@@ -78,10 +78,10 @@ export default function TravelersBriefing({
     <div className="flex flex-1 flex-col justify-center py-10">
       <div className="animate-rise text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
-          Your passport is stamped
+          Your Tabletop Passport is stamped
         </p>
         <h1 className="mt-3 font-display text-3xl font-semibold leading-snug text-text">
-          Welcome to the road ahead.
+          Welcome to your next adventure.
         </h1>
         <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-text-muted">
           The Lexicon is just getting to know you. Here&apos;s where your
