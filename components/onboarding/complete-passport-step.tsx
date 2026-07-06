@@ -10,7 +10,7 @@ import {
   USERNAME_PATTERN,
 } from "@/lib/types";
 import type { BannerSelection } from "@/components/onboarding/choose-banner-step";
-import type { ProfileFormDefaults } from "@/components/profile-form";
+import { toList, type ProfileFormDefaults } from "@/components/profile-form";
 
 function suggestUsername(seed: string | null): string {
   if (!seed) return "";
@@ -44,7 +44,7 @@ export default function CompletePassportStep({
     importedDefaults?.display_name ?? ""
   );
   const [availability, setAvailability] = useState("");
-  const [homeTerritory, setHomeTerritory] = useState("");
+  const [homeTerritories, setHomeTerritories] = useState("");
   const [travelRadius, setTravelRadius] = useState<string>("");
   const [bio, setBio] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -80,7 +80,7 @@ export default function CompletePassportStep({
         primary_factions: bannerSelection.primaryFaction
           ? [bannerSelection.primaryFaction]
           : [],
-        home_locations: homeTerritory.trim() ? [homeTerritory.trim()] : [],
+        home_locations: toList(homeTerritories),
         home_venue_id: venueId,
         travel_radius_miles: travelRadius ? Number(travelRadius) : null,
         banner_id: bannerSelection.bannerId,
@@ -181,21 +181,23 @@ export default function CompletePassportStep({
 
           <div>
             <label
-              htmlFor="ob_home_territory"
+              htmlFor="ob_home_territories"
               className="mb-1.5 block text-sm font-medium text-text"
             >
-              Home territory
+              Home territories
             </label>
             <input
-              id="ob_home_territory"
+              id="ob_home_territories"
               type="text"
-              value={homeTerritory}
-              onChange={(e) => setHomeTerritory(e.target.value)}
-              placeholder="City or ZIP code"
+              value={homeTerritories}
+              onChange={(e) => setHomeTerritories(e.target.value)}
+              placeholder="e.g. Brooklyn NY, Austin TX, 94607"
               className="field"
             />
             <p className="mt-1.5 text-xs text-text-subtle">
-              Anchors your passport to a local community.
+              One or more cities or ZIP codes, comma separated — each one
+              anchors you to a local community. Add every city you actually
+              spend time in.
             </p>
           </div>
 

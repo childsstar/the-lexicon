@@ -23,7 +23,7 @@ export type ProfileFormDefaults = Pick<
   "display_name" | "discord_username" | "avatar_url"
 >;
 
-function toList(value: string): string[] {
+export function toList(value: string): string[] {
   return value
     .split(",")
     .map((s) => s.trim())
