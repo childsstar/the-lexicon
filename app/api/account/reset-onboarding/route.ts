@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getRequestUser } from "@/lib/supabase-server";
 
 export async function POST(request: Request) {
   if (process.env.NODE_ENV === "production") {
@@ -9,24 +9,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const authorization = request.headers.get("authorization") ?? "";
-
-  if (!url || !anonKey) {
+  let supabase;
+  let user;
+  try {
+    ({ supabase, user } = await getRequestUser(request));
+  } catch (err) {
     return NextResponse.json(
-      { error: "Supabase is not configured." },
+      { error: err instanceof Error ? err.message : String(err) },
       { status: 500 }
     );
   }
 
-  const supabase = createClient(url, anonKey, {
-    global: { headers: authorization ? { authorization } : {} },
-    auth: { persistSession: false },
-  });
-
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  if (!user) {
     return NextResponse.json(
       { error: "Sign in before resetting onboarding." },
       { status: 401 }
@@ -50,7 +44,7 @@ export async function POST(request: Request) {
       preferred_game_key: null,
       profile_completed_at: null,
     })
-    .eq("id", userData.user.id);
+    .eq("id", user.id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

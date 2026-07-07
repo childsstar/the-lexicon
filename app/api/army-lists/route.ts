@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { parseArmyList } from "@/lib/army-lists/parser";
 import { buildTacticalOverview, EMPTY_TACTICAL_SUMMARY } from "@/lib/army-lists/tactical-overview";
 import { generateFallbackArmyName } from "@/lib/army-lists/naming";
 import { generateVisualIdentity } from "@/lib/armies/visual-identity";
+import { getRequestUser } from "@/lib/supabase-server";
 import type { ParsedArmyList } from "@/lib/army-lists/types";
 
 const MAX_RAW_TEXT_LENGTH = 40_000;
@@ -14,19 +14,6 @@ type RequestBody = {
   faction?: unknown;
   rawText?: unknown;
 };
-
-function getSupabaseForRequest(request: Request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const authorization = request.headers.get("authorization") ?? "";
-  if (!url || !anonKey) {
-    throw new Error("Supabase is not configured.");
-  }
-  return createClient(url, anonKey, {
-    global: { headers: authorization ? { authorization } : {} },
-    auth: { persistSession: false },
-  });
-}
 
 export async function POST(request: Request) {
   let body: RequestBody;
@@ -62,14 +49,14 @@ export async function POST(request: Request) {
   }
 
   let supabase;
+  let user;
   try {
-    supabase = getSupabaseForRequest(request);
+    ({ supabase, user } = await getRequestUser(request));
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  if (!user) {
     return NextResponse.json({ error: "Sign in to muster an army." }, { status: 401 });
   }
 
@@ -97,8 +84,8 @@ export async function POST(request: Request) {
   const { data, error } = await supabase
     .from("army_lists")
     .insert({
-      user_id: userData.user.id,
-      profile_id: userData.user.id,
+      user_id: user.id,
+      profile_id: user.id,
       name,
       game_system: resolvedGameSystem,
       faction: resolvedFaction,

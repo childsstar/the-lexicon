@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 const muster = readFileSync(new URL("../app/(app)/armies/muster/muster-army-client.tsx", import.meta.url), "utf8");
 const provider = readFileSync(new URL("../components/auth-provider.tsx", import.meta.url), "utf8");
 const route = readFileSync(new URL("../app/api/army-lists/route.ts", import.meta.url), "utf8");
+const serverAuth = readFileSync(new URL("../lib/supabase-server.ts", import.meta.url), "utf8");
 const profile = readFileSync(new URL("../app/(app)/profile/profile-client.tsx", import.meta.url), "utf8");
 const shell = readFileSync(new URL("../components/app-shell.tsx", import.meta.url), "utf8");
 
@@ -25,8 +26,19 @@ assert.match(muster, /!loading && user[\s\S]*This army will be saved to/, "authe
 assert.match(muster, /disabled=\{submitting \|\| loading \|\| !user\}/, "muster submit is disabled until the session resolves to an authenticated user");
 assert.match(muster, /authorization: `Bearer \$\{token\}`/, "authenticated musters send the shared session token to the API");
 
-assert.match(route, /user_id: userData\.user\.id/, "saved armies are scoped to the authenticated user");
-assert.match(route, /profile_id: userData\.user\.id/, "saved armies are associated with the current profile");
+assert.match(route, /user_id: user\.id/, "saved armies are scoped to the authenticated user");
+assert.match(route, /profile_id: user\.id/, "saved armies are associated with the current profile");
 assert.match(route, /Sign in to muster an army\./, "the API rejects unauthenticated saves with a clear message");
+assert.match(route, /getRequestUser\(request\)/, "the API validates the caller via the shared server auth helper");
+
+// The server auth helper is the fix for the sign-in-not-recognized bug:
+// the caller's JWT must be validated by passing it to getUser() explicitly
+// (not the no-arg path), and attached as a capital-`Authorization` header so
+// it overwrites — rather than collides with — the anon-key header the auth
+// client sets internally. A lowercase `authorization` key would create two
+// colliding headers and GoTrue would reject the request with 401.
+assert.match(serverAuth, /getUser\(token\)/, "server helper validates the caller by passing the token to getUser explicitly");
+assert.match(serverAuth, /Authorization: `Bearer \$\{token\}`/, "server helper attaches the user JWT under the capital Authorization header key");
+assert.doesNotMatch(serverAuth, /headers:\s*\{\s*authorization\b/, "server helper must not use a lowercase authorization key that collides with the anon header");
 
 console.log("Army list import auth validation passed");

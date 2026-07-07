@@ -1,18 +1,7 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { computeMatchupStatus } from "@/lib/matchups/reveal";
+import { getRequestUser } from "@/lib/supabase-server";
 import type { MatchupRow } from "@/lib/matchups/types";
-
-function getSupabaseForRequest(request: Request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const authorization = request.headers.get("authorization") ?? "";
-  if (!url || !anonKey) throw new Error("Supabase is not configured.");
-  return createClient(url, anonKey, {
-    global: { headers: authorization ? { authorization } : {} },
-    auth: { persistSession: false },
-  });
-}
 
 export async function POST(request: Request) {
   let body: { armyId?: unknown };
@@ -28,14 +17,14 @@ export async function POST(request: Request) {
   }
 
   let supabase;
+  let user;
   try {
-    supabase = getSupabaseForRequest(request);
+    ({ supabase, user } = await getRequestUser(request));
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  if (!user) {
     return NextResponse.json({ error: "Sign in to start a matchup." }, { status: 401 });
   }
 
@@ -43,7 +32,7 @@ export async function POST(request: Request) {
     .from("army_lists")
     .select("id")
     .eq("id", armyId)
-    .eq("user_id", userData.user.id)
+    .eq("user_id", user.id)
     .maybeSingle();
   if (armyError || !army) {
     return NextResponse.json({ error: "That army couldn't be found in your muster roll." }, { status: 404 });
@@ -51,7 +40,7 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabase
     .from("army_matchups")
-    .insert({ creator_user_id: userData.user.id, creator_army_id: armyId })
+    .insert({ creator_user_id: user.id, creator_army_id: armyId })
     .select("id, invite_code")
     .single();
 
@@ -64,14 +53,14 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   let supabase;
+  let user;
   try {
-    supabase = getSupabaseForRequest(request);
+    ({ supabase, user } = await getRequestUser(request));
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  if (!user) {
     return NextResponse.json({ error: "Sign in to see your matchups." }, { status: 401 });
   }
 
@@ -84,7 +73,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const userId = userData.user.id;
+  const userId = user.id;
   const matchups = ((data ?? []) as Pick<MatchupRow, "id" | "creator_user_id" | "opponent_user_id" | "creator_locked_at" | "opponent_locked_at" | "status" | "invite_code" | "created_at">[]).map((row) => {
     const isCreator = row.creator_user_id === userId;
     return {

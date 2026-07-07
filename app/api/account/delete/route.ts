@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getBearerToken } from "@/lib/supabase-server";
 
 // The Supabase Admin API (and the service role key it needs) must only ever
 // run server-side. Pinning this route to the Node.js runtime keeps it off
@@ -29,7 +30,10 @@ export async function POST(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const authorization = request.headers.get("authorization") ?? "";
+  // The caller's JWT is attached under the capital `Authorization` key so it
+  // overwrites (rather than collides with) the anon-key header the auth
+  // client sets internally — see lib/supabase-server.ts for the full story.
+  const token = getBearerToken(request);
 
   if (!url || !anonKey) {
     return missingConfigResponse(
@@ -39,13 +43,17 @@ export async function POST(request: Request) {
   }
 
   const userClient = createClient(url, anonKey, {
-    global: { headers: authorization ? { authorization } : {} },
+    global: { headers: token ? { Authorization: `Bearer ${token}` } : {} },
     auth: { persistSession: false },
   });
 
   // Require a valid authenticated session before anything else — this check
   // must succeed on the anon key alone, independent of admin configuration.
-  const { data: userData, error: userError } = await userClient.auth.getUser();
+  // The token is passed explicitly (not the no-arg getUser()) so it is
+  // actually validated instead of read from a session this client never has.
+  const { data: userData, error: userError } = token
+    ? await userClient.auth.getUser(token)
+    : { data: { user: null }, error: new Error("Missing bearer token") };
   if (userError || !userData.user) {
     return NextResponse.json(
       { error: "Sign in before deleting your account." },
