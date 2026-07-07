@@ -11,10 +11,15 @@ assert.match(route, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/, "route reads the 
 assert.doesNotMatch(route, /NEXT_PUBLIC_.*SERVICE_ROLE/, "the service role key must never be read from a NEXT_PUBLIC_ (browser-exposed) env var");
 
 // --- auth is required before deletion, independent of admin config -------
-const authCheckIndex = route.indexOf("userClient.auth.getUser()");
+// The caller's token is passed to getUser() explicitly (not the no-arg
+// path) and attached under the capital `Authorization` key, so a signed-in
+// user is actually recognized — see lib/supabase-server.ts.
+const authCheckIndex = route.indexOf("userClient.auth.getUser(token)");
 const serviceKeyCheckIndex = route.indexOf("if (!serviceRoleKey)");
-assert.ok(authCheckIndex > -1, "route checks the caller's session");
+assert.ok(authCheckIndex > -1, "route validates the caller's token explicitly via getUser(token)");
 assert.ok(serviceKeyCheckIndex > authCheckIndex, "session is validated before the service-role key is required, so unauthenticated requests always get 401 regardless of server config");
+assert.match(route, /Authorization: `Bearer \$\{token\}`/, "the user JWT is attached under the capital Authorization key so it does not collide with the anon-key header");
+assert.doesNotMatch(route, /headers:\s*\{\s*authorization\b/, "the route must not use a lowercase authorization key that collides with the anon header (the sign-in-not-recognized bug)");
 assert.match(route, /Sign in before deleting your account\./, "unauthenticated requests get a clear, safe message");
 assert.match(route, /status: 401/, "unauthenticated requests are rejected with 401");
 

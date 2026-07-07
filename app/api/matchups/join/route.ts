@@ -1,16 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-function getSupabaseForRequest(request: Request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const authorization = request.headers.get("authorization") ?? "";
-  if (!url || !anonKey) throw new Error("Supabase is not configured.");
-  return createClient(url, anonKey, {
-    global: { headers: authorization ? { authorization } : {} },
-    auth: { persistSession: false },
-  });
-}
+import { getRequestUser } from "@/lib/supabase-server";
 
 export async function POST(request: Request) {
   let body: { inviteCode?: unknown };
@@ -26,14 +15,14 @@ export async function POST(request: Request) {
   }
 
   let supabase;
+  let user;
   try {
-    supabase = getSupabaseForRequest(request);
+    ({ supabase, user } = await getRequestUser(request));
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  if (!user) {
     return NextResponse.json({ error: "Sign in to join a matchup." }, { status: 401 });
   }
 
@@ -43,7 +32,7 @@ export async function POST(request: Request) {
   // it to the right row.
   const { error: updateError } = await supabase
     .from("army_matchups")
-    .update({ opponent_user_id: userData.user.id })
+    .update({ opponent_user_id: user.id })
     .eq("invite_code", inviteCode)
     .is("opponent_user_id", null);
 

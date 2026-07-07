@@ -29,7 +29,7 @@ assert.match(fallback, /parseArmyListDeterministically/, "parser should include 
 assert.match(parser, /AI parser unavailable or failed/, "fallback should warn when AI parsing is unavailable");
 assert.match(route, /Paste a roster before mustering this army\./, "route should validate empty input");
 assert.match(route, /parserStatus = "failed"/, "route should persist failed parser state");
-assert.match(route, /userData\.user\.id/, "route should scope imports to the authenticated user");
+assert.match(route, /user_id: user\.id/, "route should scope imports to the authenticated user");
 assert.match(route, /profile_id/, "route should support profile ownership scoping");
 assert.match(migration, /enable row level security/i, "army_lists should enforce RLS");
 assert.match(migration, /Users can read their own army lists/, "army_lists should be owner scoped");

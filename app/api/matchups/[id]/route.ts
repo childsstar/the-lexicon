@@ -1,35 +1,24 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { buildArmyOverviewSnapshot, buildMatchupView } from "@/lib/matchups/reveal";
+import { getRequestUser } from "@/lib/supabase-server";
 import type { ArmyList } from "@/lib/army-lists/types";
 import type { MatchupRow } from "@/lib/matchups/types";
-
-function getSupabaseForRequest(request: Request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const authorization = request.headers.get("authorization") ?? "";
-  if (!url || !anonKey) throw new Error("Supabase is not configured.");
-  return createClient(url, anonKey, {
-    global: { headers: authorization ? { authorization } : {} },
-    auth: { persistSession: false },
-  });
-}
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   let supabase;
+  let user;
   try {
-    supabase = getSupabaseForRequest(request);
+    ({ supabase, user } = await getRequestUser(request));
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
   }
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  if (!user) {
     return NextResponse.json({ error: "Sign in to view this matchup." }, { status: 401 });
   }
-  const userId = userData.user.id;
+  const userId = user.id;
 
   const { data: matchup, error: matchupError } = await supabase
     .from("army_matchups")
