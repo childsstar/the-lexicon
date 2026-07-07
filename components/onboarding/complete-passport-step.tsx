@@ -105,13 +105,13 @@ export default function CompletePassportStep({
     <div className="flex flex-1 flex-col justify-center py-10">
       <div className="animate-rise">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-500">
-          Complete your passport
+          Complete your Tabletop Passport
         </p>
         <h1 className="mt-3 font-display text-3xl font-semibold leading-snug text-text">
-          A few last details for the road ahead.
+          A few last details before your next adventure.
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-text-muted">
-          Only two of these are required — the rest can wait until later.
+          Only two fields are required. The rest can be added as your journey unfolds.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
@@ -246,7 +246,7 @@ export default function CompletePassportStep({
             disabled={saving}
             className="w-full rounded-md bg-gold-500 px-6 py-3.5 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? "Inscribing your passport…" : "Stamp my passport"}
+            {saving ? "Inscribing your Tabletop Passport…" : "Stamp my Tabletop Passport"}
           </button>
           <p className="text-center text-xs text-text-subtle">
             Faction, game systems, and the rest can be filled in anytime from
