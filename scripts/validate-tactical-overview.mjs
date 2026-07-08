@@ -1,23 +1,11 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import ts from "typescript";
+import { readFileSync } from "node:fs";
+import { compileForRequire } from "./compile-ts.mjs";
 
-const source = readFileSync(new URL("../lib/army-lists/tactical-overview.ts", import.meta.url), "utf8")
-  .replace(/^import type .*\n/gm, "");
-const js = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-const dir = mkdtempSync(join(tmpdir(), "lexicon-tactical-"));
-const modulePath = join(dir, "tactical-overview.cjs");
-writeFileSync(modulePath, js);
-const { buildTacticalOverview } = await import(modulePath);
-
-const fallbackSource = readFileSync(new URL("../lib/army-lists/fallback-parser.ts", import.meta.url), "utf8")
-  .replace(/^import type .*\n/gm, "");
-const fallbackJs = ts.transpileModule(fallbackSource, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-const fallbackPath = join(dir, "fallback-parser.cjs");
-writeFileSync(fallbackPath, fallbackJs);
-const { parseArmyListDeterministically } = await import(fallbackPath);
+const [{ parseArmyListDeterministically }, { buildTacticalOverview }] = compileForRequire([
+  "lib/army-lists/fallback-parser.ts",
+  "lib/army-lists/tactical-overview.ts",
+]);
 
 const rawText = readFileSync(new URL("./fixtures/army-lists/death-guard-40k-app-export.txt", import.meta.url), "utf8");
 const parsed = parseArmyListDeterministically({ rawText, name: "Chorus of Contagions" });

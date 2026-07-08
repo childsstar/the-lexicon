@@ -1,4 +1,5 @@
 import type { ParsedArmyList, ParsedArmyUnit } from "./types";
+import { lookupUnitRole, isNonDatasheet } from "./unit-lexicon";
 
 export type UnitThreatTag =
   | "fast"
@@ -30,27 +31,60 @@ export type TacticalSummary = {
   watch_out_for: string[];
 };
 
-const RANGED_PATTERN = /rifle|cannon|plasma|melta|gun|missile|blast|shoot|bolt|flamer|carbine|las-?/i;
-const MELEE_PATTERN = /blade|claw|fist|sword|charge|assault|melee|talon|axe|maul|spear|fang/i;
+const RANGED_PATTERN = /rifle|cannon|plasma|melta|gun|missile|blast|shoot|bolt|flamer|carbine|borer|las-?/i;
+const MELEE_PATTERN = /blade|claw|fist|sword|charge|assault|melee|talon|axe|maul|spear|fang|hammer|glaive|halberd/i;
 const FAST_PATTERN = /jump|jetbike|bike|cavalry|scout|infiltrat|deep strike|fast|outrider|raider|skimmer/i;
 const DURABLE_PATTERN = /terminator|dreadnought|monster|walker|tank|vehicle|hauler|drone|wraith/i;
 const SCORING_PATTERN = /battleline|troop/i;
+
+// Default "you always have one" melee weapons. Every 40K datasheet carries a
+// melee profile, so their mere presence must NOT read as a melee threat —
+// otherwise dedicated shooters/psykers (e.g. Zoanthropes, whose only melee is
+// "claws and teeth") get mislabelled as melee. We strip these before testing.
+const DEFAULT_MELEE_PATTERN = /close combat weapon|claws and teeth|chitinous claws|\bteeth\b|bayonet|combat blade|\bfists?\b(?!\s*of)/gi;
 
 function textFor(unit: ParsedArmyUnit): string {
   return [unit.name, unit.section ?? "", unit.category ?? "", unit.role ?? "", ...unit.wargear, ...unit.upgrades, ...unit.enhancements].join(" ");
 }
 
+/** Melee is only a *threat* if there's a real melee weapon beyond the default one. */
+function hasMeleeThreat(text: string): boolean {
+  const withoutDefaults = text.replace(DEFAULT_MELEE_PATTERN, " ");
+  return MELEE_PATTERN.test(withoutDefaults);
+}
+
+function isCharacterUnit(unit: ParsedArmyUnit): boolean {
+  return /character/i.test(unit.role ?? "") || /characters/i.test(unit.section ?? "");
+}
+
+function isScoringUnit(unit: ParsedArmyUnit, text: string): boolean {
+  return SCORING_PATTERN.test(text) || (unit.quantity ?? 0) >= 5;
+}
+
 function classify(unit: ParsedArmyUnit): UnitThreatTag[] {
   const text = textFor(unit);
   const tags = new Set<UnitThreatTag>();
-  const isCharacter = /character/i.test(unit.role ?? "") || /characters/i.test(unit.section ?? "");
-  if (isCharacter) tags.add("character");
+
+  // 1. Curated lexicon wins for known units — it carries the authoritative
+  //    role that a keyword scan can't reliably infer from a pasted list.
+  const entry = lookupUnitRole(unit.name);
+  if (entry) {
+    entry.tags.forEach((tag) => tags.add(tag));
+    // Character/scoring also depend on this specific list's context, so layer
+    // the structural reads on top of the lexicon's inherent role.
+    if (isCharacterUnit(unit)) tags.add("character");
+    if (isScoringUnit(unit, text)) tags.add("scoring");
+    return [...tags];
+  }
+
+  // 2. Heuristic fallback for unknown units, with melee tightened.
+  if (isCharacterUnit(unit)) tags.add("character");
   if (FAST_PATTERN.test(text)) tags.add("fast");
   const pointsPerModel = unit.points && unit.quantity ? unit.points / unit.quantity : unit.points ?? 0;
   if (DURABLE_PATTERN.test(text) || pointsPerModel >= 150) tags.add("durable");
   if (RANGED_PATTERN.test(text)) tags.add("ranged");
-  if (MELEE_PATTERN.test(text)) tags.add("melee");
-  if (SCORING_PATTERN.test(text) || (unit.quantity ?? 0) >= 5) tags.add("scoring");
+  if (hasMeleeThreat(text)) tags.add("melee");
+  if (isScoringUnit(unit, text)) tags.add("scoring");
   // Every unit does *something* on the table — if nothing else matched,
   // read it as a flexible ranged/scoring piece rather than leaving it
   // out of every bucket.
@@ -76,12 +110,18 @@ function capabilitySummary(unit: ParsedArmyUnit, tags: UnitThreatTag[]): string 
 
 function toNote(unit: ParsedArmyUnit): UnitTacticalNote {
   const tags = classify(unit);
+  const entry = lookupUnitRole(unit.name);
+  // Prefer the curated plain-English summary/role when we have one; the unit
+  // count is prepended so the note still reflects this list's quantity.
+  const summary = entry
+    ? `${unit.quantity && unit.quantity > 1 ? `A unit of ${unit.quantity} — ` : ""}${entry.summary}`
+    : capabilitySummary(unit, tags);
   return {
     name: unit.name,
     points: unit.points,
     quantity: unit.quantity,
-    role: unit.role || unit.section || "Unspecified",
-    capability_summary: capabilitySummary(unit, tags),
+    role: entry?.role || unit.role || unit.section || "Unspecified",
+    capability_summary: summary,
     threat_tags: tags,
   };
 }
@@ -148,7 +188,10 @@ function watchOutFor(notes: UnitTacticalNote[]): string[] {
 }
 
 export function buildTacticalOverview(parsed: ParsedArmyList): TacticalSummary {
-  const notes = parsed.units.map(toNote);
+  // Drop anything that isn't actually a datasheet (army rules, detachment
+  // names, stratagems) so a phantom line can't masquerade as, say, a
+  // ~2000pt "durable anchor" in the overview.
+  const notes = parsed.units.filter((unit) => !isNonDatasheet(unit.name)).map(toNote);
   const { strengths, weaknesses } = strengthsAndWeaknesses(notes);
 
   return {
