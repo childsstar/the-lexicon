@@ -1,4 +1,5 @@
 import type { ArmyListParserInput, ParsedArmyList, ParsedArmyUnit } from "./types";
+import { isNonDatasheet } from "./unit-lexicon";
 
 const SECTION_HEADERS = new Set(["ATTACHED UNITS", "CHARACTERS", "BATTLELINE", "DEDICATED TRANSPORTS", "OTHER DATASHEETS", "ALLIED UNITS"]);
 const FORCE_SIZES = /\b(Strike Force|Incursion|Combat Patrol|Onslaught)\b/i;
@@ -91,6 +92,10 @@ function parseUnitLine(line: string, section: string | null): ParsedArmyUnit | n
   const quantityMatch = pointMatch[1].match(/^(\d+)\s*[x×]\s+(.+)/i);
   const name = (quantityMatch ? quantityMatch[2] : pointMatch[1]).trim();
   if (name.length < 3) return null;
+  // Army rules, detachments, and stratagems can carry a points-looking value
+  // and get mistaken for datasheets (e.g. a "Synaptic ambush" phantom). Never
+  // let a known non-datasheet name become a unit.
+  if (isNonDatasheet(name)) return null;
   return { name, quantity: quantityMatch ? Number(quantityMatch[1]) : 1, points: parseNumber(pointMatch[2]), role: inferRole(`${section ?? ""} ${line}`), section, category: section, enhancements: [], upgrades: [], wargear: [] };
 }
 

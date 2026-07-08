@@ -17,6 +17,7 @@
     "validate:army-list-import-auth": "node scripts/validate-army-list-import-auth.mjs",
     "validate:supabase-auth-header": "node scripts/validate-supabase-auth-header.mjs",
     "validate:tactical-overview": "node scripts/validate-tactical-overview.mjs",
+    "validate:unit-lexicon-classification": "node scripts/validate-unit-lexicon-classification.mjs",
     "validate:visual-identity": "node scripts/validate-visual-identity.mjs",
     "validate:army-naming": "node scripts/validate-army-naming.mjs",
     "validate:matchup-reveal": "node scripts/validate-matchup-reveal.mjs",
