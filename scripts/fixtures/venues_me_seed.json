@@ -1,0 +1,147 @@
+[
+    {
+        "name": "Warhammer - Cornerbrook Plaza",
+        "venue_type": "warhammer_store",
+        "formatted_address": "343 Gorham Rd, South Portland, ME 04106, US",
+        "city": "South Portland",
+        "region_code": "ME",
+        "postal_code": "04106",
+        "country_code": "US",
+        "website": "https://stores.warhammer.com/",
+        "phone": "+1 207-253-0300",
+        "source": "official_store_locator",
+        "source_id": "me-warhammer-cornerbrook-south-portland",
+        "source_url": "https://www.facebook.com/WarhammerCornerbrookPlaza/",
+        "confidence": 0.86,
+        "venue_categories": [
+            "official_warhammer_store",
+            "warhammer_store",
+            "retail",
+            "miniatures_wargaming"
+        ],
+        "supported_game_systems": [
+            "warhammer_40000",
+            "age_of_sigmar",
+            "Kill Team",
+            "Warhammer Underworlds"
+        ],
+        "external_payload": {
+            "audit_note": "Official Games Workshop / Warhammer store in Cornerbrook Plaza. Address (343 Gorham Rd, South Portland, ME 04106) and phone ((207) 253-0300) consistent across Yelp, YellowPages, Nextdoor and the store's own 'Warhammer - Cornerbrook Plaza' Facebook page. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Game Citadel",
+        "venue_type": "game_store",
+        "formatted_address": "720 Broadway, Bangor, ME 04401, US",
+        "city": "Bangor",
+        "region_code": "ME",
+        "postal_code": "04401",
+        "country_code": "US",
+        "website": "https://www.wargames.com/store/1088/bangor/game-citadel",
+        "phone": "+1 207-907-7887",
+        "source": "public_directory_listing",
+        "source_id": "me-game-citadel-bangor",
+        "source_url": "https://www.wargames.com/store/1088/bangor/game-citadel",
+        "confidence": 0.83,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000",
+            "warhammer"
+        ],
+        "external_payload": {
+            "audit_note": "Bangor-area FLGS. Address (720 Broadway, Bangor, ME 04401) and phone ((207) 907-7887) confirmed via the Wargames.com store directory and Yelp. Listing explicitly cites Warhammer Fantasy & 40k, D&D, Magic and hobby supplies. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Spell Bound",
+        "venue_type": "game_store",
+        "formatted_address": "67 E Concourse, Waterville, ME 04901, US",
+        "city": "Waterville",
+        "region_code": "ME",
+        "postal_code": "04901",
+        "country_code": "US",
+        "website": "https://www.spellbnd.com/",
+        "phone": "+1 207-872-8200",
+        "source": "public_directory_listing",
+        "source_id": "me-spell-bound-waterville",
+        "source_url": "https://locator.wizards.com/store/6549",
+        "confidence": 0.85,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Magic: The Gathering",
+            "Pokémon",
+            "Dungeons & Dragons",
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Waterville game store with a large open play area. Address (67 E Concourse, Waterville, ME 04901) and phone ((207) 872-8200) confirmed via the Wizards of the Coast official store locator, Yelp, Buzzfile and the Mid-Maine Chamber of Commerce. Runs Magic, Yu-Gi-Oh, Pokemon, D&D and Pathfinder events. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Game On",
+        "venue_type": "game_store",
+        "formatted_address": "198 Western Ave Ste 6, Augusta, ME 04330, US",
+        "city": "Augusta",
+        "region_code": "ME",
+        "postal_code": "04330",
+        "country_code": "US",
+        "website": "https://gameoncafe.crystalcommerce.com/",
+        "source": "public_directory_listing",
+        "source_id": "me-game-on-augusta",
+        "source_url": "https://locator.wizards.com/store/6000",
+        "confidence": 0.83,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Magic: The Gathering",
+            "Pokémon",
+            "Board games",
+            "Card games"
+        ],
+        "external_payload": {
+            "audit_note": "Augusta trading-card and tabletop game store. Address (198 Western Ave, Ste 6, Augusta, ME 04330) confirmed via the Wizards of the Coast official store locator, Yelp and Apple Maps. Hosts a Pokemon League and TCG events. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Another Round",
+        "venue_type": "board_game_cafe",
+        "formatted_address": "549 Congress St, Portland, ME 04101, US",
+        "city": "Portland",
+        "region_code": "ME",
+        "postal_code": "04101",
+        "country_code": "US",
+        "website": "https://www.anotherroundmaine.com/",
+        "source": "official_website",
+        "source_id": "me-another-round-portland",
+        "source_url": "https://www.anotherroundmaine.com/",
+        "confidence": 0.85,
+        "venue_categories": [
+            "board_game_cafe",
+            "cafe",
+            "restaurant",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Portland's first board game bar and coffee shop (opened 2024) with 300+ games, in the Congress St / Arts District. Address (549 Congress St, Portland, ME 04101) confirmed via the venue's own site, Yelp, Portland Food Map and multiple local news reports. Phone omitted as not consistently published. Coordinates not independently geocoded this session."
+        }
+    }
+]
