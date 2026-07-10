@@ -30,6 +30,35 @@
         }
     },
     {
+        "name": "Warhammer - West Hartford",
+        "venue_type": "warhammer_store",
+        "formatted_address": "7 S Main St, West Hartford, CT 06107, US",
+        "city": "West Hartford",
+        "region_code": "CT",
+        "postal_code": "06107",
+        "country_code": "US",
+        "website": "https://stores.warhammer.com/",
+        "source": "official_store_locator",
+        "source_id": "warhammer-west-hartford",
+        "source_url": "https://stores.warhammer.com/",
+        "confidence": 0.82,
+        "venue_categories": [
+            "official_warhammer_store",
+            "warhammer_store",
+            "retail",
+            "miniatures_wargaming"
+        ],
+        "supported_game_systems": [
+            "warhammer_40000",
+            "age_of_sigmar",
+            "Kill Team",
+            "Warhammer Underworlds"
+        ],
+        "external_payload": {
+            "audit_note": "Games Workshop / Warhammer store at Blue Back Square, West Hartford. Street address (7 S Main St, West Hartford, CT 06107) is consistent across multiple independent directory listings (YellowPages, Superpages, Local.com) and the store's own 'GW West Hartford' Facebook page. Two conflicting phone numbers appear across directories ((860) 702-1138 vs (860) 236-9900), so phone is omitted pending verification. Coordinates not independently geocoded this session."
+        }
+    },
+    {
         "name": "Elm City Games",
         "venue_type": "game_store",
         "formatted_address": "71 Orange St, New Haven, CT 06510, US",
