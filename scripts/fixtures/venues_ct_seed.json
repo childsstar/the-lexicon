@@ -7,6 +7,8 @@
         "region_code": "CT",
         "postal_code": "06905",
         "country_code": "US",
+        "latitude": 41.079,
+        "longitude": -73.541,
         "website": "https://stores.warhammer.com/",
         "phone": "+1 203-323-7001",
         "source": "official_store_locator",
@@ -26,7 +28,7 @@
             "Warhammer Underworlds"
         ],
         "external_payload": {
-            "audit_note": "Address and phone (2373 Summer St, Stamford, CT 06905; (203) 323-7001) are consistent across many independent directory mirrors (ShowMeLocal, Cylex, FindOpen, KeepUp Cards) in addition to the official Warhammer store locator domain, which is the standard pattern for a corroborated official Games Workshop retail store. Coordinates were not independently geocoded this session and are omitted pending verification."
+            "audit_note": "Address and phone (2373 Summer St, Stamford, CT 06905; (203) 323-7001) are consistent across many independent directory mirrors (ShowMeLocal, Cylex, FindOpen, KeepUp Cards) in addition to the official Warhammer store locator domain, which is the standard pattern for a corroborated official Games Workshop retail store. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -37,6 +39,8 @@
         "region_code": "CT",
         "postal_code": "06107",
         "country_code": "US",
+        "latitude": 41.762,
+        "longitude": -72.742,
         "website": "https://stores.warhammer.com/",
         "source": "official_store_locator",
         "source_id": "warhammer-west-hartford",
@@ -55,7 +59,7 @@
             "Warhammer Underworlds"
         ],
         "external_payload": {
-            "audit_note": "Games Workshop / Warhammer store at Blue Back Square, West Hartford. Street address (7 S Main St, West Hartford, CT 06107) is consistent across multiple independent directory listings (YellowPages, Superpages, Local.com) and the store's own 'GW West Hartford' Facebook page. Two conflicting phone numbers appear across directories ((860) 702-1138 vs (860) 236-9900), so phone is omitted pending verification. Coordinates not independently geocoded this session."
+            "audit_note": "Games Workshop / Warhammer store at Blue Back Square, West Hartford. Street address (7 S Main St, West Hartford, CT 06107) is consistent across multiple independent directory listings (YellowPages, Superpages, Local.com) and the store's own 'GW West Hartford' Facebook page. Two conflicting phone numbers appear across directories ((860) 702-1138 vs (860) 236-9900), so phone is omitted pending verification. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -66,6 +70,8 @@
         "region_code": "CT",
         "postal_code": "06510",
         "country_code": "US",
+        "latitude": 41.308,
+        "longitude": -72.925,
         "website": "https://www.elmcitygames.com/",
         "phone": "+1 203-689-3532",
         "source": "public_directory_listing",
@@ -85,7 +91,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Address/phone confirmed via Yelp business listing and the store's own website domain; a Facebook event listing (\"Warhammer 40k and miniature painting\") and prior blog posts confirm recurring 40k/miniatures programming alongside the FLGS' Magic and D&D community. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone confirmed via Yelp business listing and the store's own website domain; a Facebook event listing (\"Warhammer 40k and miniature painting\") and prior blog posts confirm recurring 40k/miniatures programming alongside the FLGS' Magic and D&D community. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -96,6 +102,8 @@
         "region_code": "CT",
         "postal_code": "06111",
         "country_code": "US",
+        "latitude": 41.672,
+        "longitude": -72.74,
         "website": "https://www.tabletopgamingcenter.com/",
         "phone": "+1 860-436-2213",
         "source": "public_directory_listing",
@@ -116,7 +124,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Address/phone (741 New Britain Ave, inside Twin City Plaza on the Newington/New Britain line) confirmed via Yelp and the store's own website contact page; description explicitly lists Games Workshop miniatures alongside Magic: The Gathering. One of the largest FLGS in New England per multiple independent write-ups. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone (741 New Britain Ave, inside Twin City Plaza on the Newington/New Britain line) confirmed via Yelp and the store's own website contact page; description explicitly lists Games Workshop miniatures alongside Magic: The Gathering. One of the largest FLGS in New England per multiple independent write-ups. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -127,6 +135,8 @@
         "region_code": "CT",
         "postal_code": "06088",
         "country_code": "US",
+        "latitude": 41.913,
+        "longitude": -72.61,
         "website": "https://thebattlestandard.com/",
         "phone": "+1 860-254-5111",
         "source": "public_directory_listing",
@@ -146,7 +156,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Address/phone confirmed via Yelp, Tripadvisor, and Giftly listings and the store's own domain. Multiple write-ups describe a dedicated miniature painting area and hosted painting clinics with a well-known Warhammer/40k-focused painter, corroborating strong Warhammer 40k support alongside general board/card/RPG stock. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone confirmed via Yelp, Tripadvisor, and Giftly listings and the store's own domain. Multiple write-ups describe a dedicated miniature painting area and hosted painting clinics with a well-known Warhammer/40k-focused painter, corroborating strong Warhammer 40k support alongside general board/card/RPG stock. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -157,6 +167,8 @@
         "region_code": "CT",
         "postal_code": "06042",
         "country_code": "US",
+        "latitude": 41.783,
+        "longitude": -72.545,
         "website": "https://www.theportalct.com/",
         "phone": "+1 860-432-0711",
         "source": "public_directory_listing",
@@ -178,7 +190,7 @@
             "Card games"
         ],
         "external_payload": {
-            "audit_note": "Address/phone corroborated across Wargames.Com's store directory, Yellow Pages, and Loc8NearMe; multiple sources describe 17 gaming tables with terrain built out for Warhammer 40k, Warhammer Fantasy, Warmachine, and Bolt Action specifically. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone corroborated across Wargames.Com's store directory, Yellow Pages, and Loc8NearMe; multiple sources describe 17 gaming tables with terrain built out for Warhammer 40k, Warhammer Fantasy, Warmachine, and Bolt Action specifically. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -189,6 +201,8 @@
         "region_code": "CT",
         "postal_code": "06851",
         "country_code": "US",
+        "latitude": 41.109,
+        "longitude": -73.396,
         "website": "https://www.battlegroundsgaming.net/",
         "phone": "+1 203-295-8181",
         "source": "public_directory_listing",
@@ -208,7 +222,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Address/phone confirmed via the store's own website and multiple independent directories (Chamber of Commerce, Loc8NearMe, FabTCG locator). Described as the highest-rated FLGS in Fairfield County, specializing in Magic, board games, Warhammer 40K, and D&D with weekly tournaments. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone confirmed via the store's own website and multiple independent directories (Chamber of Commerce, Loc8NearMe, FabTCG locator). Described as the highest-rated FLGS in Fairfield County, specializing in Magic, board games, Warhammer 40K, and D&D with weekly tournaments. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -219,6 +233,8 @@
         "region_code": "CT",
         "postal_code": "06776",
         "country_code": "US",
+        "latitude": 41.552,
+        "longitude": -73.421,
         "website": "https://nutmeggames.com/",
         "phone": "+1 860-799-6704",
         "email": "gamemasters@nutmeggames.com",
@@ -239,7 +255,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Address/phone/email confirmed via the store's own contact page and Yelp/FabTCG locator listings. Site markets itself as carrying board games, card games, puzzles, toys, Magic: The Gathering, D&D, and Warhammer 40k. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone/email confirmed via the store's own contact page and Yelp/FabTCG locator listings. Site markets itself as carrying board games, card games, puzzles, toys, Magic: The Gathering, D&D, and Warhammer 40k. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -250,6 +266,8 @@
         "region_code": "CT",
         "postal_code": "06492",
         "country_code": "US",
+        "latitude": 41.472,
+        "longitude": -72.82,
         "website": "https://dragonslairhobbies.com/",
         "phone": "+1 203-626-5087",
         "source": "public_directory_listing",
@@ -267,7 +285,7 @@
             "warhammer"
         ],
         "external_payload": {
-            "audit_note": "Address/phone confirmed via Yelp, Wizards of the Coast store locator, and the Dragon's Lair Hobbies locations page. Store description lists Magic: The Gathering, Warhammer, and Pokemon among its trading card/miniatures inventory; exact Warhammer product line (40k vs Age of Sigmar) was not specified in the reviewed sources, so the generic 'warhammer' system tag is used. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone confirmed via Yelp, Wizards of the Coast store locator, and the Dragon's Lair Hobbies locations page. Store description lists Magic: The Gathering, Warhammer, and Pokemon among its trading card/miniatures inventory; exact Warhammer product line (40k vs Age of Sigmar) was not specified in the reviewed sources, so the generic 'warhammer' system tag is used. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -278,6 +296,8 @@
         "region_code": "CT",
         "postal_code": "06340",
         "country_code": "US",
+        "latitude": 41.351,
+        "longitude": -72.079,
         "website": "https://citadel-game-cellar.com-place.com/",
         "phone": "+1 860-445-0641",
         "source": "public_directory_listing",
@@ -297,7 +317,7 @@
             "Miniatures games"
         ],
         "external_payload": {
-            "audit_note": "Address/phone confirmed via the Wizards of the Coast official store locator and multiple independent directories (Yelp, Chamber of Commerce, Loc8NearMe). Described as Groton's original FLGS operating since 1977, with a large selection of miniatures, D&D rulebooks/modules, and dedicated gaming tables; no source reviewed explicitly confirmed Games Workshop/Warhammer product lines, so no Warhammer system tag was added. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone confirmed via the Wizards of the Coast official store locator and multiple independent directories (Yelp, Chamber of Commerce, Loc8NearMe). Described as Groton's original FLGS operating since 1977, with a large selection of miniatures, D&D rulebooks/modules, and dedicated gaming tables; no source reviewed explicitly confirmed Games Workshop/Warhammer product lines, so no Warhammer system tag was added. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -308,6 +328,8 @@
         "region_code": "CT",
         "postal_code": "06457",
         "country_code": "US",
+        "latitude": 41.5623,
+        "longitude": -72.6506,
         "website": "https://backagaincafe.com/",
         "phone": "+1 860-854-6524",
         "source": "public_directory_listing",
@@ -323,7 +345,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Address/phone confirmed via the cafe's own website, CTvisit tourism listing, and Middlesex Chamber of Commerce directory. Family-friendly tea/coffee shop with a library of 800+ board games and a recurring Board Game Club event per CTvisit's events calendar. Coordinates not independently geocoded this session."
+            "audit_note": "Address/phone confirmed via the cafe's own website, CTvisit tourism listing, and Middlesex Chamber of Commerce directory. Family-friendly tea/coffee shop with a library of 800+ board games and a recurring Board Game Club event per CTvisit's events calendar. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -334,6 +356,8 @@
         "region_code": "CT",
         "postal_code": "06107",
         "country_code": "US",
+        "latitude": 41.7625,
+        "longitude": -72.742,
         "website": "https://www.westhartfordlibrary.org/programs/librarygroups/wh-tabletop-game-club/",
         "phone": "+1 860-561-6950",
         "source": "library_program_page",
@@ -350,7 +374,7 @@
             "Role-playing games"
         ],
         "external_payload": {
-            "audit_note": "West Hartford Public Library's own program page describes the West Hartford Tabletop Game Club meeting every other Tuesday evening in the Magazine Room of the Noah Webster branch (the system's main branch); address/phone confirmed via Yelp. Coordinates not independently geocoded this session."
+            "audit_note": "West Hartford Public Library's own program page describes the West Hartford Tabletop Game Club meeting every other Tuesday evening in the Magazine Room of the Noah Webster branch (the system's main branch); address/phone confirmed via Yelp. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -389,6 +413,8 @@
         "region_code": "CT",
         "postal_code": "06108",
         "country_code": "US",
+        "latitude": 41.7823,
+        "longitude": -72.612,
         "website": "https://www.easthartfordct.gov/east-hartford-public-library",
         "phone": "+1 860-290-4330",
         "source": "library_program_page",
@@ -404,7 +430,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Town of East Hartford's own library events page lists a recurring Family Board Game Night for ages 3+; address/phone for the Raymond (main) branch confirmed via Yelp and the Connecticut Library Consortium directory. Coordinates not independently geocoded this session."
+            "audit_note": "Town of East Hartford's own library events page lists a recurring Family Board Game Night for ages 3+; address/phone for the Raymond (main) branch confirmed via Yelp and the Connecticut Library Consortium directory. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -471,6 +497,8 @@
         "region_code": "CT",
         "postal_code": "06880",
         "country_code": "US",
+        "latitude": 41.1415,
+        "longitude": -73.358,
         "website": "https://westportlibrary.org/",
         "phone": "+1 203-291-4800",
         "source": "library_program_page",
@@ -488,7 +516,7 @@
             "Puzzles"
         ],
         "external_payload": {
-            "audit_note": "Westport Library's own site and Patch coverage describe 'Gaming Saturdays' in the Great Hall (board games, puzzles) plus a nationally known MakerSpace program; the street address (20 Jesup Rd) is well-established for this library but was corroborated via secondary listings rather than a directly fetched official page this session, so confidence is set moderately rather than as high as sources fetched directly. Coordinates not independently geocoded this session."
+            "audit_note": "Westport Library's own site and Patch coverage describe 'Gaming Saturdays' in the Great Hall (board games, puzzles) plus a nationally known MakerSpace program; the street address (20 Jesup Rd) is well-established for this library but was corroborated via secondary listings rather than a directly fetched official page this session, so confidence is set moderately rather than as high as sources fetched directly. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the exact street address above is the authoritative location."
         }
     },
     {
@@ -499,6 +527,8 @@
         "region_code": "CT",
         "postal_code": "06810",
         "country_code": "US",
+        "latitude": 41.3948,
+        "longitude": -73.454,
         "website": "https://danburylibrary.org/",
         "source": "library_program_page",
         "source_id": "danbury-library-dnd-makerlab",
@@ -516,7 +546,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Danbury Library's own 'Games & Play' program archive and Patch calendar listings describe a recurring live D&D RPG meetup for teens, a 'Root' tabletop RPG program, and D&D miniature painting sessions run out of the library's MakerLab. Street address corroborated via secondary listings rather than a directly fetched official page this session; coordinates not independently geocoded this session."
+            "audit_note": "Danbury Library's own 'Games & Play' program archive and Patch calendar listings describe a recurring live D&D RPG meetup for teens, a 'Root' tabletop RPG program, and D&D miniature painting sessions run out of the library's MakerLab. Street address corroborated via secondary listings rather than a directly fetched official page this session; coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode."
         }
     }
 ]
