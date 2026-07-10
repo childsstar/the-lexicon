@@ -1,0 +1,172 @@
+[
+    {
+        "name": "Warhammer - Chapel View",
+        "venue_type": "warhammer_store",
+        "formatted_address": "2000 Chapel View Blvd Suite 150, Cranston, RI 02920, US",
+        "city": "Cranston",
+        "region_code": "RI",
+        "postal_code": "02920",
+        "country_code": "US",
+        "website": "https://stores.warhammer.com/",
+        "phone": "+1 401-943-1513",
+        "source": "official_store_locator",
+        "source_id": "ri-warhammer-chapel-view-cranston",
+        "source_url": "https://www.facebook.com/WarhammerChapelView/",
+        "confidence": 0.86,
+        "venue_categories": [
+            "official_warhammer_store",
+            "warhammer_store",
+            "retail",
+            "miniatures_wargaming"
+        ],
+        "supported_game_systems": [
+            "warhammer_40000",
+            "age_of_sigmar",
+            "Kill Team",
+            "Warhammer Underworlds"
+        ],
+        "external_payload": {
+            "audit_note": "Official Games Workshop / Warhammer store in the Chapel View shopping center, Cranston. Address (2000 Chapel View Blvd Suite 150, Cranston, RI 02920) and phone ((401) 943-1513) consistent across the Chapel View mall directory, YellowPages, Nextdoor and the store's own 'Warhammer - Chapel View' Facebook page. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Game On!",
+        "venue_type": "game_store",
+        "formatted_address": "943 Namquid Dr, Warwick, RI 02888, US",
+        "city": "Warwick",
+        "region_code": "RI",
+        "postal_code": "02888",
+        "country_code": "US",
+        "website": "http://www.gameonri.com/",
+        "phone": "+1 401-739-4263",
+        "source": "public_directory_listing",
+        "source_id": "ri-game-on-warwick",
+        "source_url": "https://visitwarwickri.com/listing/game-on!/368/",
+        "confidence": 0.87,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000",
+            "BattleTech"
+        ],
+        "external_payload": {
+            "audit_note": "Veteran-owned FLGS. Address (943 Namquid Dr, Warwick, RI 02888) and phone ((401) 739-GAME / 739-4263) confirmed via the Visit Warwick RI tourism listing, Yelp and the store's own site. Inventory explicitly includes Warhammer and BattleTech miniatures plus Magic, Pokemon and D&D. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "The Mana Core",
+        "venue_type": "game_store",
+        "formatted_address": "683 Broadway, Providence, RI 02909, US",
+        "city": "Providence",
+        "region_code": "RI",
+        "postal_code": "02909",
+        "country_code": "US",
+        "website": "https://www.themanacore.com/",
+        "phone": "+1 401-589-1101",
+        "source": "public_directory_listing",
+        "source_id": "ri-mana-core-providence",
+        "source_url": "https://www.themanacore.com/",
+        "confidence": 0.83,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Magic: The Gathering",
+            "Board games",
+            "Miniatures games",
+            "Role-playing games"
+        ],
+        "external_payload": {
+            "audit_note": "Counter-service game store on Olneyville Square. Address confirmed via the store's own site, CardShopHub and Manta as 683 Broadway (a Yelp listing shows the neighboring 681 Broadway); ZIP 02909. Phone ((401) 589-1101) via CardShopHub. Stocks CCGs (Magic singles), board games, miniature games and RPGs. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Untapped Games",
+        "venue_type": "game_store",
+        "formatted_address": "545 Pawtucket Ave Ste A205, Pawtucket, RI 02860, US",
+        "city": "Pawtucket",
+        "region_code": "RI",
+        "postal_code": "02860",
+        "country_code": "US",
+        "website": "https://www.untappedgames.com/",
+        "phone": "+1 401-368-1619",
+        "source": "public_directory_listing",
+        "source_id": "ri-untapped-games-pawtucket",
+        "source_url": "https://www.untappedgames.com/store_location",
+        "confidence": 0.85,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Magic: The Gathering",
+            "Board games",
+            "Card games"
+        ],
+        "external_payload": {
+            "audit_note": "Trading-card-focused FLGS running weekly sanctioned Magic: The Gathering tournaments. Address (545 Pawtucket Ave, Ste A205, Pawtucket, RI 02860) and phone ((401) 368-1619) confirmed via the store's own location page and Yelp. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Good Game Grill",
+        "venue_type": "board_game_cafe",
+        "formatted_address": "53 Weybosset St, Providence, RI 02903, US",
+        "city": "Providence",
+        "region_code": "RI",
+        "postal_code": "02903",
+        "country_code": "US",
+        "website": "https://www.instagram.com/goodgamegrill_ri/",
+        "phone": "+1 401-537-7174",
+        "source": "public_directory_listing",
+        "source_id": "ri-good-game-grill-providence",
+        "source_url": "https://www.rimonthly.com/good-game-grill-board-game-cafe-opens-in-providence/",
+        "confidence": 0.82,
+        "venue_categories": [
+            "board_game_cafe",
+            "cafe",
+            "restaurant",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Board game cafe in downtown Providence. Address (53 Weybosset St, Providence, RI 02903) and phone ((401) 537-7174) confirmed via Rhode Island Monthly coverage and the venue's Instagram. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "The Game House",
+        "venue_type": "board_game_cafe",
+        "formatted_address": "1726 Smith St, North Providence, RI 02911, US",
+        "city": "North Providence",
+        "region_code": "RI",
+        "postal_code": "02911",
+        "country_code": "US",
+        "website": "https://www.thegamehouseri.com/",
+        "source": "official_website",
+        "source_id": "ri-the-game-house-north-providence",
+        "source_url": "https://www.thegamehouseri.com/",
+        "confidence": 0.82,
+        "venue_categories": [
+            "board_game_cafe",
+            "cafe",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Board game cafe in North Providence. Address (1726 Smith St, North Providence, RI 02911) confirmed via the cafe's own site, WPRI and Valley Breeze news coverage of its opening. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+        }
+    }
+]

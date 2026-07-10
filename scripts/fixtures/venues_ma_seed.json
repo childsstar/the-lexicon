@@ -1,0 +1,407 @@
+[
+    {
+        "name": "Warhammer - Brookline",
+        "venue_type": "warhammer_store",
+        "formatted_address": "23A Harvard St, Brookline, MA 02445, US",
+        "city": "Brookline",
+        "region_code": "MA",
+        "postal_code": "02445",
+        "country_code": "US",
+        "website": "https://stores.warhammer.com/",
+        "phone": "+1 617-731-7817",
+        "source": "official_store_locator",
+        "source_id": "ma-warhammer-brookline",
+        "source_url": "https://www.facebook.com/WarhammerBrookline/",
+        "confidence": 0.86,
+        "venue_categories": [
+            "official_warhammer_store",
+            "warhammer_store",
+            "retail",
+            "miniatures_wargaming"
+        ],
+        "supported_game_systems": [
+            "warhammer_40000",
+            "age_of_sigmar",
+            "Kill Team",
+            "Warhammer Underworlds"
+        ],
+        "external_payload": {
+            "audit_note": "Official Games Workshop / Warhammer store in Brookline Village. Address (23A Harvard St, Brookline, MA 02445) and phone ((617) 731-7817) are consistent across Yelp, YellowPages, Superpages, findglocal and the store's own 'Warhammer - Brookline' Facebook page. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Warhammer - Franklin",
+        "venue_type": "warhammer_store",
+        "formatted_address": "425 Franklin Village Dr, Franklin, MA 02038, US",
+        "city": "Franklin",
+        "region_code": "MA",
+        "postal_code": "02038",
+        "country_code": "US",
+        "website": "https://stores.warhammer.com/",
+        "phone": "+1 508-528-8500",
+        "source": "official_store_locator",
+        "source_id": "ma-warhammer-franklin",
+        "source_url": "https://www.facebook.com/WarhammerFranklin/",
+        "confidence": 0.85,
+        "venue_categories": [
+            "official_warhammer_store",
+            "warhammer_store",
+            "retail",
+            "miniatures_wargaming"
+        ],
+        "supported_game_systems": [
+            "warhammer_40000",
+            "age_of_sigmar",
+            "Kill Team",
+            "Warhammer Underworlds"
+        ],
+        "external_payload": {
+            "audit_note": "Official Games Workshop / Warhammer store in Franklin Village Mall. Address (425 Franklin Village Dr, Franklin, MA 02038) and phone ((508) 528-8500) corroborated across YellowPages (two listings), Neustar/TransUnion business profile, Buzzfile and the store's 'Warhammer - Franklin' Facebook page. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Pandemonium Books & Games",
+        "venue_type": "game_store",
+        "formatted_address": "4 Pleasant St, Cambridge, MA 02139, US",
+        "city": "Cambridge",
+        "region_code": "MA",
+        "postal_code": "02139",
+        "country_code": "US",
+        "website": "https://pandemoniumbooks.com/",
+        "phone": "+1 617-547-3721",
+        "source": "official_website",
+        "source_id": "ma-pandemonium-cambridge",
+        "source_url": "https://pandemoniumbooks.com/pages/contact-us",
+        "confidence": 0.9,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000"
+        ],
+        "external_payload": {
+            "audit_note": "Address/phone (4 Pleasant St, Central Square, Cambridge, MA 02139; (617) 547-3721) confirmed via the store's own contact page, the Cambridge Office for Tourism listing, CitySquares and Chamber of Commerce. Long-running (since 1989) FLGS/bookstore with the largest event space of its kind in the Boston area, running Magic, board game, RPG and Warhammer miniatures events. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Battleground Games & Hobbies - Abington",
+        "venue_type": "game_store",
+        "formatted_address": "1423 Bedford St, Abington, MA 02351, US",
+        "city": "Abington",
+        "region_code": "MA",
+        "postal_code": "02351",
+        "country_code": "US",
+        "website": "https://www.battlegroundgames.com/",
+        "phone": "+1 781-261-9669",
+        "source": "public_directory_listing",
+        "source_id": "ma-battleground-abington",
+        "source_url": "https://www.battlegroundgames.com/hours-locations/",
+        "confidence": 0.86,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000"
+        ],
+        "external_payload": {
+            "audit_note": "Flagship of the four-location Battleground Games & Hobbies chain. Address (1423 Bedford St, Abington, MA 02351) and phone ((781) 261-9669) confirmed via Yelp, YellowPages, Wargames.com store directory and the chain's own hours/locations page. Store stocks board/card/miniature/RPG games including Games Workshop Warhammer. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Battleground Games & Hobbies - Norton",
+        "venue_type": "game_store",
+        "formatted_address": "175 Mansfield Ave, Norton, MA 02766, US",
+        "city": "Norton",
+        "region_code": "MA",
+        "postal_code": "02766",
+        "country_code": "US",
+        "website": "https://www.battlegroundgames.com/",
+        "phone": "+1 508-316-1195",
+        "source": "public_directory_listing",
+        "source_id": "ma-battleground-norton",
+        "source_url": "https://www.battlegroundgames.com/hours-locations/",
+        "confidence": 0.85,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000"
+        ],
+        "external_payload": {
+            "audit_note": "Battleground Games & Hobbies Norton branch. Address (175 Mansfield Ave, Norton, MA 02766) and phone ((508) 316-1195) confirmed via Yelp and the chain's own hours/locations page. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Battleground Games & Hobbies - Saugus",
+        "venue_type": "game_store",
+        "formatted_address": "910 Broadway Ste D, Saugus, MA 01906, US",
+        "city": "Saugus",
+        "region_code": "MA",
+        "postal_code": "01906",
+        "country_code": "US",
+        "website": "https://www.battlegroundgames.com/",
+        "phone": "+1 781-558-2916",
+        "source": "public_directory_listing",
+        "source_id": "ma-battleground-saugus",
+        "source_url": "https://www.battlegroundgames.com/hours-locations/",
+        "confidence": 0.85,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000"
+        ],
+        "external_payload": {
+            "audit_note": "Battleground Games & Hobbies Saugus (North Shore) branch. Address (910 Broadway Ste D, Saugus, MA 01906) and phone ((781) 558-2916) confirmed via Yelp, Apple Maps and the Wizards/Riftbound store locators plus the chain's own site. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Battleground Games & Hobbies - Framingham",
+        "venue_type": "game_store",
+        "formatted_address": "60 Worcester Rd, Framingham, MA 01701, US",
+        "city": "Framingham",
+        "region_code": "MA",
+        "postal_code": "01701",
+        "country_code": "US",
+        "website": "https://www.battlegroundgames.com/",
+        "phone": "+1 508-202-9178",
+        "source": "public_directory_listing",
+        "source_id": "ma-battleground-framingham",
+        "source_url": "https://locator.wizards.com/store/17342",
+        "confidence": 0.85,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000"
+        ],
+        "external_payload": {
+            "audit_note": "Battleground Games & Hobbies MetroWest branch, opened November 8, 2024. Address (60 Worcester Rd, Framingham, MA 01701) and phone ((508) 202-9178) confirmed via the Wizards of the Coast official store locator, Yelp and the chain's own opening announcement. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "That's Entertainment",
+        "venue_type": "game_store",
+        "formatted_address": "244 Park Ave, Worcester, MA 01609, US",
+        "city": "Worcester",
+        "region_code": "MA",
+        "postal_code": "01609",
+        "country_code": "US",
+        "website": "https://thatse.com/",
+        "phone": "+1 508-755-4207",
+        "source": "public_directory_listing",
+        "source_id": "ma-thats-entertainment-worcester",
+        "source_url": "https://thatse.com/table-top-gaming/",
+        "confidence": 0.88,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "hobby_shop"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000",
+            "warhammer"
+        ],
+        "external_payload": {
+            "audit_note": "New England pop-culture emporium and tabletop retailer. Address (244 Park Ave, Worcester, MA 01609) and phone ((508) 755-4207) confirmed via the store's own site, Chamber of Commerce and Yelp. Its tabletop page explicitly lists a large selection of Warhammer model kits, codex books and Citadel paints alongside Magic and D&D. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Greenfield Games",
+        "venue_type": "game_store",
+        "formatted_address": "238 Main St, Greenfield, MA 01301, US",
+        "city": "Greenfield",
+        "region_code": "MA",
+        "postal_code": "01301",
+        "country_code": "US",
+        "website": "https://www.greenfieldgames.com/",
+        "phone": "+1 413-774-5225",
+        "source": "public_directory_listing",
+        "source_id": "ma-greenfield-games",
+        "source_url": "https://www.greenfieldgames.com/",
+        "confidence": 0.87,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000",
+            "Warmachine"
+        ],
+        "external_payload": {
+            "audit_note": "Self-described largest game store in western Massachusetts. Address (238 Main St, Greenfield, MA 01301) and phone ((413) 774-5225) confirmed via Yelp, YellowPages, Wargames.com directory and the store's own site. Multiple reviews describe stock of Warhammer, Warmachine, Malifaux and D&D with regular in-store events. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Alpha Omega Hobby",
+        "venue_type": "game_store",
+        "formatted_address": "1357 Hancock St, Quincy, MA 02169, US",
+        "city": "Quincy",
+        "region_code": "MA",
+        "postal_code": "02169",
+        "country_code": "US",
+        "website": "https://www.alphaomegahobby.com/",
+        "phone": "+1 617-328-1640",
+        "source": "public_directory_listing",
+        "source_id": "ma-alpha-omega-hobby-quincy",
+        "source_url": "https://www.alphaomegahobby.com/",
+        "confidence": 0.84,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "warhammer_40000"
+        ],
+        "external_payload": {
+            "audit_note": "Hobby/game store relocated to 1357 Hancock St next to Quincy City Hall on the Hancock-Adams Common. Address confirmed via Waze, Apple Maps and Quincy Chamber of Commerce; phone ((617) 328-1640) via Chamber of Commerce. Note: a Yelp listing still shows a former address of 1515 Hancock St, so the older street number is stale. Described as catering to the Warhammer and Magic: The Gathering crowds with a downstairs battling area. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Game Underground",
+        "venue_type": "game_store",
+        "formatted_address": "349 Moody St, Waltham, MA 02453, US",
+        "city": "Waltham",
+        "region_code": "MA",
+        "postal_code": "02453",
+        "country_code": "US",
+        "website": "https://www.facebook.com/GameUnderground/",
+        "phone": "+1 508-283-1503",
+        "source": "public_directory_listing",
+        "source_id": "ma-game-underground-waltham",
+        "source_url": "https://www.yelp.com/biz/game-underground-waltham",
+        "confidence": 0.83,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Card games"
+        ],
+        "external_payload": {
+            "audit_note": "Game store on Moody St in Waltham. Address (349 Moody St, Waltham, MA 02453) and phone ((508) 283-1503) confirmed via Yelp, YellowPages, Waltham Chamber of Commerce and Loc8NearMe. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Knight Moves Board Game Cafe",
+        "venue_type": "board_game_cafe",
+        "formatted_address": "1402 Beacon St, Brookline, MA 02446, US",
+        "city": "Brookline",
+        "region_code": "MA",
+        "postal_code": "02446",
+        "country_code": "US",
+        "website": "https://www.knightmovescafe.com/",
+        "source": "official_website",
+        "source_id": "ma-knight-moves-brookline",
+        "source_url": "https://www.knightmovescafe.com/",
+        "confidence": 0.88,
+        "venue_categories": [
+            "board_game_cafe",
+            "cafe",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Board game cafe at 1402 Beacon St, Brookline (Coolidge Corner area), address confirmed via the cafe's own site and Yelp plus Brookline.News coverage. The former Somerville location (1159 Broadway) has closed; only the original Brookline cafe operates. Phone omitted as not consistently published across sources. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Tavern of Tales",
+        "venue_type": "board_game_cafe",
+        "formatted_address": "1478 Tremont St, Boston, MA 02120, US",
+        "city": "Boston",
+        "region_code": "MA",
+        "postal_code": "02120",
+        "country_code": "US",
+        "website": "https://www.tavernoftales.com/",
+        "phone": "+1 617-708-0172",
+        "source": "official_website",
+        "source_id": "ma-tavern-of-tales-boston",
+        "source_url": "https://www.tavernoftales.com/",
+        "confidence": 0.86,
+        "venue_categories": [
+            "board_game_cafe",
+            "cafe",
+            "restaurant",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Dungeons & Dragons"
+        ],
+        "external_payload": {
+            "audit_note": "Boston's board game cafe and bar in Mission Hill (near Roxbury Crossing/Brigham Circle). Address (1478 Tremont St, Boston, MA 02120) and phone ((617) 708-0172) confirmed via the venue's own site and OpenTable. Runs board game library play plus D&D nights. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Cambridge Public Library - Main Branch",
+        "venue_type": "library",
+        "formatted_address": "449 Broadway, Cambridge, MA 02138, US",
+        "city": "Cambridge",
+        "region_code": "MA",
+        "postal_code": "02138",
+        "country_code": "US",
+        "website": "https://www.cambridgema.gov/Departments/CambridgePublicLibrary",
+        "source": "library_program_page",
+        "source_id": "ma-cambridge-public-library-game-nights",
+        "source_url": "https://cambridgepl.libcal.com/event/14173921",
+        "confidence": 0.8,
+        "venue_categories": [
+            "library",
+            "community_space",
+            "recurring_event_venue"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Dungeons & Dragons"
+        ],
+        "external_payload": {
+            "audit_note": "Cambridge Public Library's own LibCal/LibNet event system lists recurring Adult Board Game Nights (Central Square and Valente branches) and a multi-session youth Dungeons & Dragons campaign. Main branch address (449 Broadway, Cambridge, MA 02138) is the well-known central library; confirmed via the city's library department page. Coordinates not independently geocoded this session."
+        }
+    }
+]

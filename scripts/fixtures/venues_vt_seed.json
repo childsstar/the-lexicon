@@ -1,0 +1,145 @@
+[
+    {
+        "name": "Quarterstaff Games",
+        "venue_type": "game_store",
+        "formatted_address": "152 Church St, Burlington, VT 05401, US",
+        "city": "Burlington",
+        "region_code": "VT",
+        "postal_code": "05401",
+        "country_code": "US",
+        "website": "https://www.quarterstaffgames.com/",
+        "phone": "+1 802-863-3666",
+        "source": "public_directory_listing",
+        "source_id": "vt-quarterstaff-games-burlington",
+        "source_url": "https://www.quarterstaffgames.com/",
+        "confidence": 0.85,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space",
+            "tournament_venue"
+        ],
+        "supported_game_systems": [
+            "Magic: The Gathering",
+            "Board games",
+            "Dungeons & Dragons",
+            "warhammer_40000",
+            "Warmachine"
+        ],
+        "external_payload": {
+            "audit_note": "Vermont's largest and oldest gaming store, on the Church Street Marketplace. Yelp (updated 2026), Seven Days, Apple Maps and Wheree list the current address as 152 Church St, Burlington, VT 05401 (an older listing shows 130 Bank St Suite 104, likely a prior location); phone (802) 863-3666. Store explicitly stocks Magic, Warhammer and Warmachine miniatures, board games and Pathfinder/RPGs. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Vermont Gaming Academy",
+        "venue_type": "game_store",
+        "formatted_address": "155 Dorset St, South Burlington, VT 05403, US",
+        "city": "South Burlington",
+        "region_code": "VT",
+        "postal_code": "05403",
+        "country_code": "US",
+        "website": "https://www.vermontgamingacademy.com/",
+        "phone": "+1 802-399-2953",
+        "source": "public_directory_listing",
+        "source_id": "vt-vermont-gaming-academy-south-burlington",
+        "source_url": "https://www.umallvt.com/store/vermont-gaming-academy",
+        "confidence": 0.84,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "Board games",
+            "warhammer_40000"
+        ],
+        "external_payload": {
+            "audit_note": "Game store inside University Mall, South Burlington. Address (155 Dorset St, South Burlington, VT 05403) and phone ((802) 399-2953) confirmed via the University Mall directory, Yelp and Apple Maps. Store lists Magic, Pokemon, Yu-Gi-Oh, Warhammer, D&D and board games. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "The Boardroom - Board Game Cafe",
+        "venue_type": "board_game_cafe",
+        "formatted_address": "3 Mill St, Burlington, VT 05401, US",
+        "city": "Burlington",
+        "region_code": "VT",
+        "postal_code": "05401",
+        "country_code": "US",
+        "website": "https://www.theboardroomvt.com/",
+        "phone": "+1 802-540-1710",
+        "source": "public_directory_listing",
+        "source_id": "vt-the-boardroom-burlington",
+        "source_url": "https://www.theboardroomvt.com/",
+        "confidence": 0.84,
+        "venue_categories": [
+            "board_game_cafe",
+            "cafe",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Board game cafe with 700+ games to play and 500+ to buy. Address (3 Mill St, Burlington, VT 05401) and phone ((802) 540-1710) confirmed via the cafe's own site, Yelp, Seven Days and Joe Coffee locations. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Draw Go Games",
+        "venue_type": "game_store",
+        "formatted_address": "9 Evelyn St, Rutland, VT 05701, US",
+        "city": "Rutland",
+        "region_code": "VT",
+        "postal_code": "05701",
+        "country_code": "US",
+        "website": "https://drawgogames.com/",
+        "phone": "+1 802-772-7482",
+        "source": "public_directory_listing",
+        "source_id": "vt-draw-go-games-rutland",
+        "source_url": "https://drawgogames.com/contact-us/",
+        "confidence": 0.83,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Magic: The Gathering",
+            "Dungeons & Dragons",
+            "warhammer_40000",
+            "Board games"
+        ],
+        "external_payload": {
+            "audit_note": "Downtown Rutland FLGS. Address (9 Evelyn St, Rutland, VT 05701) and phone ((802) 772-7482) confirmed via the store's own contact page, Downtown Rutland business listing and the FaB TCG locator. Stocks Magic, Warhammer and D&D. Coordinates not independently geocoded this session."
+        }
+    },
+    {
+        "name": "Tinker and Smithy Game Store",
+        "venue_type": "game_store",
+        "formatted_address": "72 Main St, Middlebury, VT 05753, US",
+        "city": "Middlebury",
+        "region_code": "VT",
+        "postal_code": "05753",
+        "country_code": "US",
+        "website": "https://tinkerandsmithy.square.site/",
+        "phone": "+1 802-989-7274",
+        "source": "public_directory_listing",
+        "source_id": "vt-tinker-and-smithy-middlebury",
+        "source_url": "https://tinkerandsmithy.square.site/",
+        "confidence": 0.83,
+        "venue_categories": [
+            "retail",
+            "flgs",
+            "event_space"
+        ],
+        "supported_game_systems": [
+            "Board games",
+            "Magic: The Gathering",
+            "Dungeons & Dragons"
+        ],
+        "external_payload": {
+            "audit_note": "Game store in downtown Middlebury. Address (72 Main St, Middlebury, VT 05753) confirmed via Waze, YellowPages and the store's own Square site; phone ((802) 989-7274) via Facebook/Yelp. Sells board games, TCGs and RPGs with in-store play space. Coordinates not independently geocoded this session."
+        }
+    }
+]
