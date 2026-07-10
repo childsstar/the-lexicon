@@ -7,6 +7,8 @@
         "region_code": "NH",
         "postal_code": "03063",
         "country_code": "US",
+        "latitude": 42.7654,
+        "longitude": -71.4676,
         "website": "https://relentlessdragon.com/",
         "phone": "+1 603-204-5275",
         "source": "official_website",
@@ -27,7 +29,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Full-service FLGS and a top-tier Games Workshop Independent Stockist. Address (483 Amherst St, Nashua, NH 03063) and phone ((603) 204-5275) confirmed via the store's own site. Its Warhammer page describes a 3,500 sq ft shop with four permanent wargaming tables with scenery and a 40+ player play space, carrying the full Warhammer 40k and Age of Sigmar ranges. Coordinates not independently geocoded this session."
+            "audit_note": "Full-service FLGS and a top-tier Games Workshop Independent Stockist. Address (483 Amherst St, Nashua, NH 03063) and phone ((603) 204-5275) confirmed via the store's own site. Its Warhammer page describes a 3,500 sq ft shop with four permanent wargaming tables with scenery and a 40+ player play space, carrying the full Warhammer 40k and Age of Sigmar ranges. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -38,6 +40,8 @@
         "region_code": "NH",
         "postal_code": "03103",
         "country_code": "US",
+        "latitude": 42.9956,
+        "longitude": -71.4548,
         "website": "https://www.dmcomics.com/",
         "phone": "+1 603-669-9636",
         "source": "official_website",
@@ -57,7 +61,7 @@
             "Dungeons & Dragons"
         ],
         "external_payload": {
-            "audit_note": "New Hampshire comic and game store running weekly Magic, Yu-Gi-Oh and Pokemon events. Address (252 Willow St, Manchester, NH 03103) and phone ((603) 669-9636) confirmed via the store's own stores page, VisitNH and Chamber of Commerce. One older directory shows a former 245 Maple St address; 252 Willow St is the current, consistently listed location. Coordinates not independently geocoded this session."
+            "audit_note": "New Hampshire comic and game store running weekly Magic, Yu-Gi-Oh and Pokemon events. Address (252 Willow St, Manchester, NH 03103) and phone ((603) 669-9636) confirmed via the store's own stores page, VisitNH and Chamber of Commerce. One older directory shows a former 245 Maple St address; 252 Willow St is the current, consistently listed location. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -68,6 +72,8 @@
         "region_code": "NH",
         "postal_code": "03301",
         "country_code": "US",
+        "latitude": 43.2081,
+        "longitude": -71.5376,
         "website": "https://www.dmcomics.com/",
         "phone": "+1 603-715-2683",
         "source": "official_website",
@@ -87,7 +93,7 @@
             "Dungeons & Dragons"
         ],
         "external_payload": {
-            "audit_note": "Concord branch of Double Midnight Comics. Address (341 Loudon Rd, Concord, NH 03301) and phone ((603) 715-2683) confirmed via the store's own stores page, its 'Double Midnight Comics Concord' Facebook page and Yelp. Coordinates not independently geocoded this session."
+            "audit_note": "Concord branch of Double Midnight Comics. Address (341 Loudon Rd, Concord, NH 03301) and phone ((603) 715-2683) confirmed via the store's own stores page, its 'Double Midnight Comics Concord' Facebook page and Yelp. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -98,6 +104,8 @@
         "region_code": "NH",
         "postal_code": "03801",
         "country_code": "US",
+        "latitude": 43.0718,
+        "longitude": -70.7626,
         "website": "https://diversionsgames.com/",
         "phone": "+1 603-766-6220",
         "source": "public_directory_listing",
@@ -116,7 +124,7 @@
             "Card games"
         ],
         "external_payload": {
-            "audit_note": "Downtown Portsmouth game store (with a sister shop in South Portland, ME). Address (123 Congress St, Portsmouth, NH 03801) and phone ((603) 766-6220) confirmed via the Wizards of the Coast official store locator, the store's own site and Yelp. Runs events six days a week including MTG drafts, board game nights and LCG nights. Coordinates not independently geocoded this session."
+            "audit_note": "Downtown Portsmouth game store (with a sister shop in South Portland, ME). Address (123 Congress St, Portsmouth, NH 03801) and phone ((603) 766-6220) confirmed via the Wizards of the Coast official store locator, the store's own site and Yelp. Runs events six days a week including MTG drafts, board game nights and LCG nights. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -127,6 +135,8 @@
         "region_code": "NH",
         "postal_code": "03101",
         "country_code": "US",
+        "latitude": 42.99,
+        "longitude": -71.461,
         "website": "https://www.boardsandbrewsnh.com/",
         "phone": "+1 603-232-5184",
         "source": "official_website",
@@ -143,7 +153,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Board game cafe and bar billed as New Hampshire's first, in downtown Manchester. Address (941 Elm St, Manchester, NH 03101) and phone ((603) 232-5184) confirmed via the cafe's own site, Yelp, Tripadvisor and Manchester Ink Link coverage. Coordinates not independently geocoded this session."
+            "audit_note": "Board game cafe and bar billed as New Hampshire's first, in downtown Manchester. Address (941 Elm St, Manchester, NH 03101) and phone ((603) 232-5184) confirmed via the cafe's own site, Yelp, Tripadvisor and Manchester Ink Link coverage. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     }
 ]

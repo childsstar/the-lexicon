@@ -7,6 +7,8 @@
         "region_code": "ME",
         "postal_code": "04106",
         "country_code": "US",
+        "latitude": 43.63,
+        "longitude": -70.335,
         "website": "https://stores.warhammer.com/",
         "phone": "+1 207-253-0300",
         "source": "official_store_locator",
@@ -26,7 +28,7 @@
             "Warhammer Underworlds"
         ],
         "external_payload": {
-            "audit_note": "Official Games Workshop / Warhammer store in Cornerbrook Plaza. Address (343 Gorham Rd, South Portland, ME 04106) and phone ((207) 253-0300) consistent across Yelp, YellowPages, Nextdoor and the store's own 'Warhammer - Cornerbrook Plaza' Facebook page. Coordinates not independently geocoded this session."
+            "audit_note": "Official Games Workshop / Warhammer store in Cornerbrook Plaza. Address (343 Gorham Rd, South Portland, ME 04106) and phone ((207) 253-0300) consistent across Yelp, YellowPages, Nextdoor and the store's own 'Warhammer - Cornerbrook Plaza' Facebook page. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -37,6 +39,8 @@
         "region_code": "ME",
         "postal_code": "04401",
         "country_code": "US",
+        "latitude": 44.8016,
+        "longitude": -68.7712,
         "website": "https://www.wargames.com/store/1088/bangor/game-citadel",
         "phone": "+1 207-907-7887",
         "source": "public_directory_listing",
@@ -56,7 +60,7 @@
             "warhammer"
         ],
         "external_payload": {
-            "audit_note": "Bangor-area FLGS. Address (720 Broadway, Bangor, ME 04401) and phone ((207) 907-7887) confirmed via the Wargames.com store directory and Yelp. Listing explicitly cites Warhammer Fantasy & 40k, D&D, Magic and hobby supplies. Coordinates not independently geocoded this session."
+            "audit_note": "Bangor-area FLGS. Address (720 Broadway, Bangor, ME 04401) and phone ((207) 907-7887) confirmed via the Wargames.com store directory and Yelp. Listing explicitly cites Warhammer Fantasy & 40k, D&D, Magic and hobby supplies. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -67,6 +71,8 @@
         "region_code": "ME",
         "postal_code": "04901",
         "country_code": "US",
+        "latitude": 44.552,
+        "longitude": -69.6317,
         "website": "https://www.spellbnd.com/",
         "phone": "+1 207-872-8200",
         "source": "public_directory_listing",
@@ -86,7 +92,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Waterville game store with a large open play area. Address (67 E Concourse, Waterville, ME 04901) and phone ((207) 872-8200) confirmed via the Wizards of the Coast official store locator, Yelp, Buzzfile and the Mid-Maine Chamber of Commerce. Runs Magic, Yu-Gi-Oh, Pokemon, D&D and Pathfinder events. Coordinates not independently geocoded this session."
+            "audit_note": "Waterville game store with a large open play area. Address (67 E Concourse, Waterville, ME 04901) and phone ((207) 872-8200) confirmed via the Wizards of the Coast official store locator, Yelp, Buzzfile and the Mid-Maine Chamber of Commerce. Runs Magic, Yu-Gi-Oh, Pokemon, D&D and Pathfinder events. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -97,6 +103,8 @@
         "region_code": "ME",
         "postal_code": "04330",
         "country_code": "US",
+        "latitude": 44.3106,
+        "longitude": -69.7795,
         "website": "https://gameoncafe.crystalcommerce.com/",
         "source": "public_directory_listing",
         "source_id": "me-game-on-augusta",
@@ -115,7 +123,7 @@
             "Card games"
         ],
         "external_payload": {
-            "audit_note": "Augusta trading-card and tabletop game store. Address (198 Western Ave, Ste 6, Augusta, ME 04330) confirmed via the Wizards of the Coast official store locator, Yelp and Apple Maps. Hosts a Pokemon League and TCG events. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+            "audit_note": "Augusta trading-card and tabletop game store. Address (198 Western Ave, Ste 6, Augusta, ME 04330) confirmed via the Wizards of the Coast official store locator, Yelp and Apple Maps. Hosts a Pokemon League and TCG events. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -126,6 +134,8 @@
         "region_code": "ME",
         "postal_code": "04101",
         "country_code": "US",
+        "latitude": 43.6591,
+        "longitude": -70.2568,
         "website": "https://www.anotherroundmaine.com/",
         "source": "official_website",
         "source_id": "me-another-round-portland",
@@ -141,7 +151,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Portland's first board game bar and coffee shop (opened 2024) with 300+ games, in the Congress St / Arts District. Address (549 Congress St, Portland, ME 04101) confirmed via the venue's own site, Yelp, Portland Food Map and multiple local news reports. Phone omitted as not consistently published. Coordinates not independently geocoded this session."
+            "audit_note": "Portland's first board game bar and coffee shop (opened 2024) with 300+ games, in the Congress St / Arts District. Address (549 Congress St, Portland, ME 04101) confirmed via the venue's own site, Yelp, Portland Food Map and multiple local news reports. Phone omitted as not consistently published. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     }
 ]

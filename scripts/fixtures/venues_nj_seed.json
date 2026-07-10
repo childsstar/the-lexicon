@@ -7,6 +7,8 @@
         "region_code": "NJ",
         "postal_code": "07747",
         "country_code": "US",
+        "latitude": 40.4,
+        "longitude": -74.22,
         "website": "https://stores.warhammer.com/",
         "phone": "+1 732-566-1483",
         "source": "official_store_locator",
@@ -26,7 +28,7 @@
             "Warhammer Underworlds"
         ],
         "external_payload": {
-            "audit_note": "Official Games Workshop / Warhammer store in Colonial Plaza on Route 34 (Aberdeen Township, Matawan mailing address). Address (1121 NJ-34 Suite 1121-N, Matawan, NJ 07747) and phone ((732) 566-1483) consistent across Cylex, Firmania, YellowPages, a Yelp 'Warhammer Games Workshop' listing (updated May 2026) and the store's own 'Warhammer Holmdel/Matawan' Facebook page. NOTE: the former Games Workshop store in Voorhees, NJ (1120 White Horse Rd) has closed per Yelp/YellowPages and is intentionally excluded. Coordinates not independently geocoded this session."
+            "audit_note": "Official Games Workshop / Warhammer store in Colonial Plaza on Route 34 (Aberdeen Township, Matawan mailing address). Address (1121 NJ-34 Suite 1121-N, Matawan, NJ 07747) and phone ((732) 566-1483) consistent across Cylex, Firmania, YellowPages, a Yelp 'Warhammer Games Workshop' listing (updated May 2026) and the store's own 'Warhammer Holmdel/Matawan' Facebook page. NOTE: the former Games Workshop store in Voorhees, NJ (1120 White Horse Rd) has closed per Yelp/YellowPages and is intentionally excluded. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -37,6 +39,8 @@
         "region_code": "NJ",
         "postal_code": "08648",
         "country_code": "US",
+        "latitude": 40.2757,
+        "longitude": -74.669,
         "website": "https://round2gaming.com/",
         "phone": "+1 609-749-6000",
         "source": "official_website",
@@ -56,7 +60,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Central NJ tabletop store on the second floor of Quaker Bridge Mall. Address (3320 US-1, Quaker Bridge Mall Unit 256, Lawrence Township, NJ 08648) and phone ((609) 749-6000) confirmed via the store's own site, Simon mall directory and the Riftbound/RollForStore locators. Runs daily events including open Warhammer/tabletop wargaming every Wednesday. Coordinates not independently geocoded this session."
+            "audit_note": "Central NJ tabletop store on the second floor of Quaker Bridge Mall. Address (3320 US-1, Quaker Bridge Mall Unit 256, Lawrence Township, NJ 08648) and phone ((609) 749-6000) confirmed via the store's own site, Simon mall directory and the Riftbound/RollForStore locators. Runs daily events including open Warhammer/tabletop wargaming every Wednesday. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -67,6 +71,8 @@
         "region_code": "NJ",
         "postal_code": "08619",
         "country_code": "US",
+        "latitude": 40.25,
+        "longitude": -74.745,
         "website": "https://tabletopheaven.com/",
         "source": "official_website",
         "source_id": "nj-tabletop-heaven-ewing",
@@ -84,7 +90,7 @@
             "Card games"
         ],
         "external_payload": {
-            "audit_note": "Trading-card and tabletop store. Address (1901 N Olden Ave, Suite 10, Ewing, NJ 08619) confirmed via the store's own site, Instagram, LGS Finder, Yelp and findglocal. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+            "audit_note": "Trading-card and tabletop store. Address (1901 N Olden Ave, Suite 10, Ewing, NJ 08619) confirmed via the store's own site, Instagram, LGS Finder, Yelp and findglocal. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -95,6 +101,8 @@
         "region_code": "NJ",
         "postal_code": "08091",
         "country_code": "US",
+        "latitude": 39.8085,
+        "longitude": -74.9299,
         "website": "https://www.facebook.com/AllThingsFun/",
         "phone": "+1 856-719-1414",
         "source": "public_directory_listing",
@@ -113,7 +121,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "South Jersey game and comic retailer (2,500+ sq ft). Address (185 C Route 73 N, West Berlin, NJ 08091) and phone ((856) 719-1414) confirmed via YellowPages, Wargames.com directory, Tripadvisor and Yelp. Coordinates not independently geocoded this session."
+            "audit_note": "South Jersey game and comic retailer (2,500+ sq ft). Address (185 C Route 73 N, West Berlin, NJ 08091) and phone ((856) 719-1414) confirmed via YellowPages, Wargames.com directory, Tripadvisor and Yelp. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -124,6 +132,8 @@
         "region_code": "NJ",
         "postal_code": "08876",
         "country_code": "US",
+        "latitude": 40.5743,
+        "longitude": -74.6096,
         "website": "https://www.facebook.com/theonlygameintownnj/",
         "source": "public_directory_listing",
         "source_id": "nj-only-game-in-town-somerville",
@@ -141,7 +151,7 @@
             "Miniatures games"
         ],
         "external_payload": {
-            "audit_note": "Long-running Somerville FLGS. Address (211 W Main St, Somerville, NJ 08876) confirmed via YellowPages, Chamber of Commerce, Wargames.com directory and Manta. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+            "audit_note": "Long-running Somerville FLGS. Address (211 W Main St, Somerville, NJ 08876) confirmed via YellowPages, Chamber of Commerce, Wargames.com directory and Manta. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -152,6 +162,8 @@
         "region_code": "NJ",
         "postal_code": "07430",
         "country_code": "US",
+        "latitude": 41.087,
+        "longitude": -74.15,
         "website": "https://roguestate.gg/",
         "phone": "+1 201-822-0000",
         "source": "public_directory_listing",
@@ -172,7 +184,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Community-built FLGS in Bergen County. Address (115 Franklin Turnpike, Unit 2C, Mahwah, NJ 07430) and phone ((201) 822-0000) confirmed via Yelp, CardShopHub, BBB and LGS Finder. Store site markets Warhammer 40k, Age of Sigmar, Magic and Pokemon with daily play and tournaments. Coordinates not independently geocoded this session."
+            "audit_note": "Community-built FLGS in Bergen County. Address (115 Franklin Turnpike, Unit 2C, Mahwah, NJ 07430) and phone ((201) 822-0000) confirmed via Yelp, CardShopHub, BBB and LGS Finder. Store site markets Warhammer 40k, Age of Sigmar, Magic and Pokemon with daily play and tournaments. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -183,6 +195,8 @@
         "region_code": "NJ",
         "postal_code": "07009",
         "country_code": "US",
+        "latitude": 40.8523,
+        "longitude": -74.229,
         "website": "https://www.facebook.com/timewarpcomicsandgames/",
         "phone": "+1 973-857-9788",
         "source": "public_directory_listing",
@@ -200,7 +214,7 @@
             "Dungeons & Dragons"
         ],
         "external_payload": {
-            "audit_note": "Comic and game store in Essex County. Address (555A Pompton Ave, Cedar Grove, NJ 07009) and phone ((973) 857-9788) confirmed via Waze, Fresh Comics, Groupon, Loc8NearMe and Apple Maps. Runs Magic and tabletop events. Coordinates not independently geocoded this session."
+            "audit_note": "Comic and game store in Essex County. Address (555A Pompton Ave, Cedar Grove, NJ 07009) and phone ((973) 857-9788) confirmed via Waze, Fresh Comics, Groupon, Loc8NearMe and Apple Maps. Runs Magic and tabletop events. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -211,6 +225,8 @@
         "region_code": "NJ",
         "postal_code": "08550",
         "country_code": "US",
+        "latitude": 40.287,
+        "longitude": -74.6252,
         "website": "https://www.gamersrealm.com/",
         "phone": "+1 609-426-9339",
         "source": "public_directory_listing",
@@ -230,7 +246,7 @@
             "Flames of War"
         ],
         "external_payload": {
-            "audit_note": "Central NJ FLGS. Address (2025 Old Trenton Rd, West Windsor, NJ 08550) and phone ((609) 426-9339) confirmed via the Wargames.com store directory and the store's own online catalog. Listing cites Warhammer 40k, Flames of War, Hordes and Magic. Coordinates not independently geocoded this session."
+            "audit_note": "Central NJ FLGS. Address (2025 Old Trenton Rd, West Windsor, NJ 08550) and phone ((609) 426-9339) confirmed via the Wargames.com store directory and the store's own online catalog. Listing cites Warhammer 40k, Flames of War, Hordes and Magic. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -241,6 +257,8 @@
         "region_code": "NJ",
         "postal_code": "07416",
         "country_code": "US",
+        "latitude": 41.1123,
+        "longitude": -74.5843,
         "website": "https://www.facebook.com/Unpluggedboardgamecafe/",
         "source": "public_directory_listing",
         "source_id": "nj-unplugged-board-game-cafe-franklin",
@@ -255,7 +273,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Board game cafe with 500+ games in Sussex County. Address (190 Munsonhurst Rd, Franklin, NJ 07416) confirmed via Yelp and Tripadvisor. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+            "audit_note": "Board game cafe with 500+ games in Sussex County. Address (190 Munsonhurst Rd, Franklin, NJ 07416) confirmed via Yelp and Tripadvisor. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     }
 ]

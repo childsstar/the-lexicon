@@ -7,6 +7,8 @@
         "region_code": "NY",
         "postal_code": "11803",
         "country_code": "US",
+        "latitude": 40.785,
+        "longitude": -73.477,
         "website": "https://stores.warhammer.com/",
         "phone": "+1 516-932-0040",
         "source": "official_store_locator",
@@ -26,7 +28,7 @@
             "Warhammer Underworlds"
         ],
         "external_payload": {
-            "audit_note": "Official Games Workshop / Warhammer store in Manetto Hill Plaza, Nassau County (Long Island). Address (14 Manetto Hill Rd, Plainview, NY 11803) and phone ((516) 932-0040) confirmed across YellowPages, Nextdoor, Instagram and the store's own 'Warhammer - Plainview' Facebook page. The Manhattan Games Workshop at 55 E 8th St is intentionally excluded as it is within NYC. Coordinates not independently geocoded this session."
+            "audit_note": "Official Games Workshop / Warhammer store in Manetto Hill Plaza, Nassau County (Long Island). Address (14 Manetto Hill Rd, Plainview, NY 11803) and phone ((516) 932-0040) confirmed across YellowPages, Nextdoor, Instagram and the store's own 'Warhammer - Plainview' Facebook page. The Manhattan Games Workshop at 55 E 8th St is intentionally excluded as it is within NYC. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -37,6 +39,8 @@
         "region_code": "NY",
         "postal_code": "11784",
         "country_code": "US",
+        "latitude": 40.8676,
+        "longitude": -73.0454,
         "website": "https://brothersgrimgames.com/",
         "phone": "+1 631-698-2805",
         "source": "public_directory_listing",
@@ -56,7 +60,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Long Island (Suffolk County) gaming hub. Address (1244 Middle Country Rd, Selden, NY 11784) and phone ((631) 698-2805) confirmed via the store's own site, Yelp, LongIsland.com and Wheree. Inventory explicitly includes Magic, Pokemon, Yu-Gi-Oh, Warhammer and D&D with tournaments. Coordinates not independently geocoded this session."
+            "audit_note": "Long Island (Suffolk County) gaming hub. Address (1244 Middle Country Rd, Selden, NY 11784) and phone ((631) 698-2805) confirmed via the store's own site, Yelp, LongIsland.com and Wheree. Inventory explicitly includes Magic, Pokemon, Yu-Gi-Oh, Warhammer and D&D with tournaments. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -67,6 +71,8 @@
         "region_code": "NY",
         "postal_code": "11743",
         "country_code": "US",
+        "latitude": 40.8682,
+        "longitude": -73.4257,
         "website": "https://www.yelp.com/biz/main-st-board-game-cafe-huntington",
         "source": "public_directory_listing",
         "source_id": "ny-main-st-board-game-cafe-huntington",
@@ -81,7 +87,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Board game cafe in Huntington, Long Island. Address (307 Main St, Huntington, NY 11743) confirmed via Yelp (updated 2026). Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+            "audit_note": "Board game cafe in Huntington, Long Island. Address (307 Main St, Huntington, NY 11743) confirmed via Yelp (updated 2026). Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -92,6 +98,8 @@
         "region_code": "NY",
         "postal_code": "10533",
         "country_code": "US",
+        "latitude": 41.0387,
+        "longitude": -73.8688,
         "website": "https://newkawaii.com/",
         "phone": "+1 914-279-0001",
         "source": "public_directory_listing",
@@ -109,7 +117,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Westchester County games/toys store near the Irvington Metro-North station. Address (1 Bridge St, Ste 105-A, Irvington, NY 10533) and phone ((914) 279-0001) confirmed via the Wizards of the Coast store locator, Chamber of Commerce and the store's own site. Runs miniature wargaming (Warhammer and skirmish games) plus board games and TTRPGs. Coordinates not independently geocoded this session."
+            "audit_note": "Westchester County games/toys store near the Irvington Metro-North station. Address (1 Bridge St, Ste 105-A, Irvington, NY 10533) and phone ((914) 279-0001) confirmed via the Wizards of the Coast store locator, Chamber of Commerce and the store's own site. Runs miniature wargaming (Warhammer and skirmish games) plus board games and TTRPGs. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -120,6 +128,8 @@
         "region_code": "NY",
         "postal_code": "12603",
         "country_code": "US",
+        "latitude": 41.64,
+        "longitude": -73.915,
         "website": "http://www.wowdragonsden.com/",
         "phone": "+1 845-471-1401",
         "source": "public_directory_listing",
@@ -138,7 +148,7 @@
             "Miniatures games"
         ],
         "external_payload": {
-            "audit_note": "Hudson Valley FLGS. The current active location is 2600 South Rd (Route 9), Poughkeepsie, NY 12603, phone (845) 471-1401, confirmed via Wargames.com directory, the store's own contact page and BBB; note an older 794 Main St location shows as closed on Yelp. Coordinates not independently geocoded this session."
+            "audit_note": "Hudson Valley FLGS. The current active location is 2600 South Rd (Route 9), Poughkeepsie, NY 12603, phone (845) 471-1401, confirmed via Wargames.com directory, the store's own contact page and BBB; note an older 794 Main St location shows as closed on Yelp. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -149,6 +159,8 @@
         "region_code": "NY",
         "postal_code": "12205",
         "country_code": "US",
+        "latitude": 42.708,
+        "longitude": -73.828,
         "website": "https://www.zombie-planet.com/",
         "phone": "+1 518-438-7202",
         "source": "public_directory_listing",
@@ -168,7 +180,7 @@
             "Card games"
         ],
         "external_payload": {
-            "audit_note": "Capital District comics-and-games store. Address (1238 Central Ave, Albany, NY 12205) and phone ((518) 438-7202) confirmed via Apple Maps, Yelp, Groupon, YellowPages and the comic shop locator. Coordinates not independently geocoded this session."
+            "audit_note": "Capital District comics-and-games store. Address (1238 Central Ave, Albany, NY 12205) and phone ((518) 438-7202) confirmed via Apple Maps, Yelp, Groupon, YellowPages and the comic shop locator. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -179,6 +191,8 @@
         "region_code": "NY",
         "postal_code": "12205",
         "country_code": "US",
+        "latitude": 42.719,
+        "longitude": -73.835,
         "website": "https://www.facebook.com/FlightsofFantasy/",
         "phone": "+1 518-435-9337",
         "source": "public_directory_listing",
@@ -197,7 +211,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Long-standing Capital District game/book store (also listed under the successor name 'Flights 2 Game Store and Hobbies'). Address (381 Sand Creek Rd, Albany, NY 12205) and phone ((518) 435-9337) confirmed via Wargames.com directory, findglocal, Yelp and CMON. Carries Warhammer, Magic and RPG supplies. Coordinates not independently geocoded this session."
+            "audit_note": "Long-standing Capital District game/book store (also listed under the successor name 'Flights 2 Game Store and Hobbies'). Address (381 Sand Creek Rd, Albany, NY 12205) and phone ((518) 435-9337) confirmed via Wargames.com directory, findglocal, Yelp and CMON. Carries Warhammer, Magic and RPG supplies. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -208,6 +222,8 @@
         "region_code": "NY",
         "postal_code": "12180",
         "country_code": "US",
+        "latitude": 42.7284,
+        "longitude": -73.6918,
         "website": "https://www.bardandbaker.com/",
         "phone": "+1 518-948-6693",
         "source": "official_website",
@@ -223,7 +239,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Capital District board game cafe in downtown Troy with 1,000+ titles. Address (501 Broadway, Ste 105, Troy, NY 12180) and phone ((518) 948-6693) confirmed via the cafe's own site, Yelp, Chamber of Commerce and Apple Maps. Coordinates not independently geocoded this session."
+            "audit_note": "Capital District board game cafe in downtown Troy with 1,000+ titles. Address (501 Broadway, Ste 105, Troy, NY 12180) and phone ((518) 948-6693) confirmed via the cafe's own site, Yelp, Chamber of Commerce and Apple Maps. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -234,6 +250,8 @@
         "region_code": "NY",
         "postal_code": "13204",
         "country_code": "US",
+        "latitude": 43.06,
+        "longitude": -76.16,
         "website": "https://www.playthegamereadthestory.com/",
         "phone": "+1 315-472-4263",
         "source": "public_directory_listing",
@@ -253,7 +271,7 @@
             "Role-playing games"
         ],
         "external_payload": {
-            "audit_note": "Syracuse comics/games store (est. 1998), main location on N Clinton St (a second location is inside Destiny USA mall). Address (689 N Clinton St, Syracuse, NY 13204) and phone ((315) 472-4263) confirmed via the store's own site, Yelp and BoardGamesStores. Explicitly stocks Games Workshop / Warhammer, Magic, board games, RPGs and miniatures. Coordinates not independently geocoded this session."
+            "audit_note": "Syracuse comics/games store (est. 1998), main location on N Clinton St (a second location is inside Destiny USA mall). Address (689 N Clinton St, Syracuse, NY 13204) and phone ((315) 472-4263) confirmed via the store's own site, Yelp and BoardGamesStores. Explicitly stocks Games Workshop / Warhammer, Magic, board games, RPGs and miniatures. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -264,6 +282,8 @@
         "region_code": "NY",
         "postal_code": "14623",
         "country_code": "US",
+        "latitude": 43.09,
+        "longitude": -77.63,
         "website": "https://shop.millenniumgames.com/",
         "phone": "+1 585-427-2190",
         "source": "official_website",
@@ -283,7 +303,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "One of the largest game stores in the US (~28,000 sq ft). Address (1225 Jefferson Rd, Rochester, NY 14623) and phone ((585) 427-2190) confirmed via the store's own site, Wargames.com directory, Yelp and LGS Finder. Hosts dozens of weekly events including Magic, Warhammer 40,000, D&D and more. Coordinates not independently geocoded this session."
+            "audit_note": "One of the largest game stores in the US (~28,000 sq ft). Address (1225 Jefferson Rd, Rochester, NY 14623) and phone ((585) 427-2190) confirmed via the store's own site, Wargames.com directory, Yelp and LGS Finder. Hosts dozens of weekly events including Magic, Warhammer 40,000, D&D and more. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -294,6 +314,8 @@
         "region_code": "NY",
         "postal_code": "14207",
         "country_code": "US",
+        "latitude": 42.94,
+        "longitude": -78.89,
         "website": "https://www.gatherandgame.com/",
         "phone": "+1 716-342-2823",
         "source": "public_directory_listing",
@@ -312,7 +334,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Buffalo West Side game store and game library. Address (463 Amherst St, Buffalo, NY 14207) and phone ((716) 342-2823) confirmed via the store's own site, Yelp, iLoveNY and Instagram. Carries Warhammer, D&D, Magic and Pokemon. Coordinates not independently geocoded this session."
+            "audit_note": "Buffalo West Side game store and game library. Address (463 Amherst St, Buffalo, NY 14207) and phone ((716) 342-2823) confirmed via the store's own site, Yelp, iLoveNY and Instagram. Carries Warhammer, D&D, Magic and Pokemon. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -323,6 +345,8 @@
         "region_code": "NY",
         "postal_code": "14850",
         "country_code": "US",
+        "latitude": 42.485,
+        "longitude": -76.475,
         "website": "https://www.cmon.com/shop-locator/great-escape-adventures-ithaca-mall/",
         "phone": "+1 607-319-4520",
         "source": "public_directory_listing",
@@ -341,7 +365,7 @@
             "Role-playing games"
         ],
         "external_payload": {
-            "audit_note": "Ithaca-area game store (Ithaca Mall / Shops at Ithaca Mall in Lansing) billed as having one of the most extensive gaming selections in Upstate NY (6,000+ board games plus RPGs, miniatures and Warhammer 40K). Address (40 Catherwood Rd, Ste B03, Ithaca, NY 14850) and phone ((607) 319-4520) confirmed via the CMON shop locator and Yelp. Coordinates not independently geocoded this session."
+            "audit_note": "Ithaca-area game store (Ithaca Mall / Shops at Ithaca Mall in Lansing) billed as having one of the most extensive gaming selections in Upstate NY (6,000+ board games plus RPGs, miniatures and Warhammer 40K). Address (40 Catherwood Rd, Ste B03, Ithaca, NY 14850) and phone ((607) 319-4520) confirmed via the CMON shop locator and Yelp. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -352,6 +376,8 @@
         "region_code": "NY",
         "postal_code": "13901",
         "country_code": "US",
+        "latitude": 42.14,
+        "longitude": -75.92,
         "website": "https://www.facebook.com/dragonmastergames.18822/",
         "source": "public_directory_listing",
         "source_id": "ny-dragon-master-games-binghamton",
@@ -369,7 +395,7 @@
             "warhammer_40000"
         ],
         "external_payload": {
-            "audit_note": "Binghamton-area FLGS carrying Magic, D&D, Pokemon, Yu-Gi-Oh and Warhammer. Address (1235 Upper Front St, Suite 3, Binghamton, NY 13901) sourced from the store's Facebook page; confidence set lower because the address was corroborated mainly via secondary/social listings rather than an independently fetched official directory page this session, and phone is omitted pending verification. Coordinates not independently geocoded this session."
+            "audit_note": "Binghamton-area FLGS carrying Magic, D&D, Pokemon, Yu-Gi-Oh and Warhammer. Address (1235 Upper Front St, Suite 3, Binghamton, NY 13901) sourced from the store's Facebook page; confidence set lower because the address was corroborated mainly via secondary/social listings rather than an independently fetched official directory page this session, and phone is omitted pending verification. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     }
 ]

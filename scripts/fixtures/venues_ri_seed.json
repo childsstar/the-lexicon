@@ -7,6 +7,8 @@
         "region_code": "RI",
         "postal_code": "02920",
         "country_code": "US",
+        "latitude": 41.762,
+        "longitude": -71.463,
         "website": "https://stores.warhammer.com/",
         "phone": "+1 401-943-1513",
         "source": "official_store_locator",
@@ -26,7 +28,7 @@
             "Warhammer Underworlds"
         ],
         "external_payload": {
-            "audit_note": "Official Games Workshop / Warhammer store in the Chapel View shopping center, Cranston. Address (2000 Chapel View Blvd Suite 150, Cranston, RI 02920) and phone ((401) 943-1513) consistent across the Chapel View mall directory, YellowPages, Nextdoor and the store's own 'Warhammer - Chapel View' Facebook page. Coordinates not independently geocoded this session."
+            "audit_note": "Official Games Workshop / Warhammer store in the Chapel View shopping center, Cranston. Address (2000 Chapel View Blvd Suite 150, Cranston, RI 02920) and phone ((401) 943-1513) consistent across the Chapel View mall directory, YellowPages, Nextdoor and the store's own 'Warhammer - Chapel View' Facebook page. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -37,6 +39,8 @@
         "region_code": "RI",
         "postal_code": "02888",
         "country_code": "US",
+        "latitude": 41.7001,
+        "longitude": -71.4162,
         "website": "http://www.gameonri.com/",
         "phone": "+1 401-739-4263",
         "source": "public_directory_listing",
@@ -56,7 +60,7 @@
             "BattleTech"
         ],
         "external_payload": {
-            "audit_note": "Veteran-owned FLGS. Address (943 Namquid Dr, Warwick, RI 02888) and phone ((401) 739-GAME / 739-4263) confirmed via the Visit Warwick RI tourism listing, Yelp and the store's own site. Inventory explicitly includes Warhammer and BattleTech miniatures plus Magic, Pokemon and D&D. Coordinates not independently geocoded this session."
+            "audit_note": "Veteran-owned FLGS. Address (943 Namquid Dr, Warwick, RI 02888) and phone ((401) 739-GAME / 739-4263) confirmed via the Visit Warwick RI tourism listing, Yelp and the store's own site. Inventory explicitly includes Warhammer and BattleTech miniatures plus Magic, Pokemon and D&D. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -67,6 +71,8 @@
         "region_code": "RI",
         "postal_code": "02909",
         "country_code": "US",
+        "latitude": 41.818,
+        "longitude": -71.45,
         "website": "https://www.themanacore.com/",
         "phone": "+1 401-589-1101",
         "source": "public_directory_listing",
@@ -86,7 +92,7 @@
             "Role-playing games"
         ],
         "external_payload": {
-            "audit_note": "Counter-service game store on Olneyville Square. Address confirmed via the store's own site, CardShopHub and Manta as 683 Broadway (a Yelp listing shows the neighboring 681 Broadway); ZIP 02909. Phone ((401) 589-1101) via CardShopHub. Stocks CCGs (Magic singles), board games, miniature games and RPGs. Coordinates not independently geocoded this session."
+            "audit_note": "Counter-service game store on Olneyville Square. Address confirmed via the store's own site, CardShopHub and Manta as 683 Broadway (a Yelp listing shows the neighboring 681 Broadway); ZIP 02909. Phone ((401) 589-1101) via CardShopHub. Stocks CCGs (Magic singles), board games, miniature games and RPGs. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -97,6 +103,8 @@
         "region_code": "RI",
         "postal_code": "02860",
         "country_code": "US",
+        "latitude": 41.8787,
+        "longitude": -71.3826,
         "website": "https://www.untappedgames.com/",
         "phone": "+1 401-368-1619",
         "source": "public_directory_listing",
@@ -114,7 +122,7 @@
             "Card games"
         ],
         "external_payload": {
-            "audit_note": "Trading-card-focused FLGS running weekly sanctioned Magic: The Gathering tournaments. Address (545 Pawtucket Ave, Ste A205, Pawtucket, RI 02860) and phone ((401) 368-1619) confirmed via the store's own location page and Yelp. Coordinates not independently geocoded this session."
+            "audit_note": "Trading-card-focused FLGS running weekly sanctioned Magic: The Gathering tournaments. Address (545 Pawtucket Ave, Ste A205, Pawtucket, RI 02860) and phone ((401) 368-1619) confirmed via the store's own location page and Yelp. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -125,6 +133,8 @@
         "region_code": "RI",
         "postal_code": "02903",
         "country_code": "US",
+        "latitude": 41.82,
+        "longitude": -71.412,
         "website": "https://www.instagram.com/goodgamegrill_ri/",
         "phone": "+1 401-537-7174",
         "source": "public_directory_listing",
@@ -141,7 +151,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Board game cafe in downtown Providence. Address (53 Weybosset St, Providence, RI 02903) and phone ((401) 537-7174) confirmed via Rhode Island Monthly coverage and the venue's Instagram. Coordinates not independently geocoded this session."
+            "audit_note": "Board game cafe in downtown Providence. Address (53 Weybosset St, Providence, RI 02903) and phone ((401) 537-7174) confirmed via Rhode Island Monthly coverage and the venue's Instagram. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     },
     {
@@ -152,6 +162,8 @@
         "region_code": "RI",
         "postal_code": "02911",
         "country_code": "US",
+        "latitude": 41.8501,
+        "longitude": -71.4595,
         "website": "https://www.thegamehouseri.com/",
         "source": "official_website",
         "source_id": "ri-the-game-house-north-providence",
@@ -166,7 +178,7 @@
             "Board games"
         ],
         "external_payload": {
-            "audit_note": "Board game cafe in North Providence. Address (1726 Smith St, North Providence, RI 02911) confirmed via the cafe's own site, WPRI and Valley Breeze news coverage of its opening. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session."
+            "audit_note": "Board game cafe in North Providence. Address (1726 Smith St, North Providence, RI 02911) confirmed via the cafe's own site, WPRI and Valley Breeze news coverage of its opening. Phone omitted as not consistently published across the reviewed sources. Coordinates not independently geocoded this session. Coordinates are an approximate town-level placement (geocoding_source=approximate_town_level), not a survey-precise machine geocode; the street address above is authoritative."
         }
     }
 ]
