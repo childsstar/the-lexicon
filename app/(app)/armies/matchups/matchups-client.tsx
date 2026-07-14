@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/page-header";
 import EmptyState from "@/components/empty-state";
+import ArmySigil from "@/components/army-sigil";
 import { SwordsIcon, PlusIcon, ChevronRightIcon } from "@/components/icons";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
+import type { VisualIdentity } from "@/lib/armies/visual-identity";
 
 type MatchupSummary = {
   id: string;
@@ -17,6 +19,9 @@ type MatchupSummary = {
   opponentLocked: boolean;
   inviteCode: string | null;
   createdAt: string;
+  selfArmyName: string | null;
+  selfArmyIdentity: VisualIdentity | null;
+  opponentArmyName: string | null;
 };
 
 const STATUS_LABEL: Record<MatchupSummary["status"], string> = {
@@ -89,12 +94,20 @@ export default function MatchupsClient() {
         <div className="space-y-3">
           {matchups.map((matchup) => (
             <Link key={matchup.id} href={`/armies/matchups/${matchup.id}`} className="card card-interactive flex items-center gap-4 p-5">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-gold-500">
-                <SwordsIcon className="h-5 w-5" />
-              </div>
+              {matchup.selfArmyIdentity ? (
+                <ArmySigil identity={matchup.selfArmyIdentity} size="md" />
+              ) : (
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-gold-500">
+                  <SwordsIcon className="h-5 w-5" />
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <p className="font-display text-lg font-semibold text-text">{STATUS_LABEL[matchup.status]}</p>
-                <p className="text-sm text-text-muted">
+                <p className="truncate text-sm text-text-muted">
+                  {matchup.selfArmyName || "No army chosen yet"}
+                  {matchup.opponentArmyName ? ` vs ${matchup.opponentArmyName}` : ""}
+                </p>
+                <p className="mt-0.5 text-xs text-text-subtle">
                   {matchup.isCreator ? "You created this matchup" : "You joined this matchup"}
                   {!matchup.hasOpponent && matchup.inviteCode ? ` · invite code ${matchup.inviteCode}` : ""}
                 </p>
