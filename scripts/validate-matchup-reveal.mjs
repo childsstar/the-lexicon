@@ -97,4 +97,20 @@ for (const column of ["creator_locked_at", "opponent_locked_at", "creator_snapsh
 assert.match(migration, /check \(status in \('pending', 'one_locked', 'revealed', 'cancelled'\)\)/, "matchup status should be constrained to the documented lifecycle");
 assert.match(migration, /Participants can read their own matchups/, "matchups should be readable only by their participants");
 
+// --- Join + cancel live behind SECURITY DEFINER functions -----------------
+const joinMigration = readFileSync(new URL("../supabase/migrations/20260714010000_matchup_join_rpc_and_cancel.sql", import.meta.url), "utf8");
+assert.match(joinMigration, /drop policy if exists "An invited opponent can join by user id"/, "the open join-by-update policy must be dropped — it let any authenticated user claim open matchups without knowing a code");
+assert.match(joinMigration, /create or replace function public\.join_matchup_by_code/, "joining should be owned by a join_matchup_by_code function");
+assert.match(joinMigration, /create or replace function public\.cancel_matchup/, "cancellation should be owned by a cancel_matchup function");
+assert.match(joinMigration, /security definer/, "both functions must be SECURITY DEFINER so the code lookup and cross-user army unlock work under RLS");
+assert.match(joinMigration, /grant execute on function public\.join_matchup_by_code\(text\) to authenticated/, "join must be callable by authenticated users");
+
+const joinRoute = readFileSync(new URL("../app/api/matchups/join/route.ts", import.meta.url), "utf8");
+assert.match(joinRoute, /rpc\("join_matchup_by_code"/, "the join route must go through the code-scoped RPC, not a raw table update");
+assert.ok(!joinRoute.includes(".update("), "the join route should no longer update army_matchups directly");
+
+// --- The matchup list must not leak the opponent's army name pre-reveal ---
+const listRoute = readFileSync(new URL("../app/api/matchups/route.ts", import.meta.url), "utf8");
+assert.match(listRoute, /opponentArmyName: status === "revealed"/, "the opponent's army name must stay sealed until the matchup is revealed");
+
 console.log("Matchup lock/reveal validation passed");

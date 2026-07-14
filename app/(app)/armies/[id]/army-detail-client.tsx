@@ -47,6 +47,17 @@ export default function ArmyDetailClient({ id }: { id: string }) {
         description="What this army can field, and what it does on the tabletop."
         backHref="/armies"
         backLabel="Armies"
+        action={
+          army ? (
+            <Link
+              href={`/armies/matchups/new?armyId=${army.id}`}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-gold-600 px-4 py-2 text-sm font-bold text-ink shadow-candle transition-colors hover:bg-gold-500"
+            >
+              <SwordsIcon className="h-4 w-4" />
+              Use in a matchup
+            </Link>
+          ) : undefined
+        }
       />
 
       {loading && <div className="card p-5 text-sm text-text-muted">Reading the muster roll…</div>}
@@ -142,18 +153,9 @@ export default function ArmyDetailClient({ id }: { id: string }) {
             <pre className="mt-4 overflow-x-auto whitespace-pre-wrap rounded-md border border-border bg-surface/70 p-4 text-xs text-text-muted">{army.raw_text}</pre>
           </details>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Link href="/armies/muster" className="rounded-md border border-gold-600 px-4 py-3 text-center text-sm font-semibold text-gold-300 hover:border-gold-400 hover:text-gold-200">
-              Muster another army
-            </Link>
-            <Link
-              href={`/armies/matchups/new?armyId=${army.id}`}
-              className="flex items-center justify-center gap-2 rounded-md bg-gold-600 px-4 py-3 text-center text-sm font-bold text-ink shadow-candle transition-colors hover:bg-gold-500"
-            >
-              <SwordsIcon className="h-4 w-4" />
-              Use in a sealed matchup
-            </Link>
-          </div>
+          <Link href="/armies/muster" className="block rounded-md border border-gold-600 px-4 py-3 text-center text-sm font-semibold text-gold-300 hover:border-gold-400 hover:text-gold-200">
+            Muster another army
+          </Link>
         </div>
       )}
     </div>

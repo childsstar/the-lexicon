@@ -1,21 +1,38 @@
+import Link from "next/link";
 import ArmySigil from "@/components/army-sigil";
 import TacticalOverviewPanel from "@/components/tactical-overview-panel";
 import type { ArmyOverviewSnapshot } from "@/lib/matchups/types";
 
 /** A shareable, opponent-safe reading of an army — used for both the "your list"
- * and "revealed opponent overview" panels in a matchup. */
-export default function ArmyOverviewPanel({ overview, eyebrow }: { overview: ArmyOverviewSnapshot; eyebrow: string }) {
+ * and "revealed opponent overview" panels in a matchup. Pass `armyHref` only for
+ * armies the viewer owns; an opponent's source army stays private under RLS. */
+export default function ArmyOverviewPanel({
+  overview,
+  eyebrow,
+  armyHref,
+}: {
+  overview: ArmyOverviewSnapshot;
+  eyebrow: string;
+  armyHref?: string;
+}) {
   return (
     <div className="card space-y-5 p-5">
-      <div className="flex items-center gap-4">
-        <ArmySigil identity={overview.visual_identity} size="lg" />
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-gold-400">{eyebrow}</p>
-          <h3 className="mt-1 font-display text-xl font-semibold text-text">{overview.name}</h3>
-          <p className="mt-0.5 text-sm text-text-muted">
-            {[overview.faction, overview.game_system].filter(Boolean).join(" · ") || "Faction unknown"}
-          </p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-4">
+          <ArmySigil identity={overview.visual_identity} size="lg" />
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-gold-400">{eyebrow}</p>
+            <h3 className="mt-1 font-display text-xl font-semibold text-text">{overview.name}</h3>
+            <p className="mt-0.5 text-sm text-text-muted">
+              {[overview.faction, overview.game_system].filter(Boolean).join(" · ") || "Faction unknown"}
+            </p>
+          </div>
         </div>
+        {armyHref && (
+          <Link href={armyHref} className="shrink-0 text-xs font-semibold text-gold-400 transition-colors hover:text-gold-300">
+            View army page →
+          </Link>
+        )}
       </div>
 
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">

@@ -29,6 +29,7 @@ export default function MatchupDetailClient({ id }: { id: string }) {
   const [selectedArmyId, setSelectedArmyId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [locking, setLocking] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
 
   const load = useCallback(async () => {
     const token = await getAccessToken();
@@ -90,6 +91,27 @@ export default function MatchupDetailClient({ id }: { id: string }) {
     }
   }
 
+  async function handleCancel() {
+    if (!window.confirm("Cancel this matchup? Neither list will be revealed, and this can't be undone.")) return;
+    setCancelling(true);
+    setError(null);
+    try {
+      const token = await getAccessToken();
+      const response = await fetch(`/api/matchups/${id}/cancel`, {
+        method: "POST",
+        headers: { authorization: token ? `Bearer ${token}` : "" },
+      });
+      if (!response.ok) {
+        const payload = await response.json();
+        setError(payload.error || "Cancelling this matchup failed.");
+        return;
+      }
+      await load();
+    } finally {
+      setCancelling(false);
+    }
+  }
+
   return (
     <div className="mx-auto max-w-3xl">
       <PageHeader
@@ -112,14 +134,48 @@ export default function MatchupDetailClient({ id }: { id: string }) {
               <div>
                 <p className="font-display text-lg font-semibold text-text">{STATUS_COPY[matchup.status]}</p>
                 <p className="text-xs text-text-subtle">
-                  {matchup.selfLocked ? "You've locked your list." : "You haven't locked your list yet."}{" "}
-                  {matchup.opponentLocked ? "Your opponent has locked." : "Your opponent hasn't locked yet."}
+                  {matchup.status === "cancelled" ? (
+                    "This matchup was cancelled — neither list was revealed."
+                  ) : (
+                    <>
+                      {matchup.selfLocked ? "You've locked your list." : "You haven't locked your list yet."}{" "}
+                      {matchup.opponentLocked ? "Your opponent has locked." : "Your opponent hasn't locked yet."}
+                    </>
+                  )}
                 </p>
               </div>
             </div>
           </div>
 
-          {!matchup.hasOpponent && matchup.inviteCode && (
+          {!matchup.selfLocked && matchup.status !== "cancelled" && (
+            <div className="card space-y-3 p-5">
+              {armies !== null && armies.length > 0 ? (
+                <label className="block">
+                  <span className="text-sm font-semibold text-text">Bring which army?</span>
+                  <select value={selectedArmyId} onChange={(event) => setSelectedArmyId(event.target.value)} className="field mt-2">
+                    {armies.map((army) => (
+                      <option key={army.id} value={army.id}>{army.name || "Untitled army"}</option>
+                    ))}
+                  </select>
+                </label>
+              ) : (
+                <p className="text-sm text-text-muted">Muster an army first, then come back to lock it in.</p>
+              )}
+              <button
+                onClick={handleLock}
+                disabled={locking || !selectedArmyId}
+                className="w-full rounded-md bg-gold-600 px-6 py-3 text-sm font-bold text-ink shadow-candle transition-colors hover:bg-gold-500 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {locking ? "Sealing your list…" : "Lock list"}
+              </button>
+              <p className="text-center text-xs text-text-subtle">
+                Locking snapshots your army as it stands right now. Later edits to the source army won&apos;t change
+                this matchup.
+              </p>
+            </div>
+          )}
+
+          {!matchup.hasOpponent && matchup.inviteCode && matchup.status !== "cancelled" && (
             <div className="card border-gold-700/40 bg-gold-950/10 p-5">
               <p className="text-sm font-semibold text-gold-200">Waiting for an opponent</p>
               <p className="mt-1 text-sm text-text-muted">Share this invite code so they can join the matchup:</p>
@@ -130,39 +186,11 @@ export default function MatchupDetailClient({ id }: { id: string }) {
           )}
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <div className="space-y-4">
+            <div>
               {matchup.self ? (
-                <ArmyOverviewPanel overview={matchup.self} eyebrow="Your army" />
+                <ArmyOverviewPanel overview={matchup.self} eyebrow="Your army" armyHref={`/armies/${matchup.self.army_id}`} />
               ) : (
-                <div className="card p-5 text-sm text-text-muted">Choose an army below to preview it here.</div>
-              )}
-
-              {!matchup.selfLocked && (
-                <div className="card space-y-3 p-5">
-                  {armies !== null && armies.length > 0 ? (
-                    <label className="block">
-                      <span className="text-sm font-semibold text-text">Bring which army?</span>
-                      <select value={selectedArmyId} onChange={(event) => setSelectedArmyId(event.target.value)} className="field mt-2">
-                        {armies.map((army) => (
-                          <option key={army.id} value={army.id}>{army.name || "Untitled army"}</option>
-                        ))}
-                      </select>
-                    </label>
-                  ) : (
-                    <p className="text-sm text-text-muted">Muster an army first, then come back to lock it in.</p>
-                  )}
-                  <button
-                    onClick={handleLock}
-                    disabled={locking || !selectedArmyId}
-                    className="w-full rounded-md bg-gold-600 px-6 py-3 text-sm font-bold text-ink shadow-candle transition-colors hover:bg-gold-500 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {locking ? "Sealing your list…" : "Lock list"}
-                  </button>
-                  <p className="text-center text-xs text-text-subtle">
-                    Locking snapshots your army as it stands right now. Later edits to the source army won&apos;t change
-                    this matchup.
-                  </p>
-                </div>
+                <div className="card p-5 text-sm text-text-muted">Choose an army above to preview it here.</div>
               )}
             </div>
 
@@ -172,16 +200,32 @@ export default function MatchupDetailClient({ id }: { id: string }) {
               ) : (
                 <div className="card flex flex-col items-center gap-3 p-8 text-center">
                   <LexiconMark className="h-8 w-8 text-text-subtle" />
-                  <p className="font-display text-lg font-semibold text-text">Sealed until both players lock</p>
+                  <p className="font-display text-lg font-semibold text-text">
+                    {matchup.status === "cancelled" ? "Matchup cancelled" : "Sealed until both players lock"}
+                  </p>
                   <p className="max-w-xs text-sm text-text-muted">
-                    {!matchup.hasOpponent
-                      ? "Once an opponent joins and both sides lock, their army overview appears here."
-                      : "Your opponent's army overview will appear here the moment you're both locked in."}
+                    {matchup.status === "cancelled"
+                      ? "This matchup ended before both sides locked, so no lists were exchanged."
+                      : !matchup.hasOpponent
+                        ? "Once an opponent joins and both sides lock, their army overview appears here."
+                        : matchup.opponentLocked
+                          ? "Your opponent has locked their list. It stays sealed until you lock yours — then both reveal at once."
+                          : "Your opponent hasn't locked yet. Their overview appears the moment you're both locked in."}
                   </p>
                 </div>
               )}
             </div>
           </div>
+
+          {(matchup.status === "pending" || matchup.status === "one_locked") && (
+            <button
+              onClick={handleCancel}
+              disabled={cancelling}
+              className="w-full rounded-md border border-border px-4 py-2.5 text-sm font-medium text-text-muted transition-colors hover:border-ember-500/60 hover:text-ember-200 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {cancelling ? "Cancelling…" : "Cancel matchup"}
+            </button>
+          )}
         </div>
       )}
     </div>

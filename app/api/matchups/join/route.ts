@@ -1,6 +1,19 @@
 import { NextResponse } from "next/server";
 import { getRequestUser } from "@/lib/supabase-server";
 
+/**
+ * Joining goes through the join_matchup_by_code() SECURITY DEFINER
+ * function (see 20260714010000_matchup_join_rpc_and_cancel.sql): the
+ * database owns the invite-code lookup, and hands back a specific
+ * outcome so we can tell the player what actually went wrong instead
+ * of one catch-all rejection.
+ */
+type JoinOutcome = {
+  outcome: "joined" | "already_joined" | "own_matchup" | "already_claimed" | "cancelled" | "not_found";
+  matchup_id?: string;
+  creator_locked?: boolean;
+};
+
 export async function POST(request: Request) {
   let body: { inviteCode?: unknown };
   try {
@@ -26,32 +39,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Sign in to join a matchup." }, { status: 401 });
   }
 
-  // RLS ("An invited opponent can join by user id") permits this update
-  // for any authenticated non-creator while opponent_user_id is still
-  // null — the invite code in the WHERE clause is what actually scopes
-  // it to the right row.
-  const { error: updateError } = await supabase
-    .from("army_matchups")
-    .update({ opponent_user_id: user.id })
-    .eq("invite_code", inviteCode)
-    .is("opponent_user_id", null);
-
-  if (updateError) {
-    return NextResponse.json({ error: updateError.message }, { status: 500 });
+  const { data, error } = await supabase.rpc("join_matchup_by_code", { code: inviteCode });
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const { data: matchup, error: fetchError } = await supabase
-    .from("army_matchups")
-    .select("id")
-    .eq("invite_code", inviteCode)
-    .maybeSingle();
-
-  if (fetchError || !matchup) {
-    return NextResponse.json(
-      { error: "That invite code is invalid, already claimed, or is your own matchup." },
-      { status: 404 }
-    );
+  const result = data as JoinOutcome;
+  switch (result.outcome) {
+    case "joined":
+    case "already_joined":
+      return NextResponse.json({ matchupId: result.matchup_id, creatorLocked: result.creator_locked ?? null });
+    case "own_matchup":
+      return NextResponse.json(
+        { error: "That's your own invite code — share it with your opponent so they can join.", matchupId: result.matchup_id },
+        { status: 400 }
+      );
+    case "already_claimed":
+      return NextResponse.json(
+        { error: "That matchup already has both players. Ask your opponent to start a fresh one." },
+        { status: 409 }
+      );
+    case "cancelled":
+      return NextResponse.json({ error: "That matchup was cancelled by its creator." }, { status: 410 });
+    case "not_found":
+    default:
+      return NextResponse.json(
+        { error: "No matchup found for that code — double-check it with your opponent." },
+        { status: 404 }
+      );
   }
-
-  return NextResponse.json({ matchupId: matchup.id });
 }

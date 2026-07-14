@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import PageHeader from "@/components/page-header";
+import ArmySigil from "@/components/army-sigil";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { ArmyList } from "@/lib/army-lists/types";
@@ -17,8 +18,10 @@ export default function NewMatchupClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, loading } = useAuth();
+  const presetArmyId = searchParams.get("armyId");
   const [armies, setArmies] = useState<ArmyList[] | null>(null);
-  const [armyId, setArmyId] = useState(searchParams.get("armyId") ?? "");
+  const [armyId, setArmyId] = useState(presetArmyId ?? "");
+  const [changingArmy, setChangingArmy] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
   const [creating, setCreating] = useState(false);
   const [joining, setJoining] = useState(false);
@@ -38,13 +41,19 @@ export default function NewMatchupClient() {
       if (cancelled) return;
       const list = (data as ArmyList[] | null) ?? [];
       setArmies(list);
-      setArmyId((current) => current || list[0]?.id || "");
+      setArmyId((current) => (list.some((army) => army.id === current) ? current : list[0]?.id || ""));
     }
     void load();
     return () => {
       cancelled = true;
     };
   }, [user]);
+
+  // Arriving via an army page's "Use in a matchup" button pre-answers
+  // the "bring which army?" question — show a confirmation instead of a picker.
+  const presetArmy = !changingArmy && presetArmyId && armyId === presetArmyId
+    ? armies?.find((army) => army.id === presetArmyId)
+    : undefined;
 
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -113,15 +122,33 @@ export default function NewMatchupClient() {
         {!loading && armies !== null && armies.length === 0 && (
           <p className="text-sm text-text-muted">You haven&apos;t mustered an army yet — muster one first, then come back here.</p>
         )}
-        {armies !== null && armies.length > 0 && (
-          <label className="block">
-            <span className="text-sm font-semibold text-text">Bring which army?</span>
-            <select value={armyId} onChange={(event) => setArmyId(event.target.value)} className="field mt-2">
-              {armies.map((army) => (
-                <option key={army.id} value={army.id}>{army.name || "Untitled army"} — {army.faction || "Unknown faction"}</option>
-              ))}
-            </select>
-          </label>
+        {presetArmy ? (
+          <div className="flex items-center gap-3 rounded-md border border-gold-600/40 bg-surface/60 p-3">
+            <ArmySigil identity={presetArmy.visual_identity_json} size="md" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold text-text">{presetArmy.name || "Untitled army"}</p>
+              <p className="truncate text-xs text-text-muted">{presetArmy.faction || "Unknown faction"}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setChangingArmy(true)}
+              className="shrink-0 text-xs font-semibold text-gold-400 transition-colors hover:text-gold-300"
+            >
+              Change army
+            </button>
+          </div>
+        ) : (
+          armies !== null &&
+          armies.length > 0 && (
+            <label className="block">
+              <span className="text-sm font-semibold text-text">Bring which army?</span>
+              <select value={armyId} onChange={(event) => setArmyId(event.target.value)} className="field mt-2">
+                {armies.map((army) => (
+                  <option key={army.id} value={army.id}>{army.name || "Untitled army"} — {army.faction || "Unknown faction"}</option>
+                ))}
+              </select>
+            </label>
+          )
         )}
         <button
           type="submit"
@@ -154,6 +181,10 @@ export default function NewMatchupClient() {
         >
           {joining ? "Joining…" : "Join matchup"}
         </button>
+        <p className="text-center text-xs text-text-subtle">
+          Enter your opponent&apos;s invite code to join their matchup. Their list stays sealed — you&apos;ll explore it
+          once you&apos;ve both locked.
+        </p>
       </form>
     </div>
   );
