@@ -44,7 +44,7 @@ export default function ArmyDetailClient({ id }: { id: string }) {
     <div className="mx-auto max-w-3xl">
       <PageHeader
         title={army?.name || "Army"}
-        description="What this army can field, and what it does on the tabletop."
+        description="Imported, user-authored muster. Review every unverified entry before locking."
         backHref="/armies"
         backLabel="Armies"
         action={
@@ -97,7 +97,7 @@ export default function ArmyDetailClient({ id }: { id: string }) {
             <dl className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Summary label="Game system" value={army.game_system || parsed?.game_system || "Unknown"} />
               <Summary label="Faction" value={[army.faction || parsed?.faction, army.subfaction].filter(Boolean).join(" / ") || "Unknown"} />
-              <Summary label="Points total" value={String(army.points_total ?? "Unknown")} />
+              <Summary label="Declared points" value={String(army.points_total ?? "Unknown")} />
               <Summary label="Datasheet count" value={String(army.datasheet_count ?? parsed?.units.length ?? 0)} />
               <Summary label="Detachments" value={detachmentLine} />
             </dl>
@@ -137,7 +137,7 @@ export default function ArmyDetailClient({ id }: { id: string }) {
               {parsed.units.map((unit, index) => (
                 <div key={`${unit.name}-${index}`} className="p-4">
                   <div className="flex flex-wrap justify-between gap-3">
-                    <p className="font-semibold text-text">{unit.quantity ? `${unit.quantity}× ` : ""}{unit.name}</p>
+                    <p className="font-semibold text-text">{unit.quantity ? `${unit.quantity}× ` : ""}{unit.name}{unit.unverified ? <span className="ml-2 rounded-full border border-gold-700/50 px-2 py-0.5 text-[10px] uppercase tracking-wide text-gold-300">Unverified entry</span> : null}</p>
                     <p className="text-sm text-text-muted">{unit.points ?? "—"} pts{unit.section ? ` · ${unit.section}` : ""}{unit.role ? ` · ${unit.role}` : ""}</p>
                   </div>
                   {[...unit.enhancements, ...unit.upgrades, ...unit.wargear].length > 0 && (
@@ -170,4 +170,3 @@ function Summary({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-

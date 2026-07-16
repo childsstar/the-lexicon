@@ -1,0 +1,26 @@
+{
+  "notice": "Fictional, user-authored development fixture. No rules or unit profiles are included.",
+  "players": [{ "name": "Star" }, { "name": "Alex" }],
+  "armies": [
+    {
+      "owner": "Star",
+      "gameKey": "the-old-world",
+      "faction": "Dwarfen Mountain Holds",
+      "name": "The Lantern Hold",
+      "declaredPoints": 2000,
+      "sourceText": "Characters\nLantern Keeper - 95 pts\nCore\n20 Hold Guardians - 210 pts\nSpecial\nClockwork Field Engine - 240 pts"
+    },
+    {
+      "owner": "Alex",
+      "gameKey": "the-old-world",
+      "faction": "Orc & Goblin Tribes",
+      "name": "The Mossgate Mob",
+      "declaredPoints": 2000,
+      "sourceText": "Characters\nMossgate Boss - 110 pts\nCore\n25 Greenway Mob - 190 pts\nRare\nRattling Scrap Cart"
+    }
+  ],
+  "matchups": [
+    { "name": "Demo table — awaiting Alex", "status": "one_locked", "creator": "Star", "opponent": "Alex" },
+    { "name": "Demo table — revealed", "status": "revealed", "creator": "Star", "opponent": "Alex" }
+  ]
+}

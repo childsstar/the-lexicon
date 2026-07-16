@@ -1,7 +1,7 @@
 import type { ArmyListParserInput, ParsedArmyList, ParsedArmyUnit } from "./types";
 import { isNonDatasheet } from "./unit-lexicon";
 
-const SECTION_HEADERS = new Set(["ATTACHED UNITS", "CHARACTERS", "BATTLELINE", "DEDICATED TRANSPORTS", "OTHER DATASHEETS", "ALLIED UNITS"]);
+const SECTION_HEADERS = new Set(["ATTACHED UNITS", "CHARACTERS", "BATTLELINE", "DEDICATED TRANSPORTS", "OTHER DATASHEETS", "ALLIED UNITS", "CORE", "SPECIAL", "RARE", "MERCENARIES", "ALLIES", "LORDS", "HEROES"]);
 const FORCE_SIZES = /\b(Strike Force|Incursion|Combat Patrol|Onslaught)\b/i;
 
 export function parseArmyListDeterministically(input: ArmyListParserInput): ParsedArmyList {
@@ -10,16 +10,34 @@ export function parseArmyListDeterministically(input: ArmyListParserInput): Pars
   const is40kExport = looksLikeWarhammer40kExport(joined);
   const detachments = is40kExport ? extractDetachments(lines) : { detachment_names: [] as string[], detachment_points: null as number | null };
   const pointsTotal = extractPointsTotal(joined);
-  const units = is40kExport ? parseWarhammer40kUnits(lines) : lines.map((line) => parseUnitLine(line, null)).filter((unit): unit is ParsedArmyUnit => Boolean(unit)).slice(0, 80);
+  const isOldWorld = input.gameSystem === "Warhammer: The Old World";
+  const units = is40kExport && !isOldWorld ? parseWarhammer40kUnits(lines) : parseSectionedUnits(lines, isOldWorld);
   const faction = input.faction || (is40kExport ? extractWarhammerFaction(lines) : null) || extractLabeledValue(lines, ["faction", "army", "allegiance"]);
   const gameSystem = input.gameSystem || inferGameSystem(joined);
   const subfaction = detachments.detachment_names.length ? detachments.detachment_names.join(" / ") : extractLabeledValue(lines, ["subfaction", "detachment", "chapter", "clan", "sept", "legion"]);
   const modelCount = units.reduce((sum, unit) => sum + (unit.quantity ?? 1), 0);
-  const warnings = ["Used deterministic fallback parsing; review units, upgrades, and points before relying on this summary."];
+  const warnings = ["Imported list is unofficial and has not been checked against construction rules. Review before locking."];
+  if (units.some((unit) => unit.unverified)) warnings.push("Some unfamiliar lines were preserved as unverified entries.");
   if (!units.length) warnings.push("No obvious unit rows were detected; raw roster text was preserved.");
   if (!pointsTotal) warnings.push("Could not confidently identify a total points value.");
 
   return { game_system: gameSystem, faction, subfaction, points_total: pointsTotal, units, unit_count: units.length, model_count: modelCount || null, detachment_names: detachments.detachment_names, detachment_points: detachments.detachment_points, inferred_playstyle_tags: inferPlaystyleTags(joined, units), confidence: units.length ? (is40kExport ? 0.78 : 0.42) : 0.22, warnings };
+}
+
+function parseSectionedUnits(lines: string[], preserveUnknown: boolean): ParsedArmyUnit[] {
+  const units: ParsedArmyUnit[] = [];
+  let section: string | null = null;
+  for (const raw of lines) {
+    const line = raw.replace(/^[-*•]\s*/, "").trim();
+    const heading = line.replace(/:$/, "").toUpperCase();
+    if (SECTION_HEADERS.has(heading)) { section = titleCase(heading); continue; }
+    const parsed = parseUnitLine(line, section);
+    if (parsed) { units.push({ ...parsed, raw_text: raw }); continue; }
+    if (preserveUnknown && section && !/^(total|faction|army|game system|points)\b/i.test(line)) {
+      units.push({ name: line, raw_text: raw, unverified: true, quantity: null, points: null, role: null, section, category: section, enhancements: [], upgrades: [], wargear: [] });
+    }
+  }
+  return units.slice(0, 120);
 }
 
 export function looksLikeWarhammer40kExport(text: string): boolean {
@@ -89,14 +107,14 @@ function parseUnitLine(line: string, section: string | null): ParsedArmyUnit | n
   if (/^(faction|army|game system|total|points|detachment|subfaction|force dispositions|exported with|data version)\b/i.test(line)) return null;
   const pointMatch = line.match(/^(.+?)\s*\(([\d,]{1,5})\s*(?:pts?|points)\)$/i) || line.match(/^(.+?)\s+[-–]\s+([\d,]{1,5})\s*(?:pts?|points)\b/i);
   if (!pointMatch) return null;
-  const quantityMatch = pointMatch[1].match(/^(\d+)\s*[x×]\s+(.+)/i);
+  const quantityMatch = pointMatch[1].match(/^(\d+)\s*(?:[x×]\s*|\s+)(.+)/i);
   const name = (quantityMatch ? quantityMatch[2] : pointMatch[1]).trim();
   if (name.length < 3) return null;
   // Army rules, detachments, and stratagems can carry a points-looking value
   // and get mistaken for datasheets (e.g. a "Synaptic ambush" phantom). Never
   // let a known non-datasheet name become a unit.
   if (isNonDatasheet(name)) return null;
-  return { name, quantity: quantityMatch ? Number(quantityMatch[1]) : 1, points: parseNumber(pointMatch[2]), role: inferRole(`${section ?? ""} ${line}`), section, category: section, enhancements: [], upgrades: [], wargear: [] };
+  return { name, raw_text: line, quantity: quantityMatch ? Number(quantityMatch[1]) : 1, points: parseNumber(pointMatch[2]), role: inferRole(`${section ?? ""} ${line}`), section, category: section, enhancements: [], upgrades: [], wargear: [] };
 }
 
 function inferGameSystem(text: string): string | null {

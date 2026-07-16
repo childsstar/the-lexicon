@@ -9,9 +9,12 @@ import { ShieldIcon, PlusIcon, SwordsIcon } from "@/components/icons";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { ArmyList } from "@/lib/army-lists/types";
+import { useActiveUniverse } from "@/components/active-universe-provider";
+import { GAMES } from "@/lib/games";
 
 export default function ArmiesClient() {
   const { user } = useAuth();
+  const { gameKey } = useActiveUniverse();
   const [armies, setArmies] = useState<ArmyList[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,9 +80,9 @@ export default function ArmiesClient() {
         />
       )}
 
-      {armies !== null && armies.length > 0 && (
+      {armies !== null && armies.filter((army) => !gameKey || army.game_key === gameKey || army.game_system === GAMES[gameKey].name).length > 0 && (
         <div className="space-y-3">
-          {armies.map((army) => (
+          {armies.filter((army) => !gameKey || army.game_key === gameKey || army.game_system === GAMES[gameKey].name).map((army) => (
             <ArmyCard key={army.id} army={army} />
           ))}
         </div>
