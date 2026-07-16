@@ -19,6 +19,33 @@ export type GameSystem = {
   gameKey?: GameKey;
 };
 
+export type FactionSupportStatus = "core" | "legacy" | "community" | "unknown";
+export type GameFaction = {
+  key: string;
+  gameKey: GameKey;
+  name: string;
+  supportStatus?: FactionSupportStatus;
+  shortDescription?: string;
+};
+
+const slug = (name: string) => name.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+/** Nominative, rules-free faction metadata shared by banners, Muster and lore. */
+export const OLD_WORLD_FACTIONS: GameFaction[] = [
+  ["Beastmen Brayherds", "legacy"], ["Chaos Dwarfs", "legacy"], ["Daemons of Chaos", "legacy"],
+  ["Dark Elves", "legacy"], ["Dwarfen Mountain Holds", "core"], ["Empire of Man", "core"],
+  ["Grand Cathay", "core"], ["High Elf Realms", "core"], ["Kingdom of Bretonnia", "core"],
+  ["Lizardmen", "legacy"], ["Orc & Goblin Tribes", "core"], ["Skaven", "legacy"],
+  ["Tomb Kings of Khemri", "core"], ["Vampire Counts", "legacy"], ["Warriors of Chaos", "core"],
+  ["Wood Elf Realms", "core"],
+].map(([name, supportStatus]) => ({ key: slug(name), gameKey: "the-old-world", name, supportStatus: supportStatus as FactionSupportStatus }));
+
+export function factionsForGame(gameKey: GameKey): GameFaction[] {
+  if (gameKey === "the-old-world") return OLD_WORLD_FACTIONS;
+  const system = RAW_GAME_SYSTEMS.find((candidate) => findGameByName(candidate.name)?.key === gameKey);
+  return (system?.factions ?? []).map((name) => ({ key: slug(name), gameKey, name, supportStatus: "unknown" }));
+}
+
 const RAW_GAME_SYSTEMS: GameSystem[] = [
   {
     name: "Warhammer 40,000",

@@ -21,6 +21,7 @@
     "validate:visual-identity": "node scripts/validate-visual-identity.mjs",
     "validate:army-naming": "node scripts/validate-army-naming.mjs",
     "validate:matchup-reveal": "node scripts/validate-matchup-reveal.mjs",
+    "validate:old-world": "node scripts/validate-old-world-mvp.mjs",
     "validate:army-card": "node scripts/validate-army-card.mjs",
     "validate:account-deletion": "node scripts/validate-account-deletion.mjs",
     "validate:all": "node scripts/validate-all.mjs"

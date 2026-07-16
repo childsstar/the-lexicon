@@ -5,6 +5,7 @@ import { generateFallbackArmyName } from "@/lib/army-lists/naming";
 import { generateVisualIdentity } from "@/lib/armies/visual-identity";
 import { getRequestUser } from "@/lib/supabase-server";
 import type { ParsedArmyList } from "@/lib/army-lists/types";
+import { findGameByName } from "@/lib/games";
 
 const MAX_RAW_TEXT_LENGTH = 40_000;
 
@@ -88,6 +89,7 @@ export async function POST(request: Request) {
       profile_id: user.id,
       name,
       game_system: resolvedGameSystem,
+      game_key: resolvedGameSystem ? findGameByName(resolvedGameSystem)?.key ?? null : null,
       faction: resolvedFaction,
       subfaction: parsed?.subfaction ?? null,
       points_total: parsed?.points_total ?? null,

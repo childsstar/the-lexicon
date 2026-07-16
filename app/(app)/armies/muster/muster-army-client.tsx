@@ -1,17 +1,20 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/page-header";
 import { useAuth } from "@/components/auth-provider";
+import { useActiveUniverse } from "@/components/active-universe-provider";
+import { GAMES } from "@/lib/games";
+import { factionsForGame } from "@/lib/game-data";
 
 const GAME_SYSTEMS = [
   "Warhammer 40,000",
-  "Warhammer Age of Sigmar",
+  "Warhammer: Age of Sigmar",
   "Kill Team",
-  "The Old World",
-  "Horus Heresy",
+  "Warhammer: The Old World",
+  "The Horus Heresy",
   "Star Wars: Legion",
   "Marvel: Crisis Protocol",
 ];
@@ -19,12 +22,19 @@ const GAME_SYSTEMS = [
 export default function MusterArmyClient() {
   const router = useRouter();
   const { user, profile, session, loading } = useAuth();
+  const { gameKey } = useActiveUniverse();
   const [name, setName] = useState("");
-  const [gameSystem, setGameSystem] = useState("");
+  const [gameSystem, setGameSystem] = useState(() => gameKey ? GAMES[gameKey].name : "");
   const [faction, setFaction] = useState("");
   const [rawText, setRawText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const selectedGame = Object.values(GAMES).find((game) => game.name === gameSystem);
+  const curatedFactions = selectedGame ? factionsForGame(selectedGame.key) : [];
+
+  useEffect(() => {
+    if (gameKey && !gameSystem) setGameSystem(GAMES[gameKey].name);
+  }, [gameKey, gameSystem]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -123,16 +133,17 @@ export default function MusterArmyClient() {
           </select>
         </Field>
 
-        <Field label="Faction" hint="Optional — useful when pasted exports omit the top-level faction.">
-          <input
+        <Field label="Faction" hint="Choose a curated faction or enter your own community faction.">
+          <input list="muster-factions"
             value={faction}
             onChange={(event) => setFaction(event.target.value)}
             placeholder="e.g. Adepta Sororitas"
             className="field"
           />
+          <datalist id="muster-factions">{curatedFactions.map((item) => <option key={item.key} value={item.name}>{item.supportStatus}</option>)}</datalist>
         </Field>
 
-        <Field label="Roster text" hint="Paste a plain-text roster/export from your builder, app, PDF, or notes. File upload and third-party sync are intentionally out of scope for this MVP.">
+        <Field label="Roster text" hint="Paste plain text from a builder or your notes. Unknown entries are preserved and never block saving.">
           <textarea
             value={rawText}
             onChange={(event) => setRawText(event.target.value)}

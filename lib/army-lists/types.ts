@@ -3,6 +3,9 @@ import type { VisualIdentity } from "@/lib/armies/visual-identity";
 
 export type ParsedArmyUnit = {
   name: string;
+  /** Exact input line. Unknown entries are deliberately preserved. */
+  raw_text?: string;
+  unverified?: boolean;
   quantity: number | null;
   points: number | null;
   role: string | null;
@@ -49,6 +52,8 @@ export type ArmyList = {
   profile_id: string | null;
   name: string | null;
   game_system: string | null;
+  game_key?: import("@/lib/games").GameKey | null;
+  description?: string | null;
   faction: string | null;
   subfaction: string | null;
   points_total: number | null;
