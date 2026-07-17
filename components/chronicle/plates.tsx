@@ -1850,6 +1850,146 @@ function GreenAvalanche({ className }: PlateProps) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Warhammer: The Old World — ten original, environment-only plates.  */
+/* Shared composition keeps the launch set coherent; each faction gets */
+/* its own skyline, landmark, palette, weather, and animated light.     */
+/* ------------------------------------------------------------------ */
+type OldWorldMotif =
+  | "chapel"
+  | "necropolis"
+  | "hold"
+  | "camp"
+  | "city"
+  | "road"
+  | "stones"
+  | "forest"
+  | "observatory"
+  | "compass";
+
+function OldWorldPlate({
+  className,
+  id,
+  deep,
+  mid,
+  glow,
+  motif,
+}: PlateProps & {
+  id: string;
+  deep: string;
+  mid: string;
+  glow: string;
+  motif: OldWorldMotif;
+}) {
+  const night = motif === "road" || motif === "stones" || motif === "forest" || motif === "observatory";
+  return (
+    <Base
+      className={className}
+      id={id}
+      deep={deep}
+      mid={mid}
+      sky={{ cx: motif === "chapel" ? 305 : 210, cy: 105, color: glow, r: 0.72, o: night ? 0.18 : 0.32 }}
+    >
+      {night && <Stars seed={id.length * 7} count={22} color={glow} maxY={245} />}
+      {motif === "chapel" && (
+        <>
+          <circle cx="310" cy="120" r="42" fill={glow} opacity="0.42" />
+          <path d="M0 420 Q90 345 185 398 T400 350 V500 H0 Z" fill={mid} opacity="0.72" />
+          <g fill={deep}>
+            <rect x="54" y="280" width="104" height="104" />
+            <path d="M44 280 L106 225 L168 280 Z" />
+            <rect x="92" y="205" width="28" height="82" />
+            <path d="M88 205 L106 178 L124 205 Z" />
+          </g>
+          <g stroke={glow} strokeWidth="2" opacity="0.8"><path d="M205 210 V350 M205 220 Q240 238 262 218 V270 Q238 288 205 266" /></g>
+        </>
+      )}
+      {motif === "necropolis" && (
+        <>
+          <circle cx="300" cy="92" r="48" fill={glow} opacity="0.55" />
+          <path d="M0 385 Q125 348 230 390 T400 365 V500 H0 Z" fill={mid} opacity="0.55" />
+          <g fill={deep}><path d="M90 385 L145 205 L200 385 Z" /><path d="M220 390 L260 265 L300 390 Z" /><rect x="42" y="265" width="14" height="125" /><path d="M38 265 L49 235 L60 265 Z" /></g>
+          <path d="M140 385 V318 Q145 282 175 282 Q205 282 210 318 V385" fill={glow} opacity="0.25" className="anim-flicker" />
+        </>
+      )}
+      {motif === "hold" && (
+        <>
+          <path d="M0 0 L82 70 L45 180 L100 245 L58 500 H0 Z M400 0 L320 80 L360 185 L305 252 L345 500 H400 Z" fill={deep} />
+          <path d="M85 500 V245 Q200 100 315 245 V500 Z" fill={deep} opacity="0.88" />
+          <path d="M128 500 V278 Q200 190 272 278 V500" fill="none" stroke={glow} strokeWidth="5" opacity="0.7" />
+          <ellipse cx="200" cy="460" rx="150" ry="20" fill={glow} opacity="0.24" className="anim-flicker" />
+        </>
+      )}
+      {motif === "camp" && (
+        <>
+          <path d="M0 420 Q95 360 205 408 T400 370 V500 H0 Z" fill={deep} />
+          <g fill={mid}>{[45, 120, 285, 350].map((x, i) => <path key={x} d={`M${x - 35} 420 L${x} ${300 + (i % 2) * 35} L${x + 38} 420 Z`} />)}</g>
+          <path d="M205 420 V202 M205 215 Q250 230 274 208 V272 Q245 289 205 260" fill="none" stroke={glow} strokeWidth="4" />
+          <g fill={glow}>{[70, 168, 305].map((x, i) => <circle key={x} cx={x} cy={430} r="9" opacity="0.7" className="anim-flicker" style={{ animationDelay: `${i * 0.7}s` }} />)}</g>
+        </>
+      )}
+      {motif === "city" && (
+        <>
+          <path d="M0 500 V310 H55 V255 H90 V330 H140 V225 H182 V305 H230 V245 H280 V320 H332 V270 H375 V220 H400 V500 Z" fill={deep} />
+          <path d="M0 415 Q95 385 190 420 T400 405" fill="none" stroke={mid} strokeWidth="18" opacity="0.7" />
+          <g fill={glow}>{Array.from({ length: 18 }, (_, i) => <rect key={i} x={18 + (i % 9) * 43} y={330 + Math.floor(i / 9) * 42 - (i % 3) * 12} width="6" height="9" opacity="0.75" className={i % 4 === 0 ? "anim-flicker" : undefined} />)}</g>
+        </>
+      )}
+      {motif === "road" && (
+        <>
+          <path d="M155 500 L190 220 L212 220 L260 500 Z" fill={mid} opacity="0.65" />
+          <path d="M0 430 Q115 375 210 420 T400 370 V500 H0 Z" fill={deep} />
+          <path d="M290 10 L278 72 L296 70 L262 160" fill="none" stroke={glow} strokeWidth="5" className="anim-bolt" />
+          <ellipse cx="278" cy="90" rx="110" ry="70" fill={glow} opacity="0.1" />
+          <g fill={mid}>{[78, 325].map((x) => <path key={x} d={`M${x - 15} 430 L${x - 10} 275 L${x + 10} 260 L${x + 16} 430 Z`} />)}</g>
+        </>
+      )}
+      {motif === "stones" && (
+        <>
+          <path d="M0 425 Q100 385 210 418 T400 390 V500 H0 Z" fill={deep} />
+          <g fill={mid}>{[55, 125, 210, 292, 360].map((x, i) => <path key={x} d={`M${x - 18} 430 L${x - 12} ${255 + (i % 2) * 42} L${x + 8} ${238 + (i % 2) * 42} L${x + 18} 430 Z`} opacity={0.95 - i * 0.08} />)}</g>
+          <ellipse cx="205" cy="420" rx="82" ry="26" fill={glow} opacity="0.38" className="anim-flicker" />
+          <path d="M130 205 Q200 155 270 205" fill="none" stroke={glow} strokeWidth="2" opacity="0.3" />
+        </>
+      )}
+      {motif === "forest" && (
+        <>
+          <g fill={deep}>{[20, 82, 168, 270, 350].map((x, i) => <path key={x} d={`M${x} 500 Q${x - 18} 380 ${x + 4} ${130 + (i % 3) * 35} Q${x + 28} 360 ${x + 38} 500 Z`} />)}</g>
+          <path d="M120 500 Q175 390 210 300 Q245 395 292 500 Z" fill={mid} opacity="0.34" />
+          <g fill={glow}>{[110, 184, 248, 320].map((x, i) => <circle key={x} cx={x} cy={235 + (i % 2) * 60} r="4" opacity="0.8" className="anim-twinkle" style={{ animationDelay: `${i}s` }} />)}</g>
+        </>
+      )}
+      {motif === "observatory" && (
+        <>
+          <path d="M0 440 Q125 405 220 438 T400 420 V500 H0 Z" fill={deep} />
+          <g fill={deep}><rect x="116" y="260" width="168" height="180" /><path d="M100 260 L200 205 L300 260 Z" /><rect x="185" y="145" width="30" height="88" /></g>
+          <g fill="none" stroke={glow} opacity="0.8"><ellipse cx="200" cy="180" rx="82" ry="26" strokeWidth="4" transform="rotate(-18 200 180)" /><ellipse cx="200" cy="180" rx="30" ry="82" strokeWidth="3" transform="rotate(25 200 180)" /><circle cx="200" cy="180" r="8" fill={glow} /></g>
+          <path d="M0 458 Q100 440 200 458 T400 452" fill="none" stroke={glow} strokeWidth="3" opacity="0.3" />
+        </>
+      )}
+      {motif === "compass" && (
+        <>
+          <path d="M0 500 V320 L55 290 V260 L120 235 V310 L175 280 V205 L230 235 V300 L290 250 V300 L350 270 V215 L400 250 V500 Z" fill={deep} />
+          <g transform="translate(205 190)" fill="none" stroke={glow}><circle r="88" strokeWidth="4" opacity="0.62" /><circle r="54" strokeWidth="2" opacity="0.45" /><path d="M0 -110 V110 M-110 0 H110 M-78 -78 L78 78 M78 -78 L-78 78" strokeWidth="2" opacity="0.55" /><path d="M0 -72 L12 0 L0 72 L-12 0 Z" fill={glow} opacity="0.45" className="anim-flicker" /></g>
+          <g fill={glow}>{[48, 108, 300, 355].map((x, i) => <circle key={x} cx={x} cy={350 + (i % 2) * 38} r="4" className="anim-twinkle" />)}</g>
+        </>
+      )}
+      <path d="M0 470 Q100 450 200 468 T400 458 V500 H0 Z" fill={deep} opacity="0.82" />
+    </Base>
+  );
+}
+
+const GildedCharge = (props: PlateProps) => <OldWorldPlate {...props} id="gilded-charge" deep="#0b1020" mid="#294b7a" glow="#f0cf78" motif="chapel" />;
+const SunlessDynasty = (props: PlateProps) => <OldWorldPlate {...props} id="sunless-dynasty" deep="#100d08" mid="#6b4a20" glow="#55d5c8" motif="necropolis" />;
+const MountainLedger = (props: PlateProps) => <OldWorldPlate {...props} id="mountain-ledger" deep="#0c1012" mid="#3e4b50" glow="#d79a45" motif="hold" />;
+const CrookedMuster = (props: PlateProps) => <OldWorldPlate {...props} id="crooked-muster" deep="#0d1007" mid="#3d501d" glow="#d8a33d" motif="camp" />;
+const HundredHearths = (props: PlateProps) => <OldWorldPlate {...props} id="hundred-hearths" deep="#101318" mid="#364c62" glow="#e0ad55" motif="city" />;
+const IronComet = (props: PlateProps) => <OldWorldPlate {...props} id="iron-comet" deep="#0b0a0d" mid="#3e252b" glow="#e14f3d" motif="road" />;
+const ThornedRevel = (props: PlateProps) => <OldWorldPlate {...props} id="thorned-revel" deep="#090d08" mid="#3b321d" glow="#a7c85a" motif="stones" />;
+const HiddenBough = (props: PlateProps) => <OldWorldPlate {...props} id="hidden-bough" deep="#07110c" mid="#1f513c" glow="#d4c875" motif="forest" />;
+const IvoryAstrolabe = (props: PlateProps) => <OldWorldPlate {...props} id="ivory-astrolabe" deep="#08101c" mid="#31557a" glow="#e8dfb0" motif="observatory" />;
+const JadeCompass = (props: PlateProps) => <OldWorldPlate {...props} id="jade-compass" deep="#071310" mid="#246152" glow="#e0b85e" motif="compass" />;
+
 /** Plate registry, keyed by banner id. Banners without a plate fall back to
  * BannerArt's gradient — so new banners can ship before their art does.
  * The first twelve are the hand-crafted originals (do not alter); the rest
@@ -1895,4 +2035,14 @@ export const PLATES: Record<string, React.FC<PlateProps>> = {
   "velvet-mirror": VelvetMirror,
   "winter-cauldron": WinterCauldron,
   "green-avalanche": GreenAvalanche,
+  "gilded-charge": GildedCharge,
+  "sunless-dynasty": SunlessDynasty,
+  "mountain-ledger": MountainLedger,
+  "crooked-muster": CrookedMuster,
+  "hundred-hearths": HundredHearths,
+  "iron-comet": IronComet,
+  "thorned-revel": ThornedRevel,
+  "hidden-bough": HiddenBough,
+  "ivory-astrolabe": IvoryAstrolabe,
+  "jade-compass": JadeCompass,
 };
