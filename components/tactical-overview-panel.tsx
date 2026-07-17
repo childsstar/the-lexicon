@@ -27,6 +27,10 @@ export default function TacticalOverviewPanel({ tactical }: { tactical: Tactical
         <ThreatGroup title="Melee threats" notes={tactical.melee_threats} />
         <ThreatGroup title="Scoring/objective units" notes={tactical.scoring_units} />
         <ThreatGroup title="Key characters" notes={tactical.key_characters} />
+        <ThreatGroup title="Cavalry & chariots" notes={tactical.cavalry_and_chariots ?? []} />
+        <ThreatGroup title="War machines" notes={tactical.war_machines ?? []} />
+        <ThreatGroup title="Monsters" notes={tactical.monsters ?? []} />
+        <ThreatGroup title="Magic users" notes={tactical.magic_users ?? []} />
       </div>
     </div>
   );
