@@ -39,4 +39,17 @@ const empty = buildTacticalOverview({
 assert.equal(empty.fast_threats.length, 0);
 assert.equal(empty.key_characters.length, 0);
 
+// Old World summaries use rank-and-flank roles rather than relying solely on
+// 40K concepts such as Battleline, vehicles, and deep strike.
+const oldWorld = buildTacticalOverview(parseArmyListDeterministically({
+  gameSystem: "Warhammer: The Old World",
+  faction: "Empire of Man",
+  rawText: `The Amber Road\nTotal: 2,000 pts\nCharacters\nWizard Lord - 210 pts\nCore\n20 State Troops - 180 pts\n5 Empire Knights - 135 pts\nSpecial\nGreat Cannon - 125 pts\nRare\nSteam Tank - 265 pts`,
+}));
+assert.ok(oldWorld.scoring_units.some((unit) => unit.name === "State Troops"), "Old World Core infantry should read as board presence");
+assert.ok(oldWorld.cavalry_and_chariots.some((unit) => unit.name === "Empire Knights"), "Old World cavalry should be identified");
+assert.ok(oldWorld.war_machines.some((unit) => unit.name === "Great Cannon"), "Old World war machines should be identified");
+assert.ok(oldWorld.magic_users.some((unit) => unit.name === "Wizard Lord"), "Old World magic users should be identified");
+assert.match(oldWorld.broad_role, /Old World/, "Old World summaries should use system-appropriate language");
+
 console.log("Tactical overview validation passed");
