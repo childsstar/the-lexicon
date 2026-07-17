@@ -49,8 +49,8 @@ Warhammer-only MVP or not game-shaped.
   `components/chronicle/hall-of-banners-filter.tsx`) — scoped to the active
   realm/game via `filterBannersForActiveContext`, with a contextual heading
   ("Hall of Banners — Age of Sigmar") and a graceful fallback note + full
-  list when a realm has no banners mapped yet (true today for Horus Heresy
-  and The Old World — all 40 existing banners are 40k/AoS only). The banner
+  list when a realm has no banners mapped yet (true today for Horus Heresy; The Old World now has a complete
+  10-faction banner set alongside the 40 existing 40k/AoS banners). The banner
   cards themselves stay server-rendered exactly as before; the client
   component only decides which of the already-rendered cards to keep (see
   the hydration note below).

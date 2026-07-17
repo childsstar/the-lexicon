@@ -31,6 +31,7 @@ const records = [...body.matchAll(/\n  \{[\s\S]*?\n  \},/g)].map((m) => m[0]);
 if (records.length === 0) throw new Error("No banner records found.");
 
 const ids = new Set();
+const oldWorldFactions = new Set();
 for (const [index, record] of records.entries()) {
   for (const field of requiredStringFields) {
     if (!new RegExp(`${field}:\\s*"[^"]+"`).test(record)) {
@@ -43,6 +44,10 @@ for (const [index, record] of records.entries()) {
   ids.add(id);
 
   const gameSystemKey = record.match(/gameSystemKey:\s*"([^"]+)"/)?.[1];
+  if (gameSystemKey === "the-old-world") {
+    const faction = record.match(/primaryFaction:\s*"([^"]+)"/)?.[1];
+    if (faction) oldWorldFactions.add(faction);
+  }
   if (!allowedGameSystems.has(gameSystemKey)) {
     throw new Error(`Banner ${id} uses unknown gameSystemKey: ${gameSystemKey}`);
   }
@@ -70,4 +75,28 @@ for (const [index, record] of records.entries()) {
   }
 }
 
-console.log(`Validated ${records.length} banners: unique ids, required fields, game system keys, palettes, trait profiles, and plate registry entries.`);
+const expectedOldWorldFactions = new Set([
+  "Kingdom of Bretonnia",
+  "Tomb Kings of Khemri",
+  "Dwarfen Mountain Holds",
+  "Orc & Goblin Tribes",
+  "Empire of Man",
+  "Warriors of Chaos",
+  "Beastmen Brayherds",
+  "Wood Elf Realms",
+  "High Elf Realms",
+  "Grand Cathay",
+]);
+const missingOldWorldFactions = [...expectedOldWorldFactions].filter(
+  (faction) => !oldWorldFactions.has(faction)
+);
+const unexpectedOldWorldFactions = [...oldWorldFactions].filter(
+  (faction) => !expectedOldWorldFactions.has(faction)
+);
+if (missingOldWorldFactions.length || unexpectedOldWorldFactions.length) {
+  throw new Error(
+    `Old World roster mismatch. Missing: ${missingOldWorldFactions.join(", ") || "none"}; unexpected: ${unexpectedOldWorldFactions.join(", ") || "none"}.`
+  );
+}
+
+console.log(`Validated ${records.length} banners: unique ids, required fields, game system keys, palettes, trait profiles, plate registry entries, and the complete ${oldWorldFactions.size}-faction Old World roster.`);
