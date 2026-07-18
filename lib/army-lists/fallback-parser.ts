@@ -1,19 +1,20 @@
 import type { ArmyListParserInput, ParsedArmyList, ParsedArmyUnit } from "./types";
 import { isNonDatasheet } from "./unit-lexicon";
+import { detectRosterGame } from "./import-utils";
 
-const SECTION_HEADERS = new Set(["ATTACHED UNITS", "CHARACTERS", "BATTLELINE", "DEDICATED TRANSPORTS", "OTHER DATASHEETS", "ALLIED UNITS", "CORE", "SPECIAL", "RARE", "MERCENARIES", "ALLIES", "LORDS", "HEROES"]);
+const SECTION_HEADERS = new Set(["ATTACHED UNITS", "CHARACTERS", "BATTLELINE", "DEDICATED TRANSPORTS", "OTHER DATASHEETS", "ALLIED UNITS", "CORE", "CORE UNITS", "SPECIAL", "SPECIAL UNITS", "RARE", "RARE UNITS", "MERCENARIES", "ALLIES", "LORDS", "HEROES"]);
 const FORCE_SIZES = /\b(Strike Force|Incursion|Combat Patrol|Onslaught)\b/i;
 
 export function parseArmyListDeterministically(input: ArmyListParserInput): ParsedArmyList {
   const lines = input.rawText.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   const joined = lines.join("\n");
+  const gameSystem = input.gameSystem || inferGameSystem(joined);
   const is40kExport = looksLikeWarhammer40kExport(joined);
   const detachments = is40kExport ? extractDetachments(lines) : { detachment_names: [] as string[], detachment_points: null as number | null };
   const pointsTotal = extractPointsTotal(joined);
-  const isOldWorld = input.gameSystem === "Warhammer: The Old World";
+  const isOldWorld = gameSystem === "Warhammer: The Old World";
   const units = is40kExport && !isOldWorld ? parseWarhammer40kUnits(lines) : parseSectionedUnits(lines, isOldWorld);
-  const faction = input.faction || (is40kExport ? extractWarhammerFaction(lines) : null) || extractLabeledValue(lines, ["faction", "army", "allegiance"]);
-  const gameSystem = input.gameSystem || inferGameSystem(joined);
+  const faction = input.faction || (isOldWorld ? extractOldWorldFaction(lines) : null) || (is40kExport ? extractWarhammerFaction(lines) : null) || extractLabeledValue(lines, ["faction", "army", "allegiance"]);
   const subfaction = detachments.detachment_names.length ? detachments.detachment_names.join(" / ") : extractLabeledValue(lines, ["subfaction", "detachment", "chapter", "clan", "sept", "legion"]);
   const modelCount = units.reduce((sum, unit) => sum + (unit.quantity ?? 1), 0);
   const warnings = ["Imported list is unofficial and has not been checked against construction rules. Review before locking."];
@@ -21,23 +22,37 @@ export function parseArmyListDeterministically(input: ArmyListParserInput): Pars
   if (!units.length) warnings.push("No obvious unit rows were detected; raw roster text was preserved.");
   if (!pointsTotal) warnings.push("Could not confidently identify a total points value.");
 
-  return { game_system: gameSystem, faction, subfaction, points_total: pointsTotal, units, unit_count: units.length, model_count: modelCount || null, detachment_names: detachments.detachment_names, detachment_points: detachments.detachment_points, inferred_playstyle_tags: inferPlaystyleTags(joined, units), confidence: units.length ? (is40kExport ? 0.78 : 0.42) : 0.22, warnings };
+  return { roster_name: extractRosterName(lines), game_system: gameSystem, faction, subfaction, points_total: pointsTotal, units, unit_count: units.length, model_count: modelCount || null, detachment_names: detachments.detachment_names, detachment_points: detachments.detachment_points, inferred_playstyle_tags: inferPlaystyleTags(joined, units), confidence: units.length ? (is40kExport ? 0.78 : 0.72) : 0.22, warnings };
 }
 
 function parseSectionedUnits(lines: string[], preserveUnknown: boolean): ParsedArmyUnit[] {
   const units: ParsedArmyUnit[] = [];
+  const rosterName = extractRosterName(lines);
   let section: string | null = null;
+  let current: ParsedArmyUnit | null = null;
   for (const raw of lines) {
     const line = raw.replace(/^[-*•]\s*/, "").trim();
-    const heading = line.replace(/:$/, "").toUpperCase();
-    if (SECTION_HEADERS.has(heading)) { section = titleCase(heading); continue; }
+    if (/^(?:={3,}|-{3,}|Created with\b|Warhammer:\s*The Old World\b)/i.test(line) || (rosterName && line.replace(/\s*\[[\d,]+\s*pts?\]\s*$/i, "") === rosterName)) continue;
+    const heading = line.replace(/^\+{1,2}\s*/, "").replace(/\s*\[[^\]]+\]\s*\+{1,2}$/, "").replace(/:$/, "").toUpperCase();
+    if (SECTION_HEADERS.has(heading)) { section = titleCase(heading); current = null; continue; }
     const parsed = parseUnitLine(line, section);
-    if (parsed) { units.push({ ...parsed, raw_text: raw }); continue; }
+    if (parsed) { current = { ...parsed, raw_text: raw }; units.push(current); continue; }
+    if (current && /^[-*•]/.test(raw.trim())) { current.wargear.push(line); continue; }
     if (preserveUnknown && section && !/^(total|faction|army|game system|points)\b/i.test(line)) {
       units.push({ name: line, raw_text: raw, unverified: true, quantity: null, points: null, role: null, section, category: section, enhancements: [], upgrades: [], wargear: [] });
     }
   }
   return units.slice(0, 120);
+}
+
+function extractRosterName(lines: string[]): string | null {
+  const candidate = lines.find((line) => /\[[\d,]+\s*pts?\]\s*$/i.test(line) && !/^\+{1,2}/.test(line));
+  return candidate?.replace(/\s*\[[\d,]+\s*pts?\]\s*$/i, "").trim() || null;
+}
+
+function extractOldWorldFaction(lines: string[]): string | null {
+  const metadata = lines.find((line) => /^Warhammer:\s*The Old World\s*,/i.test(line));
+  return metadata?.split(",").map((part) => part.trim())[1] || null;
 }
 
 export function looksLikeWarhammer40kExport(text: string): boolean {
@@ -105,7 +120,7 @@ function extractPointsTotal(text: string): number | null {
 
 function parseUnitLine(line: string, section: string | null): ParsedArmyUnit | null {
   if (/^(faction|army|game system|total|points|detachment|subfaction|force dispositions|exported with|data version)\b/i.test(line)) return null;
-  const pointMatch = line.match(/^(.+?)\s*\(([\d,]{1,5})\s*(?:pts?|points)\)$/i) || line.match(/^(.+?)\s+[-–]\s+([\d,]{1,5})\s*(?:pts?|points)\b/i);
+  const pointMatch = line.match(/^(.+?)\s*[\[(]([\d,]{1,5})\s*(?:pts?|points)[\])]$/i) || line.match(/^(.+?)\s+[-–]\s+([\d,]{1,5})\s*(?:pts?|points)\b/i);
   if (!pointMatch) return null;
   const quantityMatch = pointMatch[1].match(/^(\d+)\s*(?:[x×]\s*|\s+)(.+)/i);
   const name = (quantityMatch ? quantityMatch[2] : pointMatch[1]).trim();
@@ -118,8 +133,10 @@ function parseUnitLine(line: string, section: string | null): ParsedArmyUnit | n
 }
 
 function inferGameSystem(text: string): string | null {
+  const detected = detectRosterGame(text);
+  if (detected) return detected.name;
   if (looksLikeWarhammer40kExport(text) || /warhammer\s*40|40k|adeptus|space marines|tyranids|necrons|death guard/i.test(text)) return "Warhammer 40,000";
-  if (/age of sigmar|stormcast|seraphon|ossiarch/i.test(text)) return "Warhammer Age of Sigmar";
+  if (/age of sigmar|stormcast|seraphon|ossiarch/i.test(text)) return "Warhammer: Age of Sigmar";
   if (/kill team/i.test(text)) return "Kill Team";
   return null;
 }

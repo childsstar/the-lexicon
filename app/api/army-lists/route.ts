@@ -6,6 +6,7 @@ import { generateVisualIdentity } from "@/lib/armies/visual-identity";
 import { getRequestUser } from "@/lib/supabase-server";
 import type { ParsedArmyList } from "@/lib/army-lists/types";
 import { findGameByName } from "@/lib/games";
+import { ARMY_IMPORT_ERROR, isArmyListSchemaError } from "@/lib/army-lists/import-utils";
 
 const MAX_RAW_TEXT_LENGTH = 40_000;
 
@@ -74,7 +75,7 @@ export async function POST(request: Request) {
 
   const resolvedFaction = parsed?.faction ?? faction;
   const resolvedGameSystem = parsed?.game_system ?? gameSystem;
-  const name = userEnteredName || generateFallbackArmyName({ faction: resolvedFaction, gameSystem: resolvedGameSystem });
+  const name = userEnteredName || parsed?.roster_name || generateFallbackArmyName({ faction: resolvedFaction, gameSystem: resolvedGameSystem });
   const tacticalSummary = parsed && parsed.units.length ? buildTacticalOverview(parsed) : EMPTY_TACTICAL_SUMMARY;
   const visualIdentity = generateVisualIdentity({
     faction: resolvedFaction,
@@ -110,7 +111,8 @@ export async function POST(request: Request) {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("army_lists insert failed", { code: error.code, message: error.message, details: error.details });
+    return NextResponse.json({ error: ARMY_IMPORT_ERROR, retryable: isArmyListSchemaError(error) }, { status: 500 });
   }
 
   return NextResponse.json({ armyList: data }, { status: 201 });

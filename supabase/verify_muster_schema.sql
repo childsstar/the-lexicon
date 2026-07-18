@@ -20,7 +20,7 @@ select column_name
 from information_schema.columns
 where table_schema = 'public' and table_name = 'army_lists'
   and column_name in (
-    'id', 'user_id', 'profile_id', 'name', 'game_system', 'faction',
+    'id', 'user_id', 'profile_id', 'name', 'game_system', 'game_key', 'faction',
     'subfaction', 'points_total', 'datasheet_count', 'model_count',
     'detachment_names', 'detachment_points', 'raw_text', 'parsed_json',
     'playstyle_tags', 'tactical_summary', 'parser_status', 'parser_error',
@@ -28,7 +28,7 @@ where table_schema = 'public' and table_name = 'army_lists'
     'created_at', 'updated_at'
   )
 order by column_name;
--- expect: all 22 column names listed above
+-- expect: all 23 column names listed above
 
 -- 3. RLS is enabled on both tables.
 select relname, relrowsecurity

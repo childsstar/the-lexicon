@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/page-header";
 import { useAuth } from "@/components/auth-provider";
-import { useActiveUniverse } from "@/components/active-universe-provider";
 import { GAMES } from "@/lib/games";
 import { factionsForGame } from "@/lib/game-data";
+import { detectRosterGame } from "@/lib/army-lists/import-utils";
 
 const GAME_SYSTEMS = [
   "Warhammer 40,000",
@@ -22,9 +22,9 @@ const GAME_SYSTEMS = [
 export default function MusterArmyClient() {
   const router = useRouter();
   const { user, profile, session, loading } = useAuth();
-  const { gameKey } = useActiveUniverse();
   const [name, setName] = useState("");
-  const [gameSystem, setGameSystem] = useState(() => gameKey ? GAMES[gameKey].name : "");
+  const [gameSystem, setGameSystem] = useState("");
+  const [gameWasSelected, setGameWasSelected] = useState(false);
   const [faction, setFaction] = useState("");
   const [rawText, setRawText] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -33,8 +33,8 @@ export default function MusterArmyClient() {
   const curatedFactions = selectedGame ? factionsForGame(selectedGame.key) : [];
 
   useEffect(() => {
-    if (gameKey && !gameSystem) setGameSystem(GAMES[gameKey].name);
-  }, [gameKey, gameSystem]);
+    if (!gameWasSelected) setGameSystem(detectRosterGame(rawText)?.name ?? "");
+  }, [rawText, gameWasSelected]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -125,7 +125,7 @@ export default function MusterArmyClient() {
         </Field>
 
         <Field label="Game system" hint="Choose one or leave blank so the roster text can suggest it.">
-          <select value={gameSystem} onChange={(event) => setGameSystem(event.target.value)} className="field">
+          <select value={gameSystem} onChange={(event) => { setGameSystem(event.target.value); setGameWasSelected(Boolean(event.target.value)); }} className="field">
             <option value="">Infer from roster text</option>
             {GAME_SYSTEMS.map((system) => (
               <option key={system} value={system}>{system}</option>

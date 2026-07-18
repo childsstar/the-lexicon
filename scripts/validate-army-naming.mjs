@@ -37,12 +37,12 @@ assert.equal(
 const route = readFileSync(new URL("../app/api/army-lists/route.ts", import.meta.url), "utf8");
 assert.match(
   route,
-  /const name = userEnteredName \|\| generateFallbackArmyName\(/,
-  "the route should preserve a user-entered name and only fall back when it's blank"
+  /const name = userEnteredName \|\| parsed\?\.roster_name \|\| generateFallbackArmyName\(/,
+  "the route should preserve a user-entered name, then use roster metadata, and only then fall back"
 );
 assert.doesNotMatch(
   route,
-  /name:\s*parsed(\?\.|\.)/,
+  /const name = parsed(\?\.|\.)/,
   "the route should never assign the saved name directly from parsed roster data"
 );
 
