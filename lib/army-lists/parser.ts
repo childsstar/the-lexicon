@@ -3,6 +3,7 @@ import { parseArmyListDeterministically } from "./fallback-parser";
 import type { ArmyListParser, ArmyListParserInput, ParsedArmyList, ParsedArmyUnit } from "./types";
 
 export const EMPTY_PARSED_ARMY_LIST: ParsedArmyList = {
+  roster_name: null,
   game_system: null,
   faction: null,
   subfaction: null,
@@ -35,6 +36,7 @@ export const ARMY_LIST_SCHEMA = {
     "detachment_points",
   ],
   properties: {
+    roster_name: { type: ["string", "null"] },
     game_system: { type: ["string", "null"] },
     faction: { type: ["string", "null"] },
     subfaction: { type: ["string", "null"] },

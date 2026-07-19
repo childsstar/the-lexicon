@@ -17,6 +17,7 @@ export type ParsedArmyUnit = {
 };
 
 export type ParsedArmyList = {
+  roster_name?: string | null;
   game_system: string | null;
   faction: string | null;
   subfaction: string | null;
@@ -52,7 +53,7 @@ export type ArmyList = {
   profile_id: string | null;
   name: string | null;
   game_system: string | null;
-  game_key?: import("@/lib/games").GameKey | null;
+  game_key: import("@/lib/games").GameKey | null;
   description?: string | null;
   faction: string | null;
   subfaction: string | null;
