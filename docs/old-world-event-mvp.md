@@ -10,7 +10,7 @@
 
 ## Migration
 
-Run `supabase db push` in each environment. Migration `20260716000000_old_world_event_mvp.sql` adds nullable `game_key` and `description`, backfills recognized legacy display strings, and creates a user/game index. It removes no content and keeps `game_system` for compatibility.
+Run `supabase link --project-ref <production-project-ref>` followed by `supabase db push --linked` in each environment. Migration `20260727000000_ensure_army_lists_game_key.sql` is the idempotent production repair: it adds nullable `game_key`, preserves existing values, backfills recognized legacy display strings/parser metadata/raw roster text (and a legacy `realm_key` when present), restores the canonical-value check and user/game index, and notifies PostgREST to reload its schema cache. It removes no content and keeps `game_system` for compatibility. If the REST API still reports a schema-cache error after the push, run `notify pgrst, 'reload schema';` in the Supabase SQL Editor (or use Dashboard → Settings → API → Reload schema), then retry the import.
 
 ## Privacy decisions
 
