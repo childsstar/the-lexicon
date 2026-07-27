@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { compileForRequire } from "./compile-ts.mjs";
+import { readFileSync } from "node:fs";
 
 const [games, data, parser, importUtils] = compileForRequire([
   "lib/games.ts",
@@ -97,5 +98,15 @@ assert.equal(importUtils.detectRosterGame("Warhammer 40,000\nDeath Guard")?.key,
 assert.equal(importUtils.detectRosterGame("Warhammer: Age of Sigmar\nStormcast Eternals")?.key, "age-of-sigmar");
 assert.equal(importUtils.isArmyListSchemaError({ code: "PGRST204", message: "Could not find game_key in schema cache" }), true);
 assert.doesNotMatch(importUtils.ARMY_IMPORT_ERROR, /schema cache|game_key|Supabase/i, "database details must not reach users");
+
+const repairMigration = readFileSync(new URL("../supabase/migrations/20260727000000_ensure_army_lists_game_key.sql", import.meta.url), "utf8");
+const databaseTypes = readFileSync(new URL("../supabase/database.types.ts", import.meta.url), "utf8");
+assert.match(repairMigration, /add column if not exists game_key text/i);
+assert.match(repairMigration, /where game_key is null/i, "backfill must preserve existing values");
+assert.match(repairMigration, /parsed_json->>'game_system'.*raw_text/s, "backfill should inspect parser metadata and source text");
+assert.match(repairMigration, /army_lists_game_key_check/);
+assert.match(repairMigration, /army_lists_user_game_idx/);
+assert.match(repairMigration, /notify pgrst, 'reload schema'/i);
+assert.match(databaseTypes, /game_key: string \| null/, "generated Supabase snapshot must expose game_key");
 
 console.log("Old World exact import, game precedence, legacy systems, safe errors, headings, quantities and source preservation passed");
