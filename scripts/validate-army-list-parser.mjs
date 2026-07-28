@@ -64,6 +64,6 @@ assert.match(muster, /router\.push\(`\/armies\/\$\{payload\.armyList\.id\}`\)/, 
 assert.match(detail, /TacticalOverviewPanel/, "army detail page should render the shared tactical overview panel");
 assert.match(tacticalPanel, /What this army can field/, "tactical overview panel should explain what the army can field");
 assert.match(detail, /Raw pasted text/, "army detail page should expose collapsible raw text");
-assert.match(detail, /ArmySigil/, "army detail page should render the army's visual identity");
+assert.match(detail, /FactionHeraldry/, "army detail page should render the army's faction heraldry");
 
 console.log("Army list parser/import validation passed");

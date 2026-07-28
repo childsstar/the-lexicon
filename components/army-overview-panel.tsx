@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ArmySigil from "@/components/army-sigil";
+import FactionHeraldry from "@/components/faction-heraldry";
 import TacticalOverviewPanel from "@/components/tactical-overview-panel";
 import type { ArmyOverviewSnapshot } from "@/lib/matchups/types";
 
@@ -19,7 +19,7 @@ export default function ArmyOverviewPanel({
     <div className="card space-y-5 p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-4">
-          <ArmySigil identity={overview.visual_identity} size="lg" />
+          <FactionHeraldry faction={overview.faction} size="lg" />
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-gold-400">{eyebrow}</p>
             <h3 className="mt-1 font-display text-xl font-semibold text-text">{overview.name}</h3>

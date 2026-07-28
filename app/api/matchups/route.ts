@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { computeMatchupStatus } from "@/lib/matchups/reveal";
 import { getRequestUser } from "@/lib/supabase-server";
 import type { MatchupRow } from "@/lib/matchups/types";
-import type { VisualIdentity } from "@/lib/armies/visual-identity";
 
 export async function POST(request: Request) {
   let body: { armyId?: unknown };
@@ -69,8 +68,8 @@ export async function GET(request: Request) {
     .from("army_matchups")
     .select(
       "id, creator_user_id, opponent_user_id, creator_army_id, opponent_army_id, creator_locked_at, opponent_locked_at, status, invite_code, created_at, " +
-        "creatorSnapshotName:creator_snapshot->>name, creatorSnapshotIdentity:creator_snapshot->visual_identity, " +
-        "opponentSnapshotName:opponent_snapshot->>name, opponentSnapshotIdentity:opponent_snapshot->visual_identity"
+        "creatorSnapshotName:creator_snapshot->>name, creatorSnapshotFaction:creator_snapshot->>faction, " +
+        "opponentSnapshotName:opponent_snapshot->>name, opponentSnapshotFaction:opponent_snapshot->>faction"
     )
     .order("created_at", { ascending: false });
 
@@ -83,9 +82,9 @@ export async function GET(request: Request) {
     "id" | "creator_user_id" | "opponent_user_id" | "creator_army_id" | "opponent_army_id" | "creator_locked_at" | "opponent_locked_at" | "status" | "invite_code" | "created_at"
   > & {
     creatorSnapshotName: string | null;
-    creatorSnapshotIdentity: VisualIdentity | null;
+    creatorSnapshotFaction: string | null;
     opponentSnapshotName: string | null;
-    opponentSnapshotIdentity: VisualIdentity | null;
+    opponentSnapshotFaction: string | null;
   };
   const rows = (data ?? []) as unknown as ListRow[];
 
@@ -97,14 +96,14 @@ export async function GET(request: Request) {
     .map((row) => (row.creator_user_id === userId ? row.creator_army_id : row.opponent_army_id))
     .filter((armyId): armyId is string => Boolean(armyId));
 
-  const armyInfo = new Map<string, { name: string | null; identity: VisualIdentity | null }>();
+  const armyInfo = new Map<string, { name: string | null; faction: string | null }>();
   if (unnamedSelfArmyIds.length > 0) {
     const { data: armies } = await supabase
       .from("army_lists")
-      .select("id, name, visual_identity_json")
+      .select("id, name, faction")
       .in("id", unnamedSelfArmyIds);
-    for (const army of (armies ?? []) as { id: string; name: string | null; visual_identity_json: VisualIdentity | null }[]) {
-      armyInfo.set(army.id, { name: army.name, identity: army.visual_identity_json });
+    for (const army of (armies ?? []) as { id: string; name: string | null; faction: string | null }[]) {
+      armyInfo.set(army.id, { name: army.name, faction: army.faction });
     }
   }
 
@@ -123,7 +122,8 @@ export async function GET(request: Request) {
       inviteCode: row.opponent_user_id ? null : row.invite_code,
       createdAt: row.created_at,
       selfArmyName: (isCreator ? row.creatorSnapshotName : row.opponentSnapshotName) ?? selfFallback?.name ?? null,
-      selfArmyIdentity: (isCreator ? row.creatorSnapshotIdentity : row.opponentSnapshotIdentity) ?? selfFallback?.identity ?? null,
+      selfArmyFaction: (isCreator ? row.creatorSnapshotFaction : row.opponentSnapshotFaction) ?? selfFallback?.faction ?? null,
+      hasSelfArmy: Boolean(selfArmyId),
       // The opponent's army name stays sealed until reveal, same as the list itself.
       opponentArmyName: status === "revealed" ? (isCreator ? row.opponentSnapshotName : row.creatorSnapshotName) : null,
     };

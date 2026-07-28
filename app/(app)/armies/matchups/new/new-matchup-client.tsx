@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import PageHeader from "@/components/page-header";
-import ArmySigil from "@/components/army-sigil";
+import FactionHeraldry from "@/components/faction-heraldry";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { ArmyList } from "@/lib/army-lists/types";
@@ -124,7 +124,7 @@ export default function NewMatchupClient() {
         )}
         {presetArmy ? (
           <div className="flex items-center gap-3 rounded-md border border-gold-600/40 bg-surface/60 p-3">
-            <ArmySigil identity={presetArmy.visual_identity_json} size="md" />
+            <FactionHeraldry faction={presetArmy.faction} size="md" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-text">{presetArmy.name || "Untitled army"}</p>
               <p className="truncate text-xs text-text-muted">{presetArmy.faction || "Unknown faction"}</p>

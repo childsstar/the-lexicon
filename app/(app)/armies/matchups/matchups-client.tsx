@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/page-header";
 import EmptyState from "@/components/empty-state";
-import ArmySigil from "@/components/army-sigil";
+import FactionHeraldry from "@/components/faction-heraldry";
 import { SwordsIcon, PlusIcon, ChevronRightIcon } from "@/components/icons";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
-import type { VisualIdentity } from "@/lib/armies/visual-identity";
 
 type MatchupSummary = {
   id: string;
@@ -20,7 +19,8 @@ type MatchupSummary = {
   inviteCode: string | null;
   createdAt: string;
   selfArmyName: string | null;
-  selfArmyIdentity: VisualIdentity | null;
+  selfArmyFaction: string | null;
+  hasSelfArmy: boolean;
   opponentArmyName: string | null;
 };
 
@@ -94,8 +94,8 @@ export default function MatchupsClient() {
         <div className="space-y-3">
           {matchups.map((matchup) => (
             <Link key={matchup.id} href={`/armies/matchups/${matchup.id}`} className="card card-interactive flex items-center gap-4 p-5">
-              {matchup.selfArmyIdentity ? (
-                <ArmySigil identity={matchup.selfArmyIdentity} size="md" />
+              {matchup.hasSelfArmy ? (
+                <FactionHeraldry faction={matchup.selfArmyFaction} size="md" />
               ) : (
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-gold-500">
                   <SwordsIcon className="h-5 w-5" />
