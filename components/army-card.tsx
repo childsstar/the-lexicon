@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ArmySigil from "@/components/army-sigil";
+import FactionHeraldry from "@/components/faction-heraldry";
 import { ChevronRightIcon } from "@/components/icons";
 import type { ArmyList } from "@/lib/army-lists/types";
 
@@ -21,7 +21,7 @@ function statusLabel(army: ArmyList): string {
 export default function ArmyCard({ army }: { army: ArmyList }) {
   return (
     <Link href={`/armies/${army.id}`} className="card card-interactive flex items-center gap-4 p-5">
-      <ArmySigil identity={army.visual_identity_json} size="md" />
+      <FactionHeraldry faction={army.faction} size="md" />
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <h2 className="truncate font-display text-lg font-semibold text-text">{army.name || "Untitled army"}</h2>

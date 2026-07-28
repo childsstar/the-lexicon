@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/page-header";
-import ArmySigil from "@/components/army-sigil";
+import FactionHeraldry from "@/components/faction-heraldry";
 import TacticalOverviewPanel from "@/components/tactical-overview-panel";
 import { getSupabaseClient } from "@/lib/supabase";
+import { resolveFactionHeraldry } from "@/lib/chronicle/faction-heraldry";
 import type { ArmyList } from "@/lib/army-lists/types";
 import { SwordsIcon } from "@/components/icons";
 
@@ -35,6 +36,7 @@ export default function ArmyDetailClient({ id }: { id: string }) {
   }, [id]);
 
   const parsed = army?.parsed_json;
+  const faction = army?.faction || parsed?.faction;
   const tactical = army?.tactical_summary;
   const detachmentLine = army?.detachment_names?.length
     ? `${army.detachment_names.join(" / ")}${army.detachment_points ? ` (${army.detachment_points} DP)` : ""}`
@@ -69,10 +71,10 @@ export default function ArmyDetailClient({ id }: { id: string }) {
           <div className="card p-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="flex items-center gap-4">
-                <ArmySigil identity={army.visual_identity_json} size="lg" />
+                <FactionHeraldry faction={faction} size="lg" />
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-gold-400">
-                    {army.visual_identity_json?.motif || "Army"}
+                    {resolveFactionHeraldry(faction)?.name || "Army"}
                   </p>
                   <h2 className="mt-1 font-display text-2xl font-semibold text-text">{army.name || "Untitled army"}</h2>
                 </div>
