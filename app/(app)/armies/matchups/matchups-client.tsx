@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/page-header";
 import EmptyState from "@/components/empty-state";
+import ArmiesSectionNav from "@/components/armies-section-nav";
 import ArmySigil from "@/components/army-sigil";
 import { SwordsIcon, PlusIcon, ChevronRightIcon } from "@/components/icons";
 import { useAuth } from "@/components/auth-provider";
@@ -75,6 +76,8 @@ export default function MatchupsClient() {
           </Link>
         }
       />
+
+      <ArmiesSectionNav />
 
       {error && <div className="card mb-4 border-ember-500/50 p-4 text-sm text-ember-200">{error}</div>}
 

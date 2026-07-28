@@ -89,6 +89,15 @@ export default function DashboardClient() {
         <div className="gilded-rule mt-4" />
       </div>
 
+      <Link
+        href="/armies/matchups"
+        className="mb-4 inline-flex min-h-10 items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm font-semibold text-text-muted transition-colors hover:border-gold-600/60 hover:text-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+      >
+        <SwordsIcon className="h-4 w-4 text-gold-500" />
+        Prepare a matchup
+        <ChevronRightIcon className="h-3.5 w-3.5 text-text-subtle" />
+      </Link>
+
       {!enriched && (
         <Link
           href="/profile/setup"

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import PageHeader from "@/components/page-header";
 import ArmyOverviewPanel from "@/components/army-overview-panel";
+import ArmiesSectionNav from "@/components/armies-section-nav";
 import { LexiconMark, SwordsIcon } from "@/components/icons";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
@@ -120,6 +121,8 @@ export default function MatchupDetailClient({ id }: { id: string }) {
         backHref="/armies/matchups"
         backLabel="Matchups"
       />
+
+      <ArmiesSectionNav />
 
       {error && <div className="card mb-4 border-ember-500/50 p-4 text-sm text-ember-200">{error}</div>}
       {!matchup && !error && <div className="card p-5 text-sm text-text-muted">Opening the sealed ledger…</div>}
