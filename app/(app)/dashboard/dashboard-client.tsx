@@ -104,6 +104,17 @@ export default function DashboardClient() {
         </Link>
       )}
 
+      <div className="mb-4 flex justify-end">
+        <Link
+          href="/armies/matchups"
+          className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-4 py-2 text-sm font-semibold text-text-muted transition-colors hover:border-gold-600 hover:text-gold-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+        >
+          <SwordsIcon className="h-4 w-4" />
+          Prepare a matchup
+          <ChevronRightIcon className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+
       <div className="grid gap-3 sm:grid-cols-2">
         {/* Profile — the one card backed by real data */}
         <Link

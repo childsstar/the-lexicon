@@ -5,6 +5,7 @@ import Link from "next/link";
 import PageHeader from "@/components/page-header";
 import EmptyState from "@/components/empty-state";
 import FactionHeraldry from "@/components/faction-heraldry";
+import ArmiesSectionNav from "@/components/armies-section-nav";
 import { SwordsIcon, PlusIcon, ChevronRightIcon } from "@/components/icons";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
@@ -71,10 +72,12 @@ export default function MatchupsClient() {
             className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-gold-500 px-4 py-2 text-sm font-semibold text-ink-950 transition-colors hover:bg-gold-400"
           >
             <PlusIcon className="h-4 w-4" />
-            New matchup
+            Start a matchup
           </Link>
         }
       />
+
+      <ArmiesSectionNav />
 
       {error && <div className="card mb-4 border-ember-500/50 p-4 text-sm text-ember-200">{error}</div>}
 
