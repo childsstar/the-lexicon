@@ -5,7 +5,8 @@ import Link from "next/link";
 import PageHeader from "@/components/page-header";
 import EmptyState from "@/components/empty-state";
 import ArmyCard from "@/components/army-card";
-import { ShieldIcon, PlusIcon, SwordsIcon } from "@/components/icons";
+import ArmiesSectionNav from "@/components/armies-section-nav";
+import { ShieldIcon, PlusIcon } from "@/components/icons";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { ArmyList } from "@/lib/army-lists/types";
@@ -54,13 +55,7 @@ export default function ArmiesClient() {
         }
       />
 
-      <Link
-        href="/armies/matchups"
-        className="mb-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-gold-400 hover:text-gold-300"
-      >
-        <SwordsIcon className="h-3.5 w-3.5" />
-        Prep a sealed matchup
-      </Link>
+      <ArmiesSectionNav />
 
       {error && (
         <div className="card mb-4 border-ember-500/50 p-4 text-sm text-ember-200">{error}</div>

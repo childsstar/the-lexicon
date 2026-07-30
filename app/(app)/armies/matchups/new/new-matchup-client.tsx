@@ -3,6 +3,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import PageHeader from "@/components/page-header";
+import Link from "next/link";
+import ArmiesSectionNav from "@/components/armies-section-nav";
 import FactionHeraldry from "@/components/faction-heraldry";
 import { useAuth } from "@/components/auth-provider";
 import { getSupabaseClient } from "@/lib/supabase";
@@ -116,11 +118,21 @@ export default function NewMatchupClient() {
         backLabel="Matchups"
       />
 
+      <ArmiesSectionNav />
+
       <form onSubmit={handleCreate} className="card space-y-4 p-5">
         <h2 className="font-display text-lg font-semibold text-text">Start a matchup</h2>
         {error && <div className="rounded-md border border-ember-500/50 bg-ember-950/30 px-4 py-3 text-sm text-ember-200">{error}</div>}
         {!loading && armies !== null && armies.length === 0 && (
-          <p className="text-sm text-text-muted">You haven&apos;t mustered an army yet — muster one first, then come back here.</p>
+          <div className="rounded-md border border-border bg-surface/60 p-4 text-sm text-text-muted">
+            <p>You haven&apos;t mustered an army yet. Muster one first, then come back here.</p>
+            <Link
+              href="/armies/muster"
+              className="mt-3 inline-flex min-h-11 items-center rounded-md border border-gold-600 px-4 py-2 font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+            >
+              Muster an army
+            </Link>
+          </div>
         )}
         {presetArmy ? (
           <div className="flex items-center gap-3 rounded-md border border-gold-600/40 bg-surface/60 p-3">
