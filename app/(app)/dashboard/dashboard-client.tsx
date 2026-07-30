@@ -107,10 +107,15 @@ export default function DashboardClient() {
       <div className="mb-4 flex justify-end">
         <Link
           href="/armies/matchups"
-          className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-4 py-2 text-sm font-semibold text-text-muted transition-colors hover:border-gold-600 hover:text-gold-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+          className="flex min-h-11 w-full items-center gap-3 rounded-md border border-border-strong px-4 py-3 text-text-muted transition-colors hover:border-gold-600 hover:text-gold-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400 sm:w-auto"
         >
-          <SwordsIcon className="h-4 w-4" />
-          Prepare a matchup
+          <SwordsIcon className="h-4 w-4 shrink-0" />
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold text-text">Prepare a matchup</span>
+            <span className="mt-0.5 block text-xs leading-relaxed">
+              Start or join a sealed army-list exchange before a game.
+            </span>
+          </span>
           <ChevronRightIcon className="h-3.5 w-3.5" />
         </Link>
       </div>

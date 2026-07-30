@@ -56,7 +56,7 @@ export default function ArmyDetailClient({ id }: { id: string }) {
               className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-gold-600 px-4 py-2 text-sm font-bold text-ink shadow-candle transition-colors hover:bg-gold-500"
             >
               <SwordsIcon className="h-4 w-4" />
-              Use in a matchup
+              Prepare a matchup
             </Link>
           ) : undefined
         }

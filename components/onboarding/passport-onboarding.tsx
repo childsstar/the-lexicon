@@ -12,6 +12,7 @@ import CompletePassportStep from "@/components/onboarding/complete-passport-step
 import TravelersBriefing from "@/components/onboarding/travelers-briefing";
 import type { ProfileFormDefaults } from "@/components/profile-form";
 import type { Venue } from "@/lib/venues";
+import { getSupabaseClient } from "@/lib/supabase";
 
 type Step = "arrival" | "identity" | "discover" | "banner" | "passport" | "briefing";
 
@@ -129,6 +130,22 @@ export default function PassportOnboarding({
   const [step, setStep] = useState<Step>("arrival");
   const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
   const [bannerSelection, setBannerSelection] = useState<BannerSelection>(EMPTY_BANNER);
+  const [hasArmy, setHasArmy] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void getSupabaseClient()
+      .from("army_lists")
+      .select("id")
+      .eq("user_id", userId)
+      .limit(1)
+      .then(({ data }) => {
+        if (!cancelled) setHasArmy(Boolean(data?.length));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
 
   const displayName =
     importedDefaults?.display_name?.split(" ")[0] ??
@@ -213,6 +230,7 @@ export default function PassportOnboarding({
           <TravelersBriefing
             venue={selectedVenue}
             banner={bannerSelection}
+            hasArmy={hasArmy}
             onEnter={() => router.replace("/dashboard")}
           />
         </Frame>
