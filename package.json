@@ -22,6 +22,7 @@
     "validate:army-naming": "node scripts/validate-army-naming.mjs",
     "validate:matchup-reveal": "node scripts/validate-matchup-reveal.mjs",
     "validate:matchups-navigation": "node scripts/validate-matchups-navigation.mjs",
+    "validate:matchups-discovery": "node scripts/validate-matchups-discovery.mjs",
     "validate:old-world": "node scripts/validate-old-world-mvp.mjs",
     "validate:army-card": "node scripts/validate-army-card.mjs",
     "validate:faction-heraldry": "node scripts/validate-faction-heraldry.mjs",

@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import PageHeader from "@/components/page-header";
 import ProfileForm from "@/components/profile-form";
 import { useAuth } from "@/components/auth-provider";
 import { isProfileEnriched } from "@/lib/profiles";
-import { UserIcon } from "@/components/icons";
+import { SwordsIcon, UserIcon } from "@/components/icons";
+import { getSupabaseClient } from "@/lib/supabase";
 import {
   AVAILABILITY_OPTIONS,
   EXPERIENCE_LEVELS,
@@ -56,7 +57,28 @@ export default function ProfileClient() {
   const [deleting, setDeleting] = useState(false);
   const [accountError, setAccountError] = useState<string | null>(null);
   const [resettingOnboarding, setResettingOnboarding] = useState(false);
+  const [armyIds, setArmyIds] = useState<string[]>([]);
+  const [armiesLoaded, setArmiesLoaded] = useState(false);
   const isDevelopment = process.env.NODE_ENV !== "production";
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    void getSupabaseClient()
+      .from("army_lists")
+      .select("id")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(2)
+      .then(({ data }) => {
+        if (cancelled) return;
+        setArmyIds((data ?? []).map((army) => army.id));
+        setArmiesLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   if (!user) return null; // AuthGuard handles the redirect.
 
@@ -156,12 +178,6 @@ export default function ProfileClient() {
         description="Your commander identity — who you are, when you play, and how you like your battles fought."
         action={
           <div className="flex shrink-0 gap-2">
-            <Link
-              href="/armies/muster"
-              className="rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200"
-            >
-              Muster an Army
-            </Link>
             <button
               onClick={() => setEditing(true)}
               className="rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200"
@@ -226,6 +242,41 @@ export default function ProfileClient() {
         <Row label="Home locations" value={profile?.home_locations ?? null} />
         <Row label="Discord" value={profile?.discord_username ?? null} />
       </div>
+
+      {armiesLoaded && armyIds.length > 0 && (
+        <div className="card mt-4 flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-text">Your armies are ready</p>
+            <p className="mt-1 text-sm leading-relaxed text-text-muted">
+              Start or join a sealed army-list exchange before your next game.
+            </p>
+          </div>
+          <Link
+            href={armyIds.length === 1 ? `/armies/matchups/new?armyId=${armyIds[0]}` : "/armies/matchups"}
+            className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+          >
+            <SwordsIcon className="h-4 w-4" />
+            Prepare a matchup
+          </Link>
+        </div>
+      )}
+
+      {armiesLoaded && armyIds.length === 0 && Boolean(profile?.primary_factions?.length) && (
+        <div className="card mt-4 flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-text">Muster your first army</p>
+            <p className="mt-1 text-sm leading-relaxed text-text-muted">
+              Add an army to prepare sealed matchups and future games.
+            </p>
+          </div>
+          <Link
+            href="/armies/muster"
+            className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md border border-gold-600 px-4 py-2 text-sm font-semibold text-gold-300 transition-colors hover:border-gold-400 hover:text-gold-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+          >
+            Muster an army
+          </Link>
+        </div>
+      )}
 
       {profile?.bio && (
         <div className="card mt-4 p-5">

@@ -3,12 +3,13 @@
 import Link from "next/link";
 import type { Venue } from "@/lib/venues";
 import type { BannerSelection } from "@/components/onboarding/choose-banner-step";
-import { MapPinIcon, FlagIcon, ScrollIcon } from "@/components/icons";
+import { MapPinIcon, FlagIcon, ScrollIcon, SwordsIcon } from "@/components/icons";
 import { SectionRule } from "@/components/chronicle/frame";
 
 type Briefing = {
   icon: React.ReactNode;
   label: string;
+  description?: string;
   href: string;
   external?: boolean;
 };
@@ -20,7 +21,7 @@ type Briefing = {
  * feed and the card stays the same. Every link here is real today; nothing
  * on this card is invented.
  */
-function buildBriefing(venue: Venue | null, banner: BannerSelection): Briefing[] {
+export function buildBriefing(venue: Venue | null, banner: BannerSelection, hasArmy: boolean): Briefing[] {
   const items: Briefing[] = [];
 
   items.push(
@@ -38,13 +39,18 @@ function buildBriefing(venue: Venue | null, banner: BannerSelection): Briefing[]
   );
 
   items.push(
-    banner.bannerName
+    hasArmy
+      ? {
+          icon: <SwordsIcon className="h-4 w-4" />,
+          label: "Prepare a matchup",
+          description: "Start or join a sealed matchup using one of your armies.",
+          href: "/armies/matchups",
+        }
+      : banner.bannerName
       ? {
           icon: <ScrollIcon className="h-4 w-4" />,
-          label:
-            banner.primaryFactions.length > 1
-              ? `Muster your first force — ${banner.primaryFactions.join(", ")}`
-              : `Muster your first ${banner.primaryFaction ?? "force"}`,
+          label: "Muster your first army",
+          description: "Add an army to prepare sealed matchups and future games.",
           href: "/armies/muster",
         }
       : {
@@ -66,13 +72,15 @@ function buildBriefing(venue: Venue | null, banner: BannerSelection): Briefing[]
 export default function TravelersBriefing({
   venue,
   banner,
+  hasArmy,
   onEnter,
 }: {
   venue: Venue | null;
   banner: BannerSelection;
+  hasArmy: boolean;
   onEnter: () => void;
 }) {
-  const items = buildBriefing(venue, banner);
+  const items = buildBriefing(venue, banner, hasArmy);
 
   return (
     <div className="flex flex-1 flex-col justify-center py-10">
@@ -101,7 +109,12 @@ export default function TravelersBriefing({
               <span className="rounded-full border border-border bg-surface p-1.5 text-gold-500">
                 {item.icon}
               </span>
-              {item.label}
+              <span>
+                <span className="block">{item.label}</span>
+                {item.description && (
+                  <span className="mt-0.5 block text-xs leading-relaxed text-text-muted">{item.description}</span>
+                )}
+              </span>
             </Link>
           ))}
         </div>
