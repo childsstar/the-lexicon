@@ -1,0 +1,39 @@
+name: Venue maintenance
+
+on:
+  schedule:
+    # Sunday -> Wednesday (3 days), Wednesday -> Sunday (4 days).
+    - cron: "17 9 * * 0,3"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-venue-maintenance
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Run protected venue maintenance
+        env:
+          APP_URL: ${{ secrets.LEXICON_APP_URL }}
+          MAINTENANCE_TOKEN: ${{ secrets.LEXICON_MAINTENANCE_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$APP_URL" && test -n "$MAINTENANCE_TOKEN"
+          response_file="$(mktemp)"
+          status="$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}' \
+            --retry 2 --retry-all-errors --max-time 120 \
+            --request POST \
+            --header "Authorization: Bearer ${MAINTENANCE_TOKEN}" \
+            "${APP_URL%/}/api/maintenance/venue-refresh")"
+          cat "$response_file"
+          echo
+          if [[ ! "$status" =~ ^2 ]]; then
+            echo "Venue maintenance failed with HTTP ${status}." >&2
+            exit 1
+          fi
