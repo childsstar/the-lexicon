@@ -1,6 +1,6 @@
 # Venue Seed Format
 
-The venue seed importer accepts a JSON array of objects. This format is for local/admin-reviewed seed data only; do not commit real scraped production data or run imports automatically.
+The venue seed importer accepts a JSON array of objects. Seed data must be admin-reviewed and come from an approved, documented source. The scheduled maintenance route may process the checked-in, official-website-sourced batch; it must not scrape or fetch a new source at runtime.
 
 ## Required fields
 
