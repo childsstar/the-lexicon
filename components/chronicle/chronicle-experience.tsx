@@ -19,6 +19,7 @@ import type { ChronicleEntry } from "@/lib/chronicle";
 import {
   GAME_SYSTEMS,
   GAME_SYSTEMS_PARAM,
+  type GameSystemKey,
   encodeGameSystemKeys,
   filterByGameSystems,
   parseGameSystemKeys,
@@ -37,8 +38,13 @@ type Stage = "intro" | "questions" | "ceremony" | "results";
 
 export default function ChronicleExperience({
   entry,
+  system,
 }: {
   entry: Pick<ChronicleEntry, "quiz" | "banners">;
+  /** Set by the path-scoped route (/chronicles/<slug>/<system>): the
+   * reading draws only from this system's banners, and every URL the
+   * experience writes stays on that path. */
+  system?: GameSystemKey;
 }) {
   const { quiz, banners } = entry;
   const router = useRouter();
@@ -54,9 +60,13 @@ export default function ChronicleExperience({
   // no banners charted for those systems yet — the pool is untouched, so
   // the classic experience is exactly what it was.
   const preferredSystems = useMemo(
-    () => parseGameSystemKeys(searchParams.get(GAME_SYSTEMS_PARAM)),
-    [searchParams]
+    () =>
+      system ? [system] : parseGameSystemKeys(searchParams.get(GAME_SYSTEMS_PARAM)),
+    [system, searchParams]
   );
+  const basePath = system
+    ? `/chronicles/${quiz.slug}/${system}`
+    : `/chronicles/${quiz.slug}`;
   const hasQueryHandoff = preferredSystems.length > 0;
 
   // With no explicit hand-off, fall back to the active realm/game — the
@@ -87,10 +97,11 @@ export default function ChronicleExperience({
   // retakes, and revisits stay inside the reader's chosen worlds.
   const withSystems = useCallback(
     (url: string) =>
-      preferredSystems.length > 0
+      // A path-scoped link already carries its system — no query needed.
+      !system && preferredSystems.length > 0
         ? `${url}${url.includes("?") ? "&" : "?"}${GAME_SYSTEMS_PARAM}=${encodeGameSystemKeys(preferredSystems)}`
         : url,
-    [preferredSystems]
+    [system, preferredSystems]
   );
 
   const [stage, setStage] = useState<Stage>("intro");
@@ -224,7 +235,7 @@ export default function ChronicleExperience({
     setResult(null);
     setExploreIndex(0);
     setStage("intro");
-    router.replace(withSystems(quiz.slug ? `/chronicles/${quiz.slug}` : "?"), {
+    router.replace(withSystems(quiz.slug ? basePath : "?"), {
       scroll: false,
     });
     window.scrollTo({ top: 0 });
@@ -239,7 +250,7 @@ export default function ChronicleExperience({
   }
 
   async function share() {
-    const url = `${window.location.origin}${withSystems(`/chronicles/${quiz.slug}?a=${encodeAnswers(answers)}`)}`;
+    const url = `${window.location.origin}${withSystems(`${basePath}?a=${encodeAnswers(answers)}`)}`;
     const banner = ranked[exploreIndex];
     try {
       if (navigator.share) {
@@ -278,7 +289,7 @@ export default function ChronicleExperience({
           </p>
           {hasQueryHandoff && isFiltered && (
             <p className="mt-4 max-w-sm text-xs leading-relaxed text-text-subtle">
-              Your world guides this reading — banners drawn from{" "}
+              {system ? "This reading draws only from" : "Your world guides this reading — banners drawn from"}{" "}
               <span className="text-gold-400">
                 {[...new Set(activeBanners.map((b) => b.gameSystemKey))]
                   .map((key) => GAME_SYSTEMS[key].name)
